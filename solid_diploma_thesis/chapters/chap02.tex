@@ -1,0 +1,35 @@
+\chapter{Related work}
+\label{chap:num_2}
+
+This chapter provides an overview of currently available alternatives to \solid{}, as well as research projects that share similarities with the main concept of decentralized social platforms.
+
+\begin{center}
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c|c|c|c|c|c|}
+\cline{2-6}
+ & \solid{} & Diaspora & WebBox & OwnCloud & \begin{tabular}[c]{@{}c@{}}Centralized cloud \\ storage solutions\\  (Google Cloud \\ Storage, \\ Amazon \\ AWS and etc)\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Provides personal \\ online datastores \\ to users ?\end{tabular}} & Yes & Yes & Yes & \begin{tabular}[c]{@{}c@{}}No (Stored \\ information \\ is inside data silos, but user \\ still has control over it)\end{tabular} & \begin{tabular}[c]{@{}c@{}}No (Stored \\ information is \\ inside data silos)\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Efficient reusability of \\ stored data\end{tabular}} & Yes & No & Yes & No & No \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Decentralized \\ infrastructure\end{tabular}} & Yes & Yes & Yes & \begin{tabular}[c]{@{}c@{}}Yes (requires some \\ additional setup from user)\end{tabular} & No \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}LinkedData \\ support\end{tabular}} & Yes & Yes & Yes & Limited (Generic storage ) & \begin{tabular}[c]{@{}c@{}}Limited \\ (Generic storage)\end{tabular} \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Open-Source \&\\  Supported by a Community\end{tabular}} & Yes & \begin{tabular}[c]{@{}c@{}}Maintained but \\ not actively \\ supported\end{tabular} & \begin{tabular}[c]{@{}c@{}}Research \\ project\end{tabular} & Yes & \begin{tabular}[c]{@{}c@{}}No \\ (Mostly \\ enterprise \\ solutions)\end{tabular} \\ \hline
+\end{tabular}
+}
+\end{center}
+
+\section{Diaspora}
+
+Out of all currently available solutions, the closest software platform to \solid{} is Diaspora. In general, it is a decentralized social network platform that enables users to choose the server where their data is hosted and even run their own data hosting server. In that sense, it is similar to \solid{}. However, the main focus in Diaspora is to act as a social network, where social data is shared between users using specific APIs, and not running diverse applications on stored data. Unfortunately, it does not offer a well-defined way to use the same data with different applications. Note that Diaspora uses the term pod to refer to a data hosting server. A Diaspora “pod” is what \solid{} would refer to as a “pod server”.
+
+\section{WebBox}
+
+WebBox is a decentralized social network platform that decouples data from applications. As \solid{}, it stores user’s data as Linked Data in a decentralized way. Also similar to \solid{}, system rely on WebID for decentralized identity, authentication, and access control. In WebBox, each data storage service exposes a SPARQL endpoint, and applications manipulate the data via SPARQL queries and updates, or via HTTP GET requests. In contrast, \solid{} offers the full power of LDP for simple data interactions (e.g., hierarchical data organization, fine-grained manipulation) and additionally allows the use of link-following SPARQL for complex data retrieval. It also works as a generic storage platform upon which a significantly larger number of applications can be built. As a last remark, WebBox was mainly mentioned due to the similarities in functionality with \solid{} project, however, the platform was never released out of the bounds of a research prototype.
+
+\section{OwnCloud}
+
+In regards to previously defined requirements, this solution is somewhat too generic to the goals of the project, but due to certain features such as decentralization of the storage using manually setup instances, and various scalability features, building a platform based on the provided API is possible. In general, OwnCloud is a self-hosted open source file sync and share server. Similar to Dropbox, Google Drive, Box, and others, ownCloud lets you access your files, calendar, contacts, and other data. You can synchronize everything between your devices and share files with others. In contrast with \solid{}, the solution is still a generic cloud storage. It does not support LinkedData out of the box and does not provide a trivial way to decouple data from applications using the data. 
+
+\section{Centralized cloud storage solutions}
+
+Modern commercial and enterprise cloud storage solutions from such companies as Google and Amazon, provide a great set of features as platforms for any generic use cases when reliable file storage is needed. However, in contrast with \solid{}, this approach is the most distant from the main concepts of LinkedPipes Applications project’s requirements. As a main con of the approach is the fact that even though the developer is offered a great set of flexibility within the platform, the data storing aspects are not fully decentralized. Another issue is platform dependency meaning that migrating, sharing and interchanging the data between platforms is not trivial since all interactions with data within storage are defined by a set of APIs and SDKs specific to the selected platform. 
