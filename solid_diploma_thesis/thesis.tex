@@ -12,7 +12,7 @@
 \setlength\headsep{0mm}
 \setlength\headheight{0mm}
 % \openright makes the following text appear on a right-hand page
-\let\openright=\clearpage
+\let\openright=\clearpage 
 
 %% Settings for two-sided (duplex) printing
 % \documentclass[12pt,a4paper,twoside,openright]{report}
@@ -51,6 +51,8 @@
 \usepackage{paralist}       % improved enumerate and itemize
 \usepackage[usenames]{xcolor}  % typesetting in color
 \usepackage{xspace}
+
+\usepackage[acronym,toc]{glossaries} % making glossaries
 
 %%JaKl comment macros - to be removed when cleaning the thesis
 \newcommand{\TODO}[1]{{\color{red}{\textbf{TODO: {#1}}\xspace}}}
@@ -111,6 +113,13 @@ Abstract.
 % Definitions of macros (see description inside)
 \include{macros}
 
+%% Load glossary
+% \include{glossary}
+\input{glossary}
+
+% \makeglossaries
+\makenoidxglossaries
+
 % Title page and various mandatory informational pages
 \begin{document}
 \include{title}
@@ -120,7 +129,7 @@ Abstract.
 \tableofcontents
 
 %%% Each chapter is kept in a separate file
-\include{preface}
+\include{chapters/chap00}
 \include{chapters/chap01}
 \include{chapters/chap02}
 \include{chapters/chap03}
@@ -138,9 +147,14 @@ Abstract.
 %%% In mathematical theses, it could be better to move the list of tables to the beginning of the thesis.
 \listoftables
 
-%%% Abbreviations used in the thesis, if any, including their explanation
-%%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
-\chapwithtoc{List of Abbreviations}
+
+%%% Show glossary
+% Add to the glossary all the words defined, regardless of whether they are actually referenced in the document or not
+\glsaddall
+% \printglossaries
+% \printnoidxglossary[type=\acronymtype]
+\printnoidxglossary[title=Glossary]
+\printnoidxglossary[type=acronym]
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

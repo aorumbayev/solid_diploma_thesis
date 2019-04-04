@@ -3,6 +3,10 @@
 
 This chapter provides an overview of currently available alternatives to \solid{}, as well as research projects that share similarities with the main concept of decentralized social platforms.
 
+A big difference between Solid and (federated) services mentioned below is that Solid sets a standard way of operating through data model (RDF) and does not dictate how instances should behave as part of a federation.
+
+Solid could be defined as a more lower level abstraction than federated services like Diaspora and Mastodon in the sense that similar services such could be built upon Solid. For instance, Diaspora and Mastodon could be integrated into Solid by allowing their users to sign in using their WebID, and then allow users to store the data produced by them on the services on their own POD. 
+
 \begin{center}
 \centering
 \resizebox{\textwidth}{!}{%
@@ -29,6 +33,18 @@ WebBox is a decentralized social network platform that decouples data from appli
 \section{OwnCloud}
 
 In regards to previously defined requirements, this solution is somewhat too generic to the goals of the project, but due to certain features such as decentralization of the storage using manually setup instances, and various scalability features, building a platform based on the provided API is possible. In general, OwnCloud is a self-hosted open source file sync and share server. Similar to Dropbox, Google Drive, Box, and others, ownCloud lets you access your files, calendar, contacts, and other data. You can synchronize everything between your devices and share files with others. In contrast with \solid{}, the solution is still a generic cloud storage. It does not support LinkedData out of the box and does not provide a trivial way to decouple data from applications using the data. 
+
+\section{Mastodon}
+
+Mastodon is an online, self-hosted social media, and social networking service. It allows anyone to host their own server node in the network, and its various separately operated user bases are federated across many different sites (called "instances"). These instances are connected as a federated social network, allowing users from different instances to interact with each other seamlessly. Mastodon is a part of the wider Fediverse, allowing its users to also interact with users on other platforms that support the same protocol, such as PeerTube, Misskey, Friendica and Pleroma.
+
+Mastodon has microblogging features similar to Twitter, or Weibo, although it is distinct from them, and unlike a typical software as a service platform, it is not centrally hosted. Each user is a member of a specific, independently operated instance. Users post short messages called "toots" for others to see, and can adjust each of their post's privacy settings. The specific privacy options may vary between sites, but typically include direct messaging, followers only, public but not listed in the public feed, and public and posted to the public feed. The Mastodon mascot is a brown or grey woolly mammoth, sometimes depicted using a tablet or smartphone.
+
+Because there is no central server for Mastodon, each instance has its own code of conduct, terms of service, and moderation policies. This differs from traditional social networks by allowing users to choose an instance which has policies they agree with, or to leave an instance that has policies they disagree with, without losing access to Mastodon's social network.
+
+\section{Hubzilla}
+
+Hubzilla is a modular webserver based operating system which includes technologies for publishing, social media, file sharing, photo sharing, chat and more (including the ability to develop custom modules). These services are accessed and connected across server and administrative boundaries through the communication protocol Zot which provides a high level of privacy and security customization and a nomadic identity for the users. A webserver running Hubzilla is called a "hub".
 
 \section{Centralized cloud storage solutions}
 

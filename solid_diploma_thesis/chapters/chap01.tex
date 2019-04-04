@@ -1,16 +1,65 @@
 \chapter{LinkedPipes Applications}
 \label{chap:num_1}
 
-To be modified...
+In this chapter, the main functional requirements of LinkedPipes Applications are briefly described. This provides a better understanding about the platform and consequently serves as an introduction to defining the functional requirements of the \lpa{}.
 
-\section{The requirements of the project}
+As mentioned in previous chapters, the overall goal on LinkedPipes Applications is to create a web-based tool that would allow generation of interactive visualizations by some domain expert, that can then be embedded in an online article or on another web page or perhaps simply accessed as a standalone page.
 
-LinkedPipes Applications define the following set of requirements: 
+The following section uses the various acronyms and terms specific to Semantic Web: 
 
 \begin{itemize}
-	\item Provide a secure decentralized RDF storage for applications made using LPApps.
-    \item Give users an ability to control who can access the applications stored within the storage.
-    \item Provide a decoupling of data representing the created visualization application from the actual LPApps platform. Which means that the platform should be able to read any application represented in RDF from the storage, and easily load it. That also implies that the storage can be interchangeable. 
+    \item \gls{IRI} -- IRIs are a superset of Uniform Resource Identifiers (URI) which allow for the inclusion of Unicode characters such as Chinese or Cyrillic symbols in the identifier string. IRIs are extensively used as entity identifiers in Linked data.
+    \item SPARQL endpoint is an interface through which a user can query and inspect data stored in a particular RDF data storage.
+    \item Dataset is a collection of data available for access or download from a single data store such as a catalog or a SPARQL endpoint.
+    \item TTL -- short for Terse RDF Triple Language, one of the RDF serialization formats.
 \end{itemize}
 
-A detailed overview of the solution as well as the overview of current alternatives to \solid is provided in the consecutive chapters of this thesis. 
+\section{User authentication}
+
+The user of the platform should be able to register an account in the application, log in and log out. Moreover, once logged in, the platform should be provide functionality to create, configure and publish applications visualizing LinkedData. However, to view an application, it is not necessary to be logged in or even registered.
+
+\section{Create Application}
+
+The Create Application functionality could be described as a core feature of the LinkedPipes Application.
+
+The platform needs to provide the a tooling to specify the data sources to be utilized so that an instance of an interactive application would be created based on provided data sources. In addition to that, there needs to be four ways to provide the data source:
+
+\begin{itemize}
+\item Provide a set of dataset \acrshort{IRI}s which the tool will de-reference to get the dataset.
+\item Specify a \acrshort{SPARQL} endpoint from which data will be queried and extracted.
+\item Upload a file in \acrshort{TTL} format, containing data source specifications.
+\item Use some sample dataset provided by the tool
+\end{itemize}
+
+\section{Configure Application}
+
+After the creation of the application, platform also need to provide functionality to configure previously created applications. Each application, depending on the visualization, will have particular settings that can be set. Furthermore, users must be able to control, with the use of filters, which data is to be used and displayed. The available filters should be automatically derived based on the properties and semantics of the data. 
+
+The set of configure operations for filters can be described as follows:
+
+\begin{itemize}
+\item Removing whole data filters to ignore the values of specific data properties.
+\item Removing selected values of some filters.
+\item Setting fixed values for some filters.
+\item Set/change a name for the application.
+\end{itemize}
+
+\section{Publish Application}
+
+Another important requirement is an ability to publish the application and make it publically available for sharing the visualization to anyone via the permanent link. Furthermore, when a third party accesses this \textit{permalink}, the browser should open the LinkedPipes Applications website with the respective application opened, as configured by the publisher.
+
+Besides, when publishing an application I want the tool to offer the possibility to choose one of the below two settings:
+
+\begin{itemize}
+\item Use and display cached data, making the published application a fixed view.
+\item Regularly refresh the data from the previously chosen data sources of the interactive application.
+\end{itemize}
+
+The tool will also need to provide the ability to embed the published view into a data journalist's web page, for example, using an iFrame.
+
+\section{Store Application}
+
+Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as LinkedData, therefore the persistent storage tooling needs to be optimized for files in RDF format. 
+User needs to be able to browse the stored and published applications and optionally allow other people to collaborate or edit a specific shared application. 
+
+% A detailed overview of the solution as well as the overview of current alternatives to \solid is provided in the consecutive chapters of this thesis. 
