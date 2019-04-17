@@ -1,4 +1,5 @@
-%%% The main file. It contains definitions of basic parameters and includes all other parts.
+% The main file. It contains definitions of basic 
+% parameters and includes all other parts.
 
 %% Settings for single-side (simplex) printing
 % Margins: left 40mm, right 25mm, top and bottom 25mm
@@ -41,7 +42,7 @@
 \usepackage{bbding}         % various symbols (squares, asterisks, scissors, ...)
 \usepackage{bm}             % boldface symbols (\bm)
 \usepackage{graphicx}       % embedding of pictures
-\graphicspath{{solid_diploma_thesis/img/}}
+\graphicspath{{img/}}
 \usepackage{fancyvrb}       % improved verbatim environment
 \usepackage{natbib}         % citation style AUTHOR (YEAR), or AUTHOR [NUMBER]
 \usepackage[nottoc]{tocbibind} % makes sure that bibliography and the lists
@@ -50,8 +51,8 @@
 \usepackage{dcolumn}        % improved alignment of table columns
 \usepackage{booktabs}       % improved horizontal lines in tables
 \usepackage{paralist}       % improved enumerate and itemize
-\usepackage[usenames]{xcolor}  % typesetting in color
 \usepackage{xspace}
+% \usepackage[usenames]{xcolor}  % typesetting in color
 
 \usepackage[acronym,toc]{glossaries} % making glossaries
 
@@ -133,16 +134,16 @@ Abstract.
 \tableofcontents
 
 %%% Each chapter is kept in a separate file
-\include{solid_diploma_thesis/chapters/00_Introduction}
-\include{solid_diploma_thesis/chapters/01_LPA}
-\include{solid_diploma_thesis/chapters/02_Related_Work}
-\include{solid_diploma_thesis/chapters/03_Analysis}
-\include{solid_diploma_thesis/chapters/04_Architecture}
+\include{chapters/00_Introduction}
+\include{chapters/01_LPA}
+\include{chapters/02_Related_Work}
+\include{chapters/03_Analysis}
+\include{chapters/04_Architecture}
 
-\include{solid_diploma_thesis/epilog}
+\include{epilog}
 
 %%% Bibliography
-\include{solid_diploma_thesis/bibliography}
+\include{bibliography}
 
 %%% Figures used in the thesis (consider if this is needed)
 \listoffigures

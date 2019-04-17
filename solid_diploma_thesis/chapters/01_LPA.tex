@@ -5,14 +5,6 @@ In this chapter, the main functional requirements of LinkedPipes Applications ar
 
 %  TODO : describe components of the architecture
 
-\begin{figure}[h]
-
-\centering
-\includegraphics[width=14cm]{lpa_highlevel_architecture.png}
-\caption{High-level overview of LinkedPipes Applications Platform}
-\label{fig:high-level-arch}
-\end{figure}
-
 As mentioned in previous chapters, the overall goal on LinkedPipes Applications is to create a web-based tool that would allow generation of interactive visualizations by some domain expert, that can then be embedded in an online article or on another web page or perhaps simply accessed as a standalone page.
 
 The following section uses the various acronyms and terms specific to Semantic Web: 
@@ -24,9 +16,46 @@ The following section uses the various acronyms and terms specific to Semantic W
     \item TTL -- short for Terse RDF Triple Language, one of the RDF serialization formats.
 \end{itemize}
 
+\section{Components overview}
+
+At the lower level, the \lpa{} is a bundle of various complex services and database solutions communicating between each other in docker environment. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{lpa_highlevel_architecture.png}
+    \caption{High-level overview of LinkedPipes Applications Platform}
+    \label{fig:lpa-high-level-arch}
+\end{figure}
+
+Generally, we can categorize it into three main parts: 
+
+\begin{itemize}
+    \item \textbf{\lpa{}} - the main platform from LinkedPipes bundle, and the main stakeholder for \lpas{} project. Combines multiple database solutions for LinkedData, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
+    \item \textbf{LinkedPipes Services} - a set of external services provided from LinkedPipes bundle that \lpa{} heavily utilizes. Provides a toolset for identifying how linked data can be discovered, extracted, transformed and loaded into an RDF file for further processing.
+    \item \textbf{\lpas{}} - the main goal of the following thesis and a functional storage solution for \lpa{} platform. Contains a set of API controllers and managers that allow users of \lpa{} to store and share their applications in a secure and decentralized way. Consecutive chapters will provide a detailed overview of an architecture and implementational details.
+\end{itemize}
+
+\subsection{\lpa{}}
+
+\subsubsection{Frontend}
+
+\subsubsection{Backend}
+
+\subsubsection{Virtuoso DB}
+
+\subsubsection{PostgreSQL} 
+
+\subsection{LinkedPipes Services} 
+
+\subsubsection{Discovery} 
+
+\subsubsection{ETL} 
+
+\subsection{\lpas{}}
+
 \section{Functional requirements}
 
-
+The following sections describes the main functional requirements defined for the \lpa{}. 
 
 \subsection{User authentication}
 
