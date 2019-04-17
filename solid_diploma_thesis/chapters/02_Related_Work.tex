@@ -7,20 +7,28 @@ A big difference between Solid and (federated) services mentioned below is that 
 
 Solid could be defined as a more lower level abstraction than federated services like Diaspora and Mastodon in the sense that similar services such could be built upon Solid. For instance, Diaspora and Mastodon could be integrated into Solid by allowing their users to sign in using their WebID, and then allow users to store the data produced by them on the services on their own POD. 
 
-\begin{center}
+% \usepackage[normalem]{ulem}
+% \usepackage{graphicx}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[hbt]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{c|c|c|c|c|c|}
-\cline{2-6}
- & \solid{} & Diaspora & WebBox & OwnCloud & \begin{tabular}[c]{@{}c@{}}Centralized cloud \\ storage solutions\\  (Google Cloud \\ Storage, \\ Amazon \\ AWS and etc)\end{tabular} \\ \hline
-\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Provides personal \\ online datastores \\ to users ?\end{tabular}} & Yes & Yes & Yes & \begin{tabular}[c]{@{}c@{}}No (Stored \\ information \\ is inside data silos, but user \\ still has control over it)\end{tabular} & \begin{tabular}[c]{@{}c@{}}No (Stored \\ information is \\ inside data silos)\end{tabular} \\ \hline
-\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Efficient reusability of \\ stored data\end{tabular}} & Yes & No & Yes & No & No \\ \hline
-\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Decentralized \\ infrastructure\end{tabular}} & Yes & Yes & Yes & \begin{tabular}[c]{@{}c@{}}Yes (requires some \\ additional setup from user)\end{tabular} & No \\ \hline
-\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}LinkedData \\ support\end{tabular}} & Yes & Yes & Yes & Limited (Generic storage ) & \begin{tabular}[c]{@{}c@{}}Limited \\ (Generic storage)\end{tabular} \\ \hline
-\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Open-Source \&\\  Supported by a Community\end{tabular}} & Yes & \begin{tabular}[c]{@{}c@{}}Maintained but \\ not actively \\ supported\end{tabular} & \begin{tabular}[c]{@{}c@{}}Research \\ project\end{tabular} & Yes & \begin{tabular}[c]{@{}c@{}}No \\ (Mostly \\ enterprise \\ solutions)\end{tabular} \\ \hline
-\end{tabular}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+\textbf{Technology} & \textbf{\begin{tabular}[c]{@{}c@{}}Personal \\ Data Store\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Reusability\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Decentralized\\  infrastructure\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}LinkedData \\ support\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Open \\ Source\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Used in \\ production\end{tabular}} \\ \hline
+SOLID & Yes & Yes & Yes & Yes & Yes & No \\ \hline
+Diaspora & Yes & No & Yes & Yes & Yes & Yes \\ \hline
+WebBox & Yes & Yes & Yes & Yes & No & No \\ \hline
+OwnCloud & No & No & Yes & No & Yes & Yes \\ \hline
+Mastodon & No & Yes & Yes & No & Yes & Yes \\ \hline
+HubZilla & Yes & Yes & Yes & No & Yes & Yes \\ \hline
+\begin{tabular}[c]{@{}c@{}}Centralized cloud \\ storage solutions\end{tabular} & No & No & No & No & No & Yes \\ \hline
+\end{tabular}%
 }
-\end{center}
+\end{table}
 
 \section{Diaspora}
 

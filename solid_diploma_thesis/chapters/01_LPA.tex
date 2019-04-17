@@ -3,6 +3,16 @@
 
 In this chapter, the main functional requirements of LinkedPipes Applications are briefly described. This provides a better understanding about the platform and consequently serves as an introduction to defining the functional requirements of the \lpa{}.
 
+%  TODO : describe components of the architecture
+
+\begin{figure}[h]
+
+\centering
+\includegraphics[width=14cm]{lpa_highlevel_architecture.png}
+\caption{High-level overview of LinkedPipes Applications Platform}
+\label{fig:high-level-arch}
+\end{figure}
+
 As mentioned in previous chapters, the overall goal on LinkedPipes Applications is to create a web-based tool that would allow generation of interactive visualizations by some domain expert, that can then be embedded in an online article or on another web page or perhaps simply accessed as a standalone page.
 
 The following section uses the various acronyms and terms specific to Semantic Web: 
@@ -14,11 +24,15 @@ The following section uses the various acronyms and terms specific to Semantic W
     \item TTL -- short for Terse RDF Triple Language, one of the RDF serialization formats.
 \end{itemize}
 
-\section{User authentication}
+\section{Functional requirements}
+
+
+
+\subsection{User authentication}
 
 The user of the platform should be able to register an account in the application, log in and log out. Moreover, once logged in, the platform should be provide functionality to create, configure and publish applications visualizing LinkedData. However, to view an application, it is not necessary to be logged in or even registered.
 
-\section{Create Application}
+\subsection{Create Application}
 
 The Create Application functionality could be described as a core feature of the LinkedPipes Application.
 
@@ -31,7 +45,7 @@ The platform needs to provide the a tooling to specify the data sources to be ut
 \item Use some sample dataset provided by the tool
 \end{itemize}
 
-\section{Configure Application}
+\subsection{Configure Application}
 
 After the creation of the application, platform also need to provide functionality to configure previously created applications. Each application, depending on the visualization, will have particular settings that can be set. Furthermore, users must be able to control, with the use of filters, which data is to be used and displayed. The available filters should be automatically derived based on the properties and semantics of the data. 
 
@@ -44,7 +58,7 @@ The set of configure operations for filters can be described as follows:
 \item Set/change a name for the application.
 \end{itemize}
 
-\section{Publish Application}
+\subsection{Publish Application}
 
 Another important requirement is an ability to publish the application and make it publically available for sharing the visualization to anyone via the permanent link. Furthermore, when a third party accesses this \textit{permalink}, the browser should open the LinkedPipes Applications website with the respective application opened, as configured by the publisher.
 
@@ -57,7 +71,7 @@ Besides, when publishing an application I want the tool to offer the possibility
 
 The tool will also need to provide the ability to embed the published view into a data journalist's web page, for example, using an iFrame.
 
-\section{Store Application}
+\subsection{Store Application}
 
 Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as LinkedData, therefore the persistent storage tooling needs to be optimized for files in RDF format. 
 User needs to be able to browse the stored and published applications and optionally allow other people to collaborate or edit a specific shared application. 

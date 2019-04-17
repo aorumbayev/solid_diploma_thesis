@@ -41,6 +41,7 @@
 \usepackage{bbding}         % various symbols (squares, asterisks, scissors, ...)
 \usepackage{bm}             % boldface symbols (\bm)
 \usepackage{graphicx}       % embedding of pictures
+\graphicspath{{solid_diploma_thesis/img/}}
 \usepackage{fancyvrb}       % improved verbatim environment
 \usepackage{natbib}         % citation style AUTHOR (YEAR), or AUTHOR [NUMBER]
 \usepackage[nottoc]{tocbibind} % makes sure that bibliography and the lists
@@ -53,6 +54,9 @@
 \usepackage{xspace}
 
 \usepackage[acronym,toc]{glossaries} % making glossaries
+
+\usepackage[normalem]{ulem} % tables
+
 
 %%JaKl comment macros - to be removed when cleaning the thesis
 \newcommand{\TODO}[1]{{\color{red}{\textbf{TODO: {#1}}\xspace}}}
@@ -129,16 +133,16 @@ Abstract.
 \tableofcontents
 
 %%% Each chapter is kept in a separate file
-\include{chapters/chap00}
-\include{chapters/chap01}
-\include{chapters/chap02}
-\include{chapters/chap03}
-\include{chapters/chap04}
+\include{solid_diploma_thesis/chapters/00_Introduction}
+\include{solid_diploma_thesis/chapters/01_LPA}
+\include{solid_diploma_thesis/chapters/02_Related_Work}
+\include{solid_diploma_thesis/chapters/03_Analysis}
+\include{solid_diploma_thesis/chapters/04_Architecture}
 
-\include{epilog}
+\include{solid_diploma_thesis/epilog}
 
 %%% Bibliography
-\include{bibliography}
+\include{solid_diploma_thesis/bibliography}
 
 %%% Figures used in the thesis (consider if this is needed)
 \listoffigures
