@@ -211,22 +211,36 @@ This concludes the section demonstrating the essential abstractions within the \
 
 \section{LinkedPipes Applications vocabulary}
 
+%TODO Add citation to original solid paper
+Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also important to use advantages of LinkedData in general, and as stated in introductory chapters, as well as the original paper, one the major benefits of any \solid{} compliant server is that everything is either RDF or has the metadata in RDF.  
+
+The first task was to identify and analyze the kind of data that \lpa{} is storing. 
+
 \subsection{Configuration}
 \subsubsection{VisualizerConfiguration}
 \subsubsection{FilterConfiguration}
 \subsubsection{FilterGroup}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=14cm]{lpas_vocabulary_visualization.png}
+\caption{A class hierarchy visualization of \lpa{} vocabulary.}
+\label{fig:lpas_vocabulary_visualization}
+\end{figure}
+
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=14cm]{lpas_vocabulary_visualziation.png}
-\caption{A class hierarchy visualizaiton of \lpa{} vocabulary.}
-\label{fig:lpas_vocabulary_visualziation}
+\includegraphics[width=6cm]{lpas_vocabulary_usage.png}
+\caption{A formal representation of \lpa{} configurations expressed as RDF files using the \lpas{} vocabulary.}
+\label{fig:lpas_vocabulary_usage}
 \end{figure}
+
 
 \section{Storage Component design conventions}
 
-Now after the major components of the \lpas{} package are described, let us dive deeper into the implementations done on the frontend side inside the \lpa{} codebase. 
+
+It is important to note that the \lpas{} is not just the external package completely isolated from the \lpa{} frontend, it is also a set of React components that attempt to blend in into the user interface guidelines of the frontend. Now when the major components of the \lpas{} package as well as the \lpas{} vocabulary are described, let us dive deeper into the implementations done on the frontend side inside the \lpa{} codebase. 
 
 The \lpa{} frontend codebase was implemented using React\footnote{https://reactjs.org} and was utilising a modern stack of frontend development tools, all of those had to be taken into consideration to design React Component responsible for interactions with the storage. This section will cover the design conventions inherited from \lpa{} as well as a detailed overview of User Interfaces conforming to Material Design\footnote{https://material.io/design} conventions that were strongly utilized in \lpa{} frontend.  
 
