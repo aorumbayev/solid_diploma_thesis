@@ -5,7 +5,7 @@ The following chapter provides the overview of the architecture of \lpas. Explai
 
 \section{High level overview}
 
-While the majority of components were described in detail in chapter  \ref{chap:num_1}, the overview architecture provided in this section shows more specific details on how all the external and internal components of the system are interacting. One of the essential details represented in the figure \ref{fig:lpas_high_level_architecture} is the separation between codebases of \lpa{} and \lpas{}. The \lpa{} Frontend is imports the \lpas{} as an npm package and performs all interactions with Solid using the provided functionality of the package. In some sense, \lpas{} is being threated as an additional rudimentary backend and database layer on top of existing internal components inside \lpa{}. This is due to several functional requirements that \lpas{} package implements,  such as \textit{user authentication}, \textit{storage crud operations} and etc.
+While the majority of components were described in detail in chapter \TODO{use autoref} \ref{chap:num_1}, the overview architecture provided in this section shows more specific details on how all the external and internal components of the system are interacting. One of the essential details represented in the figure \ref{fig:lpas_high_level_architecture} is the separation between codebases of \lpa{} and \lpas{}. The \lpa{} Frontend imports the \lpas{} as an npm package and performs all interactions with Solid using the provided functionality of the package. In some sense, \lpas{} is being threated as an additional rudimentary backend and database layer on top of existing internal components inside \lpa{}. This is due to several functional requirements that \lpas{} package implements,  such as \textit{user authentication}, \textit{storage crud operations} \CONSIDER{is "crud" defied here?} and etc.
 
 \begin{figure}[h]
 \centering
@@ -18,13 +18,14 @@ As additionally demonstrated, the figure \ref{fig:lpas_high_level_architecture} 
 The generic interaction flow usually involves direct communication between the \lpa{} frontend and \lpas{} package. The internal frontend component have various React components implemented using the \lpas{} package that provide navigation and interaction with \solid{} Pods. While the package is designed under the assumption that the \lpa{} is the only user of the package, some abstractions are generic enough and have the potential to be used outside of the scope of the main functional requirements. The implementation chapter will also cover a generic use-case on how quick start with application development based on \solid{}.
 
 \subsubsection{The evolution of solid specifications}
-
-At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \texttt{NSS}, that had simpler and more extensive ability to manipulate \texttt{ACL} files. The work within this project however was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
+\TODO{use only one kind of writing solid - sometimes you have solid, sometimes SOLID, sometimes Solid. I see you have a macro for it, so just use it :)}
+At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \TODO{NSS is undefined here} \texttt{NSS}, that had simpler and more extensive ability to manipulate \texttt{ACL} files. The work within this project however was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
 
 The main note to mention for the further section in this chapter is that the architecture design was derived with an aim to rely on official specification of \solid{} while also referring to the provided functionality of \texttt{NSS} that does not always strictly follow the guidelines in specification. 
 
 
 \section{The Storage}
+\TODO{decide on using or not using "the" in section names}
 
 The initial architecture and implementation draft of \lpas{} were different from what is presented in this chapter.  \solid{} related logic was firstly a part of the \lpa{} codebase. Therefore, significantly complicating unit testing and making it hard to define the scopes of the \lpa{} and \lpas{} projects implementation. Later on, a decision was made to separate the logic of the \lpas{} and move it in the separate codebase. The majority of abstractions that were initially designed to be inside the \lpa{} codebase, consisted of various wrappers and crud functions to interact with \solid{} servers. Their design was refined and aggregated into specific abstractions, each responsible for covering the functional requirements from \lpa{} project.
 
@@ -39,7 +40,7 @@ Let us start by describing the main abstractions providing the functionality of 
 
 \subsection{Authentication Manager}
 
-The Authentication Manger is responsible for wrapping \solid{} \textit{WebID} based authentication logic into a simple and developer friendly abstraction. As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} protocols is one of many benefits of \solid{}, in contrast with popular authentication protocols used in centralized silos, it is completely agnostic to specific authentication mechanisms, allowing our single abstraction to support any arbitrary \textit{WebID-OIDC} compliant \solid{} provider.
+The Authentication Manger is responsible for wrapping \solid{} \textit{WebID} based authentication logic into a simple and developer friendly abstraction. As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} protocols is one of many benefits of \solid{}, in contrast with popular authentication protocols used in centralized silos, it is completely agnostic to specific authentication mechanisms, allowing our single abstraction to support any arbitrary \textit{WebID-OIDC} compliant \solid{} provider. \TODO{WebID-OIDC is undefined here. it is not clear to the reader what it is. You talk about it in the next paragraph, so some reordering should be done here.  Also, you should structure these chapters better and consistently. When you talk about a certain part of architecture, first say what it is for, then talk about some details. Here you have it mixed in one paragraph, with no clear separation}
 
 At the moment of writing this, the official \solid{} specification states to support the following protocols:
 \begin{itemize}
@@ -49,12 +50,12 @@ At the moment of writing this, the official \solid{} specification states to sup
 
 \subsubsection{Interacting with frontend}
 
-Sequence diagram on figure \ref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consist of the following steps:
+\TODO{The} Sequence diagram \TODO{in \st{on}} figure \ref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consist of the following steps:
 
 % TODO: cite the node-solid-server
 \begin{enumerate}
-    \item The user simply clicks on 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
-    \item The frontend component calls the Authentication Manager and asynchronously awaits for a callback. As a main input it supplies the information about the \solid{} provider that user would like to use.
+    \item The user simply clicks on \TODO{the} 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
+    \item The frontend component calls the Authentication Manager and asynchronously \TODO{awaits a callback / waits for a callback} awaits for a callback. As a main input it supplies the information about the \solid{} provider that user would like to use.
     \item The Authentication Manager contacts the \solid{} provider and requests the provider authentication web page. Each provider conforming to \solid{} specification should contain that page.
     \item Depending on the browser environment of the user, he gets redirected to the provider's authentication web page either in a new browser tab or a popup dialog.
     \item User selects the preferred authentication and inputs the credentials. At the moment of writing this thesis, popular \solid{} server implementations like node-solid-server support both WebID+TLS and WebID-OIDC specifications.
@@ -74,33 +75,34 @@ Sequence diagram on figure \ref{fig:lps_authentication_sequence_diagram} demonst
 
 \subsection{File Manager}
 % TODO: add citations
-The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
+The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP \TODO{references missing. LDP Containers and resources should be defined better} is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
 
-As mentioned earlier, \solid{} specification is re-using the LDP specification\footnote{https://www.w3.org/TR/ldp/} to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
+As mentioned earlier, \TODO{the} \solid{} specification is re-using the LDP specification\footnote{https://www.w3.org/TR/ldp/} \TODO{better to do a citation than a footnote, see https://w2.syronex.com/jmr/w3c-biblio} to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
 
 The LDP has an extensive set of resource types that are suited for defining the folder and files. However, the architecture provided is relying on two common resource terminologies that were simple enough to cover the requirements without complicating the design of the architecture. Those resources are defined as follows:
+\TODO{OK, I see the definitions here. Again, some reordering/rephrasing should help with the undefined terms. Nevertheless, the terms you use deserve a definition. Also see the definition latex environment to make the text more formal.}
 
 \begin{itemize}
 %	Cite resource 
  	\item Linked Data Platform Basic Container (LDP-BC), is a Linked Data Platform Basic Container. A LDP-RS representing a collection of linked documents that responds to client requests for creation, modification, and/or enumeration of its linked members and documents, and that conforms to the simple lifecycle patterns and conventions.
-	\item A HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
+	\item A\TODO{n} HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions \TODO{what are simple lifecycle patterns and conventions? examples, references}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
 \end{itemize}
 
 
 \subsubsection{Creating resources}
 
-The most essential operation thats is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using NSS server as a basis the general convention for creating LDP resources is a \texttt{POST} providing link to the POD under the path where resource need to be created. 
+The most essential operation that\TODO{\st{s}} is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using NSS server as a basis the general convention for creating LDP resources is a \texttt{POST} \TODO{HTTP request} providing \TODO{a} link to the POD \TODO{\st{under} using} the path where resource need to be created. 
 
 \subsubsection{Reading resources}
 
-Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforwards set of interactions with an \solid{} specification compliant server, and it can be described as follows:
+Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforward\TODO{\st{s}} set of interactions with a\TODO{\st{n}} \solid{} specification compliant server, and it can be described as follows:
 
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
     \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is simply forwarded in asynchronous fashion.
 \end{enumerate}
 
-As demonstrated in steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls to as set of very simple CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF. We will cover more information and demonstrate why it is implemented in that way in the proceeding chapter.  
+As demonstrated in \TODO{the} steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls to as set of very simple CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF \TODO{RDF what? RDF is a data model. Resource is hardly a data model...}. We will cover more information and demonstrate why it is implemented in that way in the \TODO{next \sr{proceeding}} chapter.  
  
 \begin{figure}[h]
 \centering
@@ -111,12 +113,12 @@ As demonstrated in steps above, the LDP specification provides advantages by nar
 
 \subsubsection{Renaming resources}
 
-The rename operation covers one of the functional requirements on \lpa{} platform. It is based on some simpler CRUD operations described in earlier sections. The intent is to provide an ability for an \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders. 
+The rename operation covers one of the functional requirements on \lpa{} platform. It is based on some \TODO{some is very vague. Which ones?} simpler CRUD operations described in earlier sections. The intent \TODO{of what?} is to provide \TODO{\st{an} the} ability for an \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders. 
 
-The flow on the sequence diagram displayed on figure \ref{fig:lps_rename_resource} consist of the following steps:
+The flow \TODO{\st{on} in} the sequence diagram displayed \TODO{\st{on} in} figure \ref{fig:lps_rename_resource} consist of the following steps:
 
 \begin{enumerate}
-    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction, this is similar to input steps in previous sequence diagrams. 
+    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \TODO{the} \texttt{ResourceConfig} abstraction, \TODO{which \st{this}} is similar to \TODO{the} input steps in \TODO{the} previous sequence diagrams. 
     \item \lpas{} has a conditional check to see whether the new provided resource configuration is not accidentally the resource under same title. This step is followed if the new path and title for a configuration is not equal to an old configuration.
     	\begin{enumerate}
     	\item Invoke the copy method that will depending on the resource either will copy it directly, if it is a file, or copy it recursively if it is a folder. For a sake of reducing the unnecessary details, the internals of the copy resource call is not displayed on this diagram.
@@ -134,7 +136,7 @@ The flow on the sequence diagram displayed on figure \ref{fig:lps_rename_resourc
 
 \subsubsection{Deleting resources}
 
-Deletion of resources is slightly more complicated in comparison with trivial GET, POST, PUT or PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
+Deletion of resources is slightly more complicated in comparison with \TODO{the} trivial GET, POST, PUT or PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
 The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 
 \begin{enumerate}
