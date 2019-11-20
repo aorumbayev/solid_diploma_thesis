@@ -102,7 +102,7 @@ Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence}
     \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is simply forwarded in asynchronous fashion.
 \end{enumerate}
 
-As demonstrated in \TODO{the} steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls to as set of very simple CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF \TODO{RDF what? RDF is a data model. Resource is hardly a data model...}. We will cover more information and demonstrate why it is implemented in that way in the \TODO{next \sr{proceeding}} chapter.  
+%As demonstrated in \TODO{the} steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls to as set of very simple CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF \TODO{RDF what? RDF is a data model. Resource is hardly a data model...}. We will cover more information and demonstrate why it is implemented in that way in the \TODO{next \sr{proceeding}} chapter.  
  
 \begin{figure}[h]
 \centering
@@ -214,14 +214,21 @@ This concludes the section demonstrating the essential abstractions within the \
 \section{LinkedPipes Applications vocabulary}
 
 %TODO Add citation to original solid paper
-Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also important to use advantages of LinkedData in general, and as stated in introductory chapters, as well as the original paper, one the major benefits of any \solid{} compliant server is that everything is either RDF or has the metadata in RDF.  
+Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either RDF file or has the metadata expressed as an RDF file.  
 
-The first task was to identify and analyze the kind of data that \lpa{} is storing. 
+The first task was to identify and analyze the kind of data \lpa{} is storing. The initial implementation on \lpa{} codebase was a simple application configuration JavaScript object that assembles all required configuration information for an application by the time a user of \lpa{} hits the \textit{Publish} button. In other words, we were given a JavaScript object to operate. Let us describe how this input requirement was taken into consideration while designing a solution that is both optimized for \solid{} and satisfies the requirement. 
 
-\subsection{Configuration}
-\subsubsection{VisualizerConfiguration}
-\subsubsection{FilterConfiguration}
-\subsubsection{FilterGroup}
+
+\subsection{Using Web Ontology Language}
+
+The Web Ontology Language or OWL, is a commonly used knowledge representation language used for:
+\begin{itemize}
+	\item Designing ontologies.
+	\item Formalizing domains.
+	\item Defining domain specific classes and properties.
+\end{itemize}
+
+As a first step, the JavaScript object that was used to represent \lpa{} configurations was formalized into a JSON Schema \footnote{https://json-schema.org}. Based on that Schema, the initial OWL ontology was designed using Stanford Protege \footnote{https://protege.stanford.edu}, which is a convenient open-source ontology editing tool. The class hierarchy on \autoref{fig:lpas_vocabulary_visualization} demonstrates the draft of the ontology created based on that Schema.
 
 \begin{figure}[h]
 \centering
@@ -230,6 +237,24 @@ The first task was to identify and analyze the kind of data that \lpa{} is stori
 \label{fig:lpas_vocabulary_visualization}
 \end{figure}
 
+\subsubsection{foaf:Person}
+
+The \textit{foaf:Person} node on \autoref{fig:lpas_vocabulary_visualization} refers to a WebID profile of an author of this configuration. Due to the generality of the WebID, there was no need to make a specific subclass from the foaf:Person class for that use-case.
+
+\subsubsection{Configuration}
+
+The \textit{Configuration} class is the main generic abstraction for all \lpa{} configurations. Class hold the generic object properties that can be described as follows:
+\begin{itemize}
+	\item \textit{author}, this refers to the foaf:Person class stated before, and identifies the person with his WebID as an author of this \lpa{} configuration.
+	\item \textit{published}, a date timestamp used to identify when configuration was created and published.
+	\item \textit{title}, represents the title given to that \lpa{} visualizer.
+\end{itemize}
+
+The class is also a parent class for two subclasses titled \textit{VisualizerConfiguration} and \textit{FilterConfiguration}. More details on them provided in the implementation chapter. However, at this point, it is sufficient to understand that there are two main configuration types. One of them tied to the visualization, and the other is to filters that allow filtering information displayed on visualizers.
+
+\subsubsection{FilterGroup}
+
+The \textit{FilterGroup} class is closely related to Filter and FilterConfiguration and is used to reference the aggregation of visualizer specific filters. Since it does not necessarily need to inherit the object properties of FilterConfiguration, it is inheriting from generic \textit{owl:Thing} class.
 
 \begin{figure}[h]
 \centering
@@ -237,6 +262,9 @@ The first task was to identify and analyze the kind of data that \lpa{} is stori
 \caption{A formal representation of \lpa{} configurations expressed as RDF files using the \lpas{} vocabulary.}
 \label{fig:lpas_vocabulary_usage}
 \end{figure}
+
+In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{https://json-ld.org}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into \texttt{turtle} files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
+%TODO add reference to implementation   
 
 
 \section{Storage Component design conventions}
