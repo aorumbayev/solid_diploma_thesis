@@ -12,11 +12,11 @@ This chapter provides an overview of a so-called concept of centralized data sil
 
 In the past, having control over content or information people store and access online was a common case for many technologies on the Web. However, during the past 20 years, that situation changed significantly. Various tech giants and media platforms like Facebook and Google gain control over the personal data of millions of users using their services. The data that is under the control of the fixed authority separated from the rest of the organization or community is often referred to as data silos.  From the standpoint of the company, having centralized control over the data of all users of their platforms brings many benefits. It simplifies the development of services within the organization, allows to perform various analytics processes and understand the users better. However, from the users perspective, it significantly reduces the control of their data stored within centralized platforms.
 
-\section{\solid{} overview}
+\section{SOLID overview}
 
 At the core \solid{} is a set of open specifications. At the current state of the project implementation, the community is mostly concerned about persistence and representation of resources. However, such aspects as identity, authentication and authorization are also vital parts of \solid{}.
 
-A set of these standards are undergoing active implementation stage. Main contributors consisting of the core \solid{} Inrup team, as well as Open Source community, develop the standards into various servers and tools. For instances such as node-solid-server that implements a Solid server in Node, and rdflib.js that allows you to manipulate RDF programmatically.
+A set of these standards are undergoing active implementation stage. Main contributors consisting of the core \solid{} inrupt team, as well as Open Source community, develop the standards into various servers and tools. For instances such as node-solid-server that implements a Solid server in Node, and rdflib.js that allows you to manipulate RDF programmatically.
 
 In addition to this, there is work done on supporting tools, such as Solid React SDK that is created to allow developers to more easily get into developing apps with Solid. As part of this is the style guide that can be reused by others not wanting to use the React parts.
 
@@ -67,19 +67,19 @@ The main purpose of this library is to provide the following functionality:
 
 \subsubsection{@inrupt/solid-react-components}
 
-This libray is an official SDK provided by Inrupt for developing React Web applications for SOLID. The package include various dependencies allowing:
+This libray is an official SDK provided by Inrupt for developing React Web applications for \solid{}. The package include various dependencies allowing:
 
 \begin{itemize}
-	\item Provide React developers with a set of easily customizable components interacting with SOLID specifications.
+	\item Provide React developers with a set of easily customizable components interacting with \solid{} specifications.
     \item Provide a standardized visual design conventions based on Atomic Style.
-    \item A set of cli commands for generating a template SOLID projects.
+    \item A set of cli commands for generating a template \solid{} projects.
 \end{itemize}
 
 \subsubsection{solid-auth-client}
 
-The main purpose of this low level library is to provide ability to easily perform Authentication operations while interacting with SOLID pods and servers.
+The main purpose of this low level library is to provide ability to easily perform Authentication operations while interacting with \solid{} pods and servers.
 
-At its core it is a browser library that allows your apps to securely log in to SOLID data pods and read and write data from them.
+At its core it is a browser library that allows your apps to securely log in to \solid{} data pods and read and write data from them.
 
 \subsubsection{solid-file-client}
 
@@ -91,10 +91,10 @@ Javascript RDF library for browsers and Node.js.
 
 \subsubsection{@solid/query-ldflex}
 
-The following library adds support of the LDflex language to SOLID by:
+The following library adds support of the LDflex language to \solid{} by:
 
 \begin{itemize}
-	\item Providing a JSON-LD context for SOLID.
+	\item Providing a JSON-LD context for \solid{}.
     \item Binding a query engine (Comunica).
     \item Exposing useful data paths.
     \item LDflex expressions occur for example on Solid React components, where they make it easy for developers to specify what data they want to show. They can also be used as an expression language in any other Solid project or framework.

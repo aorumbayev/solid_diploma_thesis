@@ -261,3 +261,5 @@ TSWLatexianTemp*
 # standalone packages
 *.sta
 solid_diploma_thesis/thesis\.pdf
+
+.DS_Store

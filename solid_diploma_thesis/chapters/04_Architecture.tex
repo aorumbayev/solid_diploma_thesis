@@ -1,11 +1,11 @@
 \chapter{Architecture}
 \label{chap:num_4}
 
-The following chapter provides the overview of the architecture of \lpas. Explains the main components of the Storage as well as how it is being integrated into LinkedPipes Applications platform.
+The following chapter provides an overview of the architecture of \lpas. Explains the main components of the Storage as well as how it is being integrated into the LinkedPipes Applications platform.
 
-\section{High level overview}
+\section{High-Level Overview}
 
-While the majority of components were described in detail in chapter \TODO{use autoref} \ref{chap:num_1}, the overview architecture provided in this section shows more specific details on how all the external and internal components of the system are interacting. One of the essential details represented in the figure \ref{fig:lpas_high_level_architecture} is the separation between codebases of \lpa{} and \lpas{}. The \lpa{} Frontend imports the \lpas{} as an npm package and performs all interactions with Solid using the provided functionality of the package. In some sense, \lpas{} is being threated as an additional rudimentary backend and database layer on top of existing internal components inside \lpa{}. This is due to several functional requirements that \lpas{} package implements,  such as \textit{user authentication}, \textit{storage crud operations} \CONSIDER{is "crud" defied here?} and etc.
+While the majority of components were described in detail in \autoref{chap:num_1}, the overview architecture provided in this section shows more specific details on how all the external and internal components of the system are interacting. One of the essential details represented in the figure \ref{fig:lpas_high_level_architecture} is the separation between codebases of \lpa{} and \lpas{}. The \lpa{} Frontend imports the \lpas{} as an npm package and performs all interactions with Solid using the provided functionality of the package. In some sense, \lpas{} is being treated as an additional rudimentary backend and database layer on top of existing internal components inside \lpa{}. This is due to several functional requirements that \lpas{} package implements,  such as \textit{user authentication}, \textit{operations to manipulate resources inside storage} and etc.
 
 \begin{figure}[h]
 \centering
@@ -14,18 +14,18 @@ While the majority of components were described in detail in chapter \TODO{use a
 \label{fig:lpas_high_level_architecture}
 \end{figure}
 
-As additionally demonstrated, the figure \ref{fig:lpas_high_level_architecture} also has Docker icons displayed under some modules. This is to indicate where the production-ready service is hosted. For instance, in the case of the \lpas{}, the end goal is the npm registry, while \lps{} and \lpa{} are all hosted in the docker registry where each internal component is a docker container.
-The generic interaction flow usually involves direct communication between the \lpa{} frontend and \lpas{} package. The internal frontend component have various React components implemented using the \lpas{} package that provide navigation and interaction with \solid{} Pods. While the package is designed under the assumption that the \lpa{} is the only user of the package, some abstractions are generic enough and have the potential to be used outside of the scope of the main functional requirements. The implementation chapter will also cover a generic use-case on how quick start with application development based on \solid{}.
+As additionally demonstrated, the figure \ref{fig:lpas_high_level_architecture} also has Docker icons displayed under some modules. The icons indicate where the production-ready service is hosted. For instance, in the case of the \lpas{}, the end goal is the npm registry, while \lps{} and \lpa{} are all hosted in the docker registry where each internal component is a docker container.
+The generic interaction flow usually involves direct communication between the \lpa{} frontend and \lpas{} package. The internal frontend component has various React components implemented using the \lpas{} package that provides navigation and interaction with \solid{} Pods. While the package is designed under the assumption that the \lpa{} is the only user of the package, some abstractions are generic enough and have the potential to be used outside of the scope of the main functional requirements. The implementation chapter will also cover a generic use-case on how quick start with application development based on \solid{}.
 
+%TODO NSS will be defined in earlier chapters,
 \subsubsection{The evolution of solid specifications}
-\TODO{use only one kind of writing solid - sometimes you have solid, sometimes SOLID, sometimes Solid. I see you have a macro for it, so just use it :)}
-At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \TODO{NSS is undefined here} \texttt{NSS}, that had simpler and more extensive ability to manipulate \texttt{ACL} files. The work within this project however was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
+At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions, or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \texttt{NSS}, that had a simpler and more extensive ability to manipulate \texttt{ACL} files. The work within this project, however, was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
 
-The main note to mention for the further section in this chapter is that the architecture design was derived with an aim to rely on official specification of \solid{} while also referring to the provided functionality of \texttt{NSS} that does not always strictly follow the guidelines in specification. 
+The main note to mention for the further section in this chapter is that the architecture design was derived from relying on the official specification of \solid{} while also referring to the provided functionality of \texttt{NSS} that does not always strictly follow the guidelines in the specification. 
 
 
-\section{The Storage}
-\TODO{decide on using or not using "the" in section names}
+\section{Storage}
+\label{ssec:storage}
 
 The initial architecture and implementation draft of \lpas{} were different from what is presented in this chapter.  \solid{} related logic was firstly a part of the \lpa{} codebase. Therefore, significantly complicating unit testing and making it hard to define the scopes of the \lpa{} and \lpas{} projects implementation. Later on, a decision was made to separate the logic of the \lpas{} and move it in the separate codebase. The majority of abstractions that were initially designed to be inside the \lpa{} codebase, consisted of various wrappers and crud functions to interact with \solid{} servers. Their design was refined and aggregated into specific abstractions, each responsible for covering the functional requirements from \lpa{} project.
 
@@ -39,29 +39,30 @@ The initial architecture and implementation draft of \lpas{} were different from
 Let us start by describing the main abstractions providing the functionality of \lpas{}.
 
 \subsection{Authentication Manager}
+\label{sssec:authentication_manager}
 
-The Authentication Manger is responsible for wrapping \solid{} \textit{WebID} based authentication logic into a simple and developer friendly abstraction. As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} protocols is one of many benefits of \solid{}, in contrast with popular authentication protocols used in centralized silos, it is completely agnostic to specific authentication mechanisms, allowing our single abstraction to support any arbitrary \textit{WebID-OIDC} compliant \solid{} provider. \TODO{WebID-OIDC is undefined here. it is not clear to the reader what it is. You talk about it in the next paragraph, so some reordering should be done here.  Also, you should structure these chapters better and consistently. When you talk about a certain part of architecture, first say what it is for, then talk about some details. Here you have it mixed in one paragraph, with no clear separation}
-
-At the moment of writing this, the official \solid{} specification states to support the following protocols:
+The Authentication Manager is responsible for wrapping \solid{} WebID based authentication logic into a simple and developer-friendly abstraction At the moment of writing this, the official \solid{} specification states to support the following protocols:
 \begin{itemize}
-\item WebID-TLS  - is one of the primary authentication protocols that relies on WebIDs instead of usernames. The passwords are replaced with certain cryptographic certificates as bearer tokens and is stored within user's browser.
-\item WebID-OIDC - alternative authentication protocol based on OAuth2 and OpenID Connect protocols and adjusted to support the concept of WebID. This is in fact the primary authentication option provided by \lpas{}, later chapters will provide reasoning behind why this ended up being more intuitive option to cover the authentication requirement for \lpa{}.   
+\item WebID-TLS  - is one of the primary authentication protocols that rely on WebIDs instead of usernames. The passwords are replaced with certain cryptographic certificates as bearer tokens and are stored within the user's browser.
+\item WebID-OIDC - alternative authentication protocol based on OAuth2 and OpenID Connect protocols and adjusted to support the concept of WebID. This is, in fact, the first authentication option provided by \lpas{}, later chapters will provide the reasoning behind why this ended up being a more intuitive option to cover the authentication requirement for \lpa{}.   
 \end{itemize}
+
+As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} protocols is one of many benefits of \solid{}, in contrast with popular authentication protocols used in centralized silos, it is completely agnostic to specific authentication mechanisms, allowing our single abstraction to support any arbitrary \textit{WebID-OIDC} compliant \solid{} provider. 
 
 \subsubsection{Interacting with frontend}
 
-\TODO{The} Sequence diagram \TODO{in \st{on}} figure \ref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consist of the following steps:
+Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consists of the following steps:
 
 % TODO: cite the node-solid-server
 \begin{enumerate}
-    \item The user simply clicks on \TODO{the} 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
-    \item The frontend component calls the Authentication Manager and asynchronously \TODO{awaits a callback / waits for a callback} awaits for a callback. As a main input it supplies the information about the \solid{} provider that user would like to use.
+    \item The user clicks on the 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
+    \item The frontend component calls the Authentication Manager and asynchronously waits for a callback. As the main input, it supplies the information about the \solid{} provider that the user would like to use.
     \item The Authentication Manager contacts the \solid{} provider and requests the provider authentication web page. Each provider conforming to \solid{} specification should contain that page.
     \item Depending on the browser environment of the user, he gets redirected to the provider's authentication web page either in a new browser tab or a popup dialog.
-    \item User selects the preferred authentication and inputs the credentials. At the moment of writing this thesis, popular \solid{} server implementations like node-solid-server support both WebID+TLS and WebID-OIDC specifications.
+    \item The user selects the preferred authentication and inputs the credentials. At the moment of writing this thesis, popular \solid{} server implementations like node-solid-server support both WebID+TLS and WebID-OIDC specifications.
     \item The Authentication Manager receives the callback from the provider and sets the authenticated user session token.
-    \item Frontend component receives the callback from the Authentication Manager indicating that user is authenticated.
-    \item As a last step, frontend redirects the user into the homepage dashboard of \lpa{} platform.
+    \item Frontend component receives the callback from the Authentication Manager, indicating that the user is authenticated.
+    \item As the last step, the frontend redirects the user into the homepage dashboard of \lpa{} platform.
 \end{enumerate}
 
 
@@ -83,18 +84,18 @@ The LDP has an extensive set of resource types that are suited for defining the 
 \TODO{OK, I see the definitions here. Again, some reordering/rephrasing should help with the undefined terms. Nevertheless, the terms you use deserve a definition. Also see the definition latex environment to make the text more formal.}
 
 \begin{itemize}
-%	Cite resource 
- 	\item Linked Data Platform Basic Container (LDP-BC), is a Linked Data Platform Basic Container. A LDP-RS representing a collection of linked documents that responds to client requests for creation, modification, and/or enumeration of its linked members and documents, and that conforms to the simple lifecycle patterns and conventions.
-	\item A\TODO{n} HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions \TODO{what are simple lifecycle patterns and conventions? examples, references}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
+%    Cite resource 
+     \item Linked Data Platform Basic Container (LDP-BC), is a Linked Data Platform Basic Container. An LDP-RS representing a collection of linked documents that respond to client requests for creation, modification, and enumeration of its linked members and documents, and that conforms to the simple lifecycle patterns and conventions.
+    \item A\TODO{n} HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions \TODO{what are simple lifecycle patterns and conventions? examples, references}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
 \end{itemize}
 
 
 \subsubsection{Creating resources}
 
-The most essential operation that\TODO{\st{s}} is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using NSS server as a basis the general convention for creating LDP resources is a \texttt{POST} \TODO{HTTP request} providing \TODO{a} link to the POD \TODO{\st{under} using} the path where resource need to be created. 
+The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} HTTP request providing a link to the POD using the path where resource needs to be created. 
 
 \subsubsection{Reading resources}
-
+%TODO, WIP here
 Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforward\TODO{\st{s}} set of interactions with a\TODO{\st{n}} \solid{} specification compliant server, and it can be described as follows:
 
 \begin{enumerate}
@@ -211,7 +212,7 @@ This concludes the section demonstrating the essential abstractions within the \
 \end{figure}
 
 
-\section{LinkedPipes Applications vocabulary}
+\section{LinkedPipes Applications Ontology}
 
 %TODO Add citation to original solid paper
 Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either RDF file or has the metadata expressed as an RDF file.  
@@ -220,6 +221,7 @@ The first task was to identify and analyze the kind of data \lpa{} is storing. T
 
 
 \subsection{Using Web Ontology Language}
+\label{sssec:using_web_ontology_language}
 
 The Web Ontology Language or OWL, is a commonly used knowledge representation language used for:
 \begin{itemize}
@@ -242,6 +244,7 @@ As a first step, the JavaScript object that was used to represent \lpa{} configu
 The \textit{foaf:Person} node on \autoref{fig:lpas_vocabulary_visualization} refers to a WebID profile of an author of this configuration. Due to the generality of the WebID, there was no need to make a specific subclass from the foaf:Person class for that use-case.
 
 \subsubsection{Configuration}
+\label{ssssec:configuration}
 
 The \textit{Configuration} class is the main generic abstraction for all \lpa{} configurations. Class hold the generic object properties that can be described as follows:
 \begin{itemize}
@@ -267,14 +270,13 @@ In order to simplify adoption of this ontology in \lpa{} frontend, the resulting
 %TODO add reference to implementation   
 
 
-\section{Storage Component design conventions}
+\section{Storage Component Design}
 
+It is important to note that the \lpas{} is not just the external package completely isolated from the \lpa{} frontend, it is also a set of React components that attempt to blend in into the user interface guidelines of the frontend. Now when the major components of the \lpas{} package as well as the \lpas{} vocabulary are described, let us dive deeper into the design considerations done on the frontend side inside the \lpa{} codebase. 
 
-It is important to note that the \lpas{} is not just the external package completely isolated from the \lpa{} frontend, it is also a set of React components that attempt to blend in into the user interface guidelines of the frontend. Now when the major components of the \lpas{} package as well as the \lpas{} vocabulary are described, let us dive deeper into the implementations done on the frontend side inside the \lpa{} codebase. 
+The \lpa{} frontend codebase was implemented using React\footnote{https://reactjs.org} and was utilising a modern stack of frontend development tools, all of those had to be taken into consideration to design React Component responsible for interactions with the storage. This section will cover the design conventions inherited from \lpa{} as well as a detailed overview of User Interfaces conforming to Material Design\footnote{https://material.io/design} conventions that were strongly utilized in \lpa{} frontend. In addition to that, it will also revisit the functional requirements and provide UI design proposals that are later implemented in the implementation section.
 
-The \lpa{} frontend codebase was implemented using React\footnote{https://reactjs.org} and was utilising a modern stack of frontend development tools, all of those had to be taken into consideration to design React Component responsible for interactions with the storage. This section will cover the design conventions inherited from \lpa{} as well as a detailed overview of User Interfaces conforming to Material Design\footnote{https://material.io/design} conventions that were strongly utilized in \lpa{} frontend.  
-
-\subsection{Designing the React component}
+\subsection{Designing React Components}
 
 At the root, \lpa{} frontend identifies two main types of components that are logically separated into folders titled as follows:
 \begin{itemize}
@@ -297,36 +299,84 @@ This is not a strict guideline defined by \lpa{} developers. However, if a compo
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8cm]{lpas_component_design.png}
+\includegraphics[width=7cm]{lpas_component_design.png}
 \caption{React container abstraction decomposition following \lpas{} design conventions.}
 \label{fig:lpas_component_design}
 \end{figure}
 
-Therefore, this concludes the only major design conventions that were required by \lpa{} frontend. Let us go over the details of each individual component in the following sections.
+Therefore, the logical decomposition of components by their complexity is the concludes the only major design convention that was required by \lpa{} frontend. Let us go over the details of each individual component in the following sections.
+
+\subsection{Authentication View}
+
+Authentication is the entry for the \lpa{} platform, and \lpas{} covers the design and implementation of that view since \lpa{} relies on \solid{} to perform the WebID authentication. 
+
+As previously demonstrated in \autoref{sssec:authentication_manager}, the \lpas{} package handles the authentication by redirecting the requests and responses between the browser of the user and the \solid{} provider server. The mock user interface on \autoref{fig:lpas_authenticate_mock} demonstrates a basic mock for a authentication webpage. There are several ways to authentication available to a \lpa{} user with a WebID profile in any \solid provider:
+\begin{itemize}
+    \item \textit{Provider authentication}, user clicks on a dropdown pane and selects the name of the default providers. The default providers supported by \lpas{} are \textit{inrupt.net}\footnote{https://inrupt.net} , \textit{solid.community}\footnote{https://solid.community} and a self-hosted LinkedPipes server available at \textit{lpapps.co:8443}\footnote{https://lpapps.co:8443}.
+    \item \textit{WebID authentication}, similar to previous option but instead user is able to provide his WebID and be redirected right into the login page of his provider.
+\end{itemize} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=7cm]{lpas_authenticate_mock.png}
+\caption{Mock UI for Authentication webpage in \lpa{} Frontend.}
+\label{fig:lpas_authenticate_mock}
+\end{figure}
+
+The additional user interface elements are defined as follows:
+
+\begin{itemize}
+    \item \textit{Authenticate} button executes the authentication sequence depending on the options that users have chosen, which are either Provider or direct WebID authentication.
+    \item \textit{Lean more about \solid{}} redirects users not familiar with concepts of \solid{} directly into the home page of the inrupt project.
+\end{itemize}
+ 
 
 \subsection{Storage Dashboard}
 
-Referring back to the functional requirements stated in first chapters, the ability to interact with the \lpas{} is an essential feature allowing users of \lpa{} platform to manipulate their Applications. The mock displayed on \ref{fig:lpas_ui_dashboard_mock} is a webpage accessible via the home dashboard. There are two main display modes:
+Referring back to the functional requirements stated in the first chapters, the ability to interact with the \lpas{} is an essential feature allowing users of \lpa{} platform to manipulate their Applications. The mock displayed on \ref{fig:lpas_ui_dashboard_mock} is a webpage accessible via the home dashboard. There are two main display modes:
 
 \begin{itemize}
-	\item The \textit{My apps} tab, is a React component that fetches all RDF resources in root \lpas{} folder containing applications created by a user. 
-	\item The \textit{Shared} tab, is a React component fetching all RDF resources in a shared \lpas{} folder containing applications created and shared by a particular users with other users of \lpas{} platform.
+    \item The \textit{My apps} tab, is a React component that fetches all RDF resources in root \lpas{} folder containing applications created by a user. 
+    \item The \textit{Shared} tab is a React component fetching all RDF resources in a shared \lpas{} folder containing applications created and shared by a particular user with other users of \lpas{} platform.
 \end{itemize}
 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=11cm]{lpas_ui_dashboard_mock.png}
+\includegraphics[width=7cm]{lpas_ui_dashboard_mock.png}
 \caption{Mock UI for Storage Dashboard webpage in \lpa{} Frontend.}
 \label{fig:lpas_ui_dashboard_mock}
 \end{figure}
 
-\subsection{Storage Visualizer Preview}
+
+
+The idea behind the dashboard is that each card is a visual representation of \lpa{} configuration. As mentioned earlier in \autoref{sssec:using_web_ontology_language}, each configuration is expressed using the \lpas{} ontology and stored as an RDF file inside \solid{}. The card collection view pulls each of the configurations from the container, storing them in \solid{} and populates the content. 
+
+The user of \lpa{} has a set of straightforward interactions that can be performed on card:
+\begin{itemize}
+    \item \textit{Clicking on card}, redirects the user to the webpage displaying the visualizer.
+    \item \textit{Clicking on sub-menu icon}, reveals a popup where users can choose to delete, rename, or share the visualizer.
+\end{itemize}
+
+
+\subsection{Storage Control Panel}
+
+An ability to authenticate, create, and publish an application using \solid{} are essential requirements stated by \lpa{}. However, users also need to have basic functionality to manipulate the data stored by the \lpas{} within their PODs. Therefore a mock design demonstrated on \autoref{fig:lpas_change_folder_mock} provides the basic functionality described as follows:
+
+\begin{itemize}
+    \item \texttt{Update} folder, allows users to switch their root folder into any other folder within their POD.
+    \item \texttt{Copy} folder allows users to copy all content from the current root configurations folder into a new or existing folder.
+    \item \texttt{Move} folder allows users to move all content from the current root configurations folder into a new or existing folder.
+\end{itemize}
 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=11cm]{lpas_ui_preview_mock.png}
-\caption{Mock UI for Visualizer preview popup in \lpa{} Frontend.}
-\label{fig:lpas_ui_preview_mock}
+\includegraphics[width=7cm]{lpas_change_folder_mock.png}
+\caption{Mock UI for Storage Dashboard webpage in \lpa{} Frontend.}
+\label{fig:lpas_change_folder_mock}
 \end{figure}
+
+The diagrams in \autoref{ssec:storage} demonstrate the exact sequence of interactions between \lpa{}, \lpas{} and \solid{} providers when operations like \textit{move} or \textit{copy} folder are invoked.
+
+
