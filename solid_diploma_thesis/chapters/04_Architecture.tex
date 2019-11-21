@@ -92,11 +92,22 @@ The LDP has an extensive set of resource types that are suited for defining the 
 
 \subsubsection{Creating resources}
 
-The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} HTTP request providing a link to the POD using the path where resource needs to be created. 
+The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} HTTP request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
+\begin{enumerate}
+    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
+    \item \lpas{} constructs an HTTP POST request to create the resource in POD in \solid{} server, the response is simply forwarded in asynchronous fashion.
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{lpas_create_resource.png}
+\caption{Sequence diagram for \textit{POST} resource operation invoked from StorageFileManager.}
+\label{fig:lpas_create_resource}
+\end{figure}
 
 \subsubsection{Reading resources}
 %TODO, WIP here
-Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforward\TODO{\st{s}} set of interactions with a\TODO{\st{n}} \solid{} specification compliant server, and it can be described as follows:
+Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforward set of interactions with an \solid{} specification compliant server, and it can be described as follows:
 
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
@@ -107,7 +118,7 @@ Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence}
  
 \begin{figure}[h]
 \centering
-\includegraphics[width=10cm]{get_resource.png}
+\includegraphics[width=8cm]{get_resource.png}
 \caption{Sequence diagram for \textit{GET} resource operation invoked from StorageFileManager.}
 \label{fig:lps_get_resource_sequence}
 \end{figure}
