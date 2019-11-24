@@ -100,10 +100,16 @@ login = async (idp, callbackUri) => {
 };
 \end{lstlisting}
 
-To sum up, the \textit{AuthenticationManager} is a simple and straighforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to simply calling the \textit{fetch()} method whenever an HTTP request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
+To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever an HTTP request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
+
+\section{File Manager}
+
+\section{Access Control Manager}
+
+
+%TODO: Sections belows are WIP
 
 \section{Hosting Storage Ontology}
-
 
 
 \section{Storage Frontend}

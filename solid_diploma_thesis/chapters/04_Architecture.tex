@@ -384,11 +384,19 @@ An ability to authenticate, create, and publish an application using \solid{} ar
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=7cm]{lpas_change_folder_mock.png}
+\includegraphics[width=6cm]{lpas_change_folder_mock.png}
 \caption{Mock UI for Storage Dashboard webpage in \lpa{} Frontend.}
 \label{fig:lpas_change_folder_mock}
 \end{figure}
 
 The diagrams in \autoref{ssec:storage} demonstrate the exact sequence of interactions between \lpa{}, \lpas{} and \solid{} providers when operations like \textit{move} or \textit{copy} folder are invoked.
+
+To sum up, this chapter provided an overview of three major aspects of \lpas:
+\begin{itemize}
+    \item The npm package contains the core abstractions architectured to be separated from the \lpa{} with the intent to improve \solid{} related code maintainability and testing. The sequence diagrams of all main CRUD operations performed on RDF resources in \solid{} PODs.
+    \item The \lpas{} ontology, an RDF vocabulary designed specifically for \lpa{} configurations, taking full advantage of \solid{}. In other words, giving an ability not simply to store the \lpa{} configurations, but also perform any complex querying on them using SPARQL.
+    \item The frontend React components, the UI mocks of components inside \lpa{} frontend, conforming to conventions of the \lpa{}.
+\end{itemize}
+In the next chapter, a detailed review of the implementation of the architecture will be provided.
 
 
