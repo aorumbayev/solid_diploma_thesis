@@ -76,17 +76,17 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 
 \subsection{File Manager}
 % TODO: add citations
-The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP \TODO{references missing. LDP Containers and resources should be defined better} is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
+The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers \cite{Speicher:15:LDP}. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
 
-As mentioned earlier, \TODO{the} \solid{} specification is re-using the LDP specification\footnote{https://www.w3.org/TR/ldp/} \TODO{better to do a citation than a footnote, see https://w2.syronex.com/jmr/w3c-biblio} to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
+As mentioned earlier, the \solid{} specification is re-using the LDP specification to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
 
 The LDP has an extensive set of resource types that are suited for defining the folder and files. However, the architecture provided is relying on two common resource terminologies that were simple enough to cover the requirements without complicating the design of the architecture. Those resources are defined as follows:
-\TODO{OK, I see the definitions here. Again, some reordering/rephrasing should help with the undefined terms. Nevertheless, the terms you use deserve a definition. Also see the definition latex environment to make the text more formal.}
+% TODO {OK, I see the definitions here. Again, some reordering/rephrasing should help with the undefined terms. Nevertheless, the terms you use deserve a definition. Also see the definition latex environment to make the text more formal.}
 
 \begin{itemize}
 %    Cite resource 
      \item Linked Data Platform Basic Container (LDP-BC), is a Linked Data Platform Basic Container. An LDP-RS representing a collection of linked documents that respond to client requests for creation, modification, and enumeration of its linked members and documents, and that conforms to the simple lifecycle patterns and conventions.
-    \item A\TODO{n} HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions \TODO{what are simple lifecycle patterns and conventions? examples, references}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
+    \item An \texttt{HTTP} resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions, in other words any resource that can be \textit{created}, \textit{updated}, \textit{deleted} and \textit{red}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
 \end{itemize}
 
 
@@ -94,8 +94,8 @@ The LDP has an extensive set of resource types that are suited for defining the 
 
 The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} HTTP request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
 \begin{enumerate}
-    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
-    \item \lpas{} constructs an HTTP POST request to create the resource in POD in \solid{} server, the response is simply forwarded in asynchronous fashion.
+    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of resource, whether it is a folder or a file. Additionally, it describes the required information to identify the resource within the POD.
+    \item \lpas{} constructs an HTTP POST request to create the resource in POD in \solid{} server, the response is forwarded asynchronously.
 \end{enumerate}
 
 \begin{figure}[h]
@@ -106,15 +106,16 @@ The essential operation that is at the core of most functional requirements defi
 \end{figure}
 
 \subsubsection{Reading resources}
-%TODO, WIP here
+
 Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence} is a straightforward set of interactions with an \solid{} specification compliant server, and it can be described as follows:
 
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
-    \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is simply forwarded in asynchronous fashion.
+    \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is forwarded asynchronously.
 \end{enumerate}
 
-%As demonstrated in \TODO{the} steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls to as set of very simple CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF \TODO{RDF what? RDF is a data model. Resource is hardly a data model...}. We will cover more information and demonstrate why it is implemented in that way in the \TODO{next \sr{proceeding}} chapter.  
+
+As demonstrated in the steps above, the LDP specification provides advantages by narrowing down the amount of resource lifecycle related calls as a set of elementary CRUD operations. Another important detail is that every single resource created by \lpas{} is an RDF file. We will cover more information and demonstrate why it is implemented in that way in the proceeding chapter.  
  
 \begin{figure}[h]
 \centering
@@ -125,17 +126,17 @@ Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence}
 
 \subsubsection{Renaming resources}
 
-The rename operation covers one of the functional requirements on \lpa{} platform. It is based on some \TODO{some is very vague. Which ones?} simpler CRUD operations described in earlier sections. The intent \TODO{of what?} is to provide \TODO{\st{an} the} ability for an \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders. 
+The rename operation covers one of the functional requirements on the \lpa{} platform. It is based on a simpler CRUD operations such as \textit{create} and \textit{read} resource described in earlier sections. The goal of this function is to provide the ability for a \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders. 
 
-The flow \TODO{\st{on} in} the sequence diagram displayed \TODO{\st{on} in} figure \ref{fig:lps_rename_resource} consist of the following steps:
+The flow in the sequence diagram displayed in figure \ref{fig:lps_rename_resource} consists of the following steps:
 
 \begin{enumerate}
-    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \TODO{the} \texttt{ResourceConfig} abstraction, \TODO{which \st{this}} is similar to \TODO{the} input steps in \TODO{the} previous sequence diagrams. 
-    \item \lpas{} has a conditional check to see whether the new provided resource configuration is not accidentally the resource under same title. This step is followed if the new path and title for a configuration is not equal to an old configuration.
-    	\begin{enumerate}
-    	\item Invoke the copy method that will depending on the resource either will copy it directly, if it is a file, or copy it recursively if it is a folder. For a sake of reducing the unnecessary details, the internals of the copy resource call is not displayed on this diagram.
-    	\item After copying the content of configuration into new destination, the old resource it removed using the delete operation.
-    	\end{enumerate}
+    \item \lpa{} frontend invokes the FileManager abstraction with a request specified in the \texttt{ResourceConfig} abstraction, which is similar to the input steps in the previous sequence diagrams. 
+    \item \lpas{} has a conditional check to see whether the new provided resource configuration is not accidentally the resource under the same title. This step is followed if the new path and title for a configuration are not equal to an old configuration.
+        \begin{enumerate}
+        \item Invoke the copy method that will depend on the resource either will copy it directly, if it is a file, or copy it recursively if it is a folder. For the sake of reducing the unnecessary details, the internals of the copy resource call is not displayed on this diagram.
+        \item After copying the content of configuration into a new destination, the old resource is removed using the delete operation.
+        \end{enumerate}
     \item \lpas{} returns a successful promise since no renaming is invoked in that case. 
 \end{enumerate}
 
@@ -148,20 +149,20 @@ The flow \TODO{\st{on} in} the sequence diagram displayed \TODO{\st{on} in} figu
 
 \subsubsection{Deleting resources}
 
-Deletion of resources is slightly more complicated in comparison with \TODO{the} trivial GET, POST, PUT or PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
+The deletion of resources is slightly more complicated in comparison with the trivial GET, POST, PUT, and PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource, and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
 The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 
 \begin{enumerate}
-    \item Similar to previous sequence flows, the action is triggered by an input request from \lpa{} frontend
-    \item If resource is and LDP Resource, FileManager trivially sends 
-   	a single DELETE request to the server and returns the response
-    \item If resource is an LDP Basic Container:
-    	\begin{enumerate}
-    	\item Invokes a method for recursively deleting contents of a folder.
-    	\item Within that method, it performs a call that fetches the raw RDF describing the LDP Basic Container and parses the resources contained within using. 
-    	\item Iterate over files, remove the individually as in first step.
-    	\item Iterate over folders, remove them individually as in first step 
-    	\end{enumerate}
+    \item Similar to the previous sequence flows, the action is triggered by an input request from \lpa{} frontend
+    \item If the resource is and LDP Resource, FileManager trivially sends 
+       a single DELETE request to the server and returns the response
+    \item If the resource is an LDP Basic Container:
+        \begin{enumerate}
+        \item Invokes a method for recursively deleting the contents of a folder.
+        \item Within that method, it performs a call that fetches the raw RDF describing the LDP Basic Container and parses the resources contained within using. 
+        \item Iterate over files, remove them individually as in the first step.
+        \item Iterate over folders, remove them individually as in the first step 
+        \end{enumerate}
 \end{enumerate}
 
 
@@ -173,7 +174,7 @@ The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 \end{figure}
 
 
-One of the assumption made in this recursive operation is the interactions with \texttt{ACL} files when recursive delete is performed. As mentioned in the introduction to this chapter, \solid{} community is still at its beginnings and there are many significant improvements yet to introduce. In order to make the delete operation more generic, the DELETE interactions with \texttt{ACL} files were have to be removed due to a more strict access policy established between providers of the server and \solid{} apps. The following section will dive deeper into Access Control Managements and related functionality.
+One of the assumptions made in this recursive operation is the interactions with \texttt{ACL} files when a recursive delete is performed. As mentioned in the introduction to this chapter, \solid{} community is still at its beginnings, and there are many significant improvements yet to introduce. In order to make the delete operation more generic, the DELETE interactions with \texttt{ACL} files had to be removed due to a more strict access policy established between providers of the server and \solid{} apps. The following section will dive deeper into Access Control Managements and related functionality.
 
 \subsubsection{Classes overview}
 
@@ -197,20 +198,20 @@ File manager is the biggest of all three abstractions displayed on the figure \r
 
 \subsection{Access Control Manager}
 
-The primary responsibility of the Access Control Manager is a subset under File Manager abstraction. It is designed to support the File Manager entities and provide an ability to wrap them with Web Access Control compliant settings. In other words, this allows a developer of \lpa{} to programmatically control the Read and Write access to any resource inside an arbitrary \solid{} POD by utilising the developer-friendly interfaces and classes defined within the scope of this abstraction. Essentially every \texttt{ACL} files is nothing more than yet another RDF resource with few extra features. Hence, the abstraction was placed under the File Manager since the core logic is concerned with similar resource lifecycle manipulations.
-%TODO add citations
+The primary responsibility of the Access Control Manager is a subset under File Manager abstraction. It is designed to support the File Manager entities and provide an ability to wrap them with Web Access Control compliant settings. In other words, this allows a developer of \lpa{} to programmatically control the Read and Write access to any resource inside an arbitrary \solid{} POD by utilizing the developer-friendly interfaces and classes defined within the scope of this abstraction. Essentially, every \texttt{ACL} file is nothing more than yet another RDF resource with few extra features. Hence, the abstraction was placed under the File Manager since the core logic is concerned with similar resource lifecycle manipulations.
+%TODO refine citations
 
-It is yet another wrapper on top of the functionality provided by any \solid{} compliant servers. In this case, being \solid{} compliant also assumes conforming to Web Access Control or WAC specification. It defines the so-called Access Control Resources, which are entities serving as the declaration of access control privileges for a specific resource. Within the context of \solid{} specification this means managing access rights to resources in \solid{} PODS for various WebIDs.
+It is yet another wrapper on top of the functionality provided by any \solid{} compliant servers. In this case, being \solid{} compliant also assumes conforming to Web Access Control or WAC specification \cite{Solid:WAC}. It defines the so-called Access Control Resources, which are entities serving as the declaration of access control privileges for a specific resource. Within the context of \solid{} specification this means managing access rights to resources in \solid{} PODS for various WebIDs.
 
-The main function provided by the abstraction is an acl file generator. The flow on the figure \ref{fig:lps_acl_update_flow} demonstrated the process of generation, parsing and serialization of ACL files: 
+The main function provided by the abstraction is an ACL file generator. The flow on the figure \ref{fig:lps_acl_update_flow} demonstrated the process of generation, parsing, and serialization of ACL files: 
 
 \begin{enumerate}
-	\item Create Access Control triples for specified input resource configuration file.
-	\item Create individual triples defining acl configuration for a resource owner.
-	\item Create individual triples for public access, if the resource itself is marked as public.
-	\item Gather and parse those triples into a an rdflib abstraction representing an RDF Graph.
-	\item Serialize this graph instance into a string representing a \texttt{text/turtle} file.
-	\item Finally perform an HTTP call, that uses PUT to create an ACL file attached to a specified resource.
+    \item Create Access Control triples for specified input resource configuration files.
+    \item Create individual triples defining ACL configuration for a resource owner.
+    \item Create individual triples for public access if the resource itself is marked as public.
+    \item Gather and parse those triples into a rdflib abstraction representing an RDF Graph.
+    \item Serialize this graph instance into a string representing a \texttt{text/turtle} file.
+    \item Finally performs an HTTP call, that uses PUT to create an ACL file attached to a specified resource.
 \end{enumerate}
 
 This concludes the section demonstrating the essential abstractions within the \lpas{} package. The consecutive chapters dedicated to Documentation will cover and provide more details regarding less significant classes and utilities available inside the package.
@@ -225,8 +226,8 @@ This concludes the section demonstrating the essential abstractions within the \
 
 \section{LinkedPipes Applications Ontology}
 
-%TODO Add citation to original solid paper
-Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either RDF file or has the metadata expressed as an RDF file.  
+%TODO refine citation to original solid paper
+Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either an RDF file or has the metadata expressed as an RDF file \cite{Solid:OriginalPaper}.  
 
 The first task was to identify and analyze the kind of data \lpa{} is storing. The initial implementation on \lpa{} codebase was a simple application configuration JavaScript object that assembles all required configuration information for an application by the time a user of \lpa{} hits the \textit{Publish} button. In other words, we were given a JavaScript object to operate. Let us describe how this input requirement was taken into consideration while designing a solution that is both optimized for \solid{} and satisfies the requirement. 
 
