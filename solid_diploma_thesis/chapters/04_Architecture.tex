@@ -94,16 +94,16 @@ The LDP has an extensive set of resource types that are suited for defining the 
 
 \subsubsection{Creating resources}
 
-The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} HTTP request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
+The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} \texttt{HTTP} request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of resource, whether it is a folder or a file. Additionally, it describes the required information to identify the resource within the POD.
-    \item \lpas{} constructs an HTTP POST request to create the resource in POD in \solid{} server, the response is forwarded asynchronously.
+    \item \lpas{} constructs an \texttt{HTTP} \texttt{POST} request to create the resource in POD in \solid{} server, the response is forwarded asynchronously.
 \end{enumerate}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8cm]{lpas_create_resource.png}
-\caption{Sequence diagram for \textit{POST} resource operation invoked from StorageFileManager.}
+\caption{Sequence diagram for \texttt{POST} resource operation invoked from StorageFileManager.}
 \label{fig:lpas_create_resource}
 \end{figure}
 
@@ -113,7 +113,7 @@ Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence}
 
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
-    \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is forwarded asynchronously.
+    \item \lpas{} constructs an \texttt{HTTP} \texttt{GET} request to obtain the information from \solid{} server from the provider, the response is forwarded asynchronously.
 \end{enumerate}
 
 
@@ -122,13 +122,14 @@ As demonstrated in the steps above, the LDP specification provides advantages by
 \begin{figure}[h]
 \centering
 \includegraphics[width=8cm]{get_resource.png}
-\caption{Sequence diagram for \textit{GET} resource operation invoked from StorageFileManager.}
+\caption{Sequence diagram for \texttt{GET} resource operation invoked from StorageFileManager.}
 \label{fig:lps_get_resource_sequence}
 \end{figure}
 
 \subsubsection{Renaming resources}
+\label{ssssec:renaming_resources}
 
-The rename operation covers one of the functional requirements on the \lpa{} platform. It is based on a simpler CRUD operations such as \textit{create} and \textit{read} resource described in earlier sections. The goal of this function is to provide the ability for a \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders. 
+The rename operation covers one of the functional requirements on the \lpa{} platform. It is based on a simpler CRUD operations such as \textit{create} and \textit{read} resource described in earlier sections. The goal of this function is to provide the ability for a \lpa{} developer to implement a functionality to let \lpa{} platform users to choose and manipulate their storage configuration folders.
 
 The flow in the sequence diagram displayed in figure \ref{fig:lps_rename_resource} consists of the following steps:
 
@@ -151,7 +152,7 @@ The flow in the sequence diagram displayed in figure \ref{fig:lps_rename_resourc
 
 \subsubsection{Deleting resources}
 
-The deletion of resources is slightly more complicated in comparison with the trivial GET, POST, PUT, and PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource, and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
+The deletion of resources is slightly more complicated in comparison with the trivial \texttt{GET}, \texttt{POST}, \texttt{PUT}, and \texttt{PATCH} operations described in earlier sections. The main goal here is to differentiate the type of the resource, and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
 The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 
 \begin{enumerate}
@@ -199,6 +200,7 @@ File manager is the biggest of all three abstractions displayed on the figure \r
 
 
 \subsection{Access Control Manager}
+\label{sssec:access_control_manager_arch}
 
 The primary responsibility of the Access Control Manager is a subset under File Manager abstraction. It is designed to support the File Manager entities and provide an ability to wrap them with Web Access Control compliant settings. In other words, this allows a developer of \lpa{} to programmatically control the Read and Write access to any resource inside an arbitrary \solid{} POD by utilizing the developer-friendly interfaces and classes defined within the scope of this abstraction. Essentially, every \texttt{ACL} file is nothing more than yet another RDF resource with few extra features. Hence, the abstraction was placed under the File Manager since the core logic is concerned with similar resource lifecycle manipulations.
 %TODO refine citations
@@ -213,7 +215,7 @@ The main function provided by the abstraction is an ACL file generator. The flow
     \item Create individual triples for public access if the resource itself is marked as public.
     \item Gather and parse those triples into a rdflib abstraction representing an RDF Graph.
     \item Serialize this graph instance into a string representing a \texttt{text/turtle} file.
-    \item Finally performs an HTTP call, that uses PUT to create an ACL file attached to a specified resource.
+    \item Finally performs an \texttt{HTTP} call, that uses \texttt{PUT} to create an ACL file attached to a specified resource.
 \end{enumerate}
 
 This concludes the section demonstrating the essential abstractions within the \lpas{} package. The consecutive chapters dedicated to Documentation will cover and provide more details regarding less significant classes and utilities available inside the package.
