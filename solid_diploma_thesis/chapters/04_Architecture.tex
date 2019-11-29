@@ -49,6 +49,7 @@ The Authentication Manager is responsible for wrapping \solid{} WebID based auth
 
 As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} protocols is one of many benefits of \solid{}, in contrast with popular authentication protocols used in centralized silos, it is completely agnostic to specific authentication mechanisms, allowing our single abstraction to support any arbitrary \textit{WebID-OIDC} compliant \solid{} provider. 
 
+
 \subsubsection{Interacting with frontend}
 
 Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consists of the following steps:
@@ -75,6 +76,7 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 
 
 \subsection{File Manager}
+\label{sssec:file_manager}
 % TODO: add citations
 The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers \cite{Speicher:15:LDP}. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
 
