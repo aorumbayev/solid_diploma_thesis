@@ -55,6 +55,11 @@
 \usepackage{xcolor}
 \usepackage{soul}
 \usepackage{listings}
+\usepackage[cache=false]{minted}
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}
+\AfterEndEnvironment{minted}{\end{tcolorbox}}
 %% Customizing for Javascript
 \usepackage{color}
 \definecolor{lightgray}{rgb}{.9,.9,.9}

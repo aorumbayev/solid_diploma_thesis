@@ -229,6 +229,7 @@ This concludes the section demonstrating the essential abstractions within the \
 
 
 \section{LinkedPipes Applications Ontology}
+\label{ssec:lpas_application_ontology_arch}
 
 %TODO refine citation to original solid paper
 Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either an RDF file or has the metadata expressed as an RDF file \cite{Solid:OriginalPaper}.  
@@ -287,6 +288,7 @@ In order to simplify adoption of this ontology in \lpa{} frontend, the resulting
 
 
 \section{Storage Component Design}
+\label{ssec:lpas_storage_component_design}
 
 It is important to note that the \lpas{} is not just the external package completely isolated from the \lpa{} frontend, it is also a set of React components that attempt to blend in into the user interface guidelines of the frontend. Now when the major components of the \lpas{} package as well as the \lpas{} vocabulary are described, let us dive deeper into the design considerations done on the frontend side inside the \lpa{} codebase. 
 
@@ -328,7 +330,7 @@ Authentication is the entry for the \lpa{} platform, and \lpas{} covers the desi
 
 As previously demonstrated in \autoref{sssec:authentication_manager}, the \lpas{} package handles the authentication by redirecting the requests and responses between the browser of the user and the \solid{} provider server. The mock user interface on \autoref{fig:lpas_authenticate_mock} demonstrates a basic mock for a authentication webpage. There are several ways to authentication available to a \lpa{} user with a WebID profile in any \solid provider:
 \begin{itemize}
-    \item \textit{Provider authentication}, user clicks on a dropdown pane and selects the name of the default providers. The default providers supported by \lpas{} are \textit{inrupt.net}\footnote{https://inrupt.net} , \textit{solid.community}\footnote{https://solid.community} and a self-hosted LinkedPipes server available at \textit{lpapps.co:8443}\footnote{https://lpapps.co:8443}.
+    \item \textit{Provider authentication}, user clicks on a dropdown pane and selects the name of the default providers. The default providers supported by \lpas{} are \textit{inrupt.net} \footnote{https://inrupt.net} , \textit{solid.community}\footnote{https://solid.community} and a self-hosted LinkedPipes server available at \textit{lpapps.co:8443} \footnote{https://lpapps.co:8443}.
     \item \textit{WebID authentication}, similar to previous option but instead user is able to provide his WebID and be redirected right into the login page of his provider.
 \end{itemize} 
 
