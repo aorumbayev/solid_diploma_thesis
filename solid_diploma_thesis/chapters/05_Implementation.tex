@@ -49,6 +49,7 @@ _ ...         # Readme and various configuration files
 The proceeding sections will describe the individual abstractions mentioned in \autoref{ssec:storage} section.
 
 \subsection{Authentication Manager}
+\label{sssec:authentication_manager_implementation}
 
 This section will continue the architectural description of the Authentication manager described in \autoref{sssec:authentication_manager}, describe the implementation, and provide examples of how the abstraction is used inside \lpa{}.
 
@@ -359,9 +360,9 @@ The following section will continue the \autoref{ssec:lpas_storage_component_des
 
 \subsection{Preliminaries}
 
-In order to simplify understanding of this section, it is important to recap the conventions and specifics of \lpa{} frontend implementation by providing some extended details, as they were strictly taken into consideration while developing \lpas{} components inside the \lpa{} frontend codebase.
+To simplify the understanding of this section, it is important to recap the conventions and specifics of \lpa{} frontend implementation by providing some extended details, as they were strictly taken into consideration while developing \lpas{} components inside the \lpa{} frontend codebase.
 
-As mentioned earlier in \TODO{add reference to introduction chapter}, the frontend provides a way for the user to interact with the \lpa{}. As demonstrated on the \autoref{fig:lpa_frontend_architecture}, frontend uses Redux and React as a main frameworks for building the components and managing states.
+As mentioned earlier in \TODO{add reference to introduction chapter}, the frontend provides a way for the user to interact with the \lpa{}. As demonstrated on the \autoref{fig:lpa_frontend_architecture}, the frontend uses Redux and React as a primary framework for building the components and managing states.
 
 \begin{figure}[h]
 \centering
@@ -396,6 +397,7 @@ The implementation of the \lpa{} frontend is located at the \texttt{src/frontend
     \item \textit{components} - contains all \texttt{.jsx} components, visualizers and various UI elements implementations not related to interactions with \solid{}.
     \item \textit{containers} - contains complex layouts for specific web-pages of the web app not related to interactions with \solid{}. Each folder is named after individual webpage. 
     \item \textit{storage} - contains all contributions and implementations made within the scope of \lpas{} project. Has a substructure mimicking the global folder structure to improve code maintainability and signify the difference between implementations of \lpa{} and \lpas{}.
+    \item \textit{configuration files and entry points}, contains a set of configuration files at the root, such as linter configurations, the file with global Redux store and a file called \textit{AppRouter.jsx}, which is the main controller of whole frontend since it manages the user sessions and establishes the socket connections with \lpa{} backend.
 \end{itemize}
 
 \subsection{Storage folder structure}
@@ -403,12 +405,107 @@ The implementation of the \lpa{} frontend is located at the \texttt{src/frontend
 As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe the internals of \textit{storage} folder inside \lpa{} frontend codebase. 
 
 \begin{itemize}
-    \item \textit{utils} - contains various handy utility classes, variables, and methods.
-    \item \textit{ducks} - contains all Redux reducers, actions and selectors. 
-    \item \textit{models} - contains global setup for various components as well as the specification for the MaterialDesign theme used in the project.
+    \item \textit{utils} - contains various handy utility classes, variables, and methods for storage specific React Components.
+    \item \textit{ducks} - contains all Redux reducers, actions and selectors for storage specific React Components. 
+    \item \textit{models} - contains classes representing \textit{VisualizerConfiguration} and other \lpa{} specific classes that did not have to be split into the \lpas{} package.
     \item \textit{components} - contains all \texttt{.jsx} components, visualizers and various UI elements implementations not related to interactions with \solid{}.
-    \item \textit{containers} - contains complex layouts for specific web-pages of the web app not related to interactions with \solid{}. Each folder is named after individual webpage. 
+    \item \textit{containers} - contains complex layouts for storage specific web-pages. Each folder is named after individual webpage.     
+    \item \textit{StorageBackend.jsx} - represents a class wrapping various utilities on top of basic \lpas{} storage abstractions. The logic related to fetching the \lpa{} configurations is implemented in this file.
+    \item \textit{StorageToolbox.jsx} - represents a class wrapping the \textit{StorageBackend.jsx} utilities into simple methods to be invoked directly from internal methods of Storage React Components. In other words, it serves as a middleware layer between React Components and low level and generic functionality of \lpas{} package abstractions.
 \end{itemize}
+
+\subsection{Authentication View}
+
+This section continues the architecture and mocks provided in \autoref{ssec:lpas_storage_component_design}, and describes the implementation of the React Component in detail.
+In order to comply to conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
+\begin{itemize}
+	\item \textit{AuthenticationContainer}, a file containing the stateful React Component. In other words, it manages local views specific states as well as global states related to Redux.
+	\item \textit{AuthenticationComponent.jsx}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
+	\item \textit{SolidProviderComponent.jsx}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
+\end{itemize}
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+const mapStateToProps = state => {
+  return {
+    webId: state.user.webId
+  };
+};
+
+export const AuthorizationContainer = connect(mapStateToProps)(Authorization);
+\end{minted}
+\caption{An example of mapping Redux state to a props of React Container} 
+\label{lst:map_state_to_props_example}
+\end{listing}
+
+Following that pattern, the \textit{render()} function of \textit{AuthenticationContainer.jsx} takes an instance of \textit{AuthenticationComponent.jsx} while passing both internal and Redux state as props to it. The global structure of all Redux states in \lpa{} is to specific to be described within the scope of the \lpas{} project, however an examples of states relevant to Authentication View are going to be provided. For instance, the code example at \autoref{lst:map_state_to_props_example} demonstrates a typical example of an operation that maps the Redux states to \textit{props} of a React Component, in this case we are mapping the global \textit{webID} value that is used by React Router to identify whether user is authenticated and can render the dashboard or should be redirected back to the screen. As it was mentioned earlier in \autoref{ssssec:lpa_frontend_code_structure} and \autoref{sssec:authentication_manager_implementation}, the \textit{AppRouter.jsx} is one of the main entry points to the frontend web app, and it directly utilizes both \textit{AuthenticationManager} abstraction from Authentication React component. An example code on \autoref{lst:track_session_example} demonstrates a code snippet from \textit{AppRouter.jsx} that is invoked every time user session is being authenticated or user is logging out.
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+AuthenticationManager.trackSession(session => {
+  if (session) {
+     handleSetUserWebId(session.webId);
+
+     self.startSocketListeners();
+     ...
+  }
+})
+\end{minted}
+\caption{An example of \textit{trackSession()} callback listening for changes in authentication state} 
+\label{lst:track_session_example}
+\end{listing}
+
+The User Interface strictly follows initial mock design demonstrated at \autoref{fig:lpas_authenticate_mock}. User has an ability to perform authentication either by choosing an individual \solid{} provider or use a supply his WebID directly if his \solid{} provider is not available in the list of default providers. At the moment of writing this part, the project provides support for \texttt{inrupt.net} \footnote{https://inrupt.net}, \texttt{solid.community} \footnote{https://solid.community} and self-hosted provider made specifically for LinkedPipes available at \textit{lpapps.co} \footnote{https://lpapps.co:8443}. After performing the authentication use is redirected into the Dashboard webpage of \lpa{} frontend.
+
+\subsubsection{Overview of states and methods}
+
+As general details on structure of the implementation is defined now, let us dive deeper into description main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
+\begin{itemize}
+	\item \textit{webIdFieldValue}, a \texttt{string} value holding input at the \textit{textfield} for supplying WebID value.
+	\item \textit{withWebIdStatus}, a \texttt{boolean} value representing the current input state and whether is chosen to use available providers or entered his WebID manually.
+	\item \textit{session}, an \texttt{object} representing current session returned from \textit{AuthenticationManager} abstraction.
+	\item \textit{providerTitle}, a \texttt{string} value holding the title of selected provider. This is needed to be supplied into \textit{login()} method of \textit{AuthenticationManager} abstraction that invokes the \texttt{solid-auth-client} library.  
+\end{itemize}
+
+The set of methods inside the \textit{AuthenticationComponent} class can be described as follows:
+\begin{itemize}
+	\item \textit{handleProviderChange()} a methods that is passed as a \texttt{prop} to \textit{AuthenticationComponent}, and invoked every time user selects or update his selection of default providers.
+	\item \textit{handleSignIn} a method that is invoked when is pressing the \textit{Authenticate} button, this redirects a call to \textit{AuthenticationManager} abstraction that initiates the sequence flow described at \autoref{fig:lps_authentication_sequence_diagram}.
+	\item \textit{handleWebIdFieldChange} a method invoked when user inputs or modifies the input at the \textit{textfield} used for WebID.
+	\item \textit{isWebIdValid} a method that uses \textit{regex} to validate whether provided WebID is in valid format.
+	\item \textit{onSetWithWebId} a method invoked when the \textit{withWebIdStatus} status changes.  
+\end{itemize}
+
+The final rendered UI of this implementation will be provided in the of this chapter under \autoref{ssec:overview_of_implemented_requirements}, where a detailed overview of a final implementation satisfying each of the original \lpa{} requirements are provided.
+
+\subsection{Storage Dashboard}
+
+The Storage Dashboard webpage described at \autoref{sssec:architecture_storage_dashboard} was a challenging component to implement. To simplify the understanding of the structure in which components and containers are invoked the \autoref{fig:storage_dashboard_implementation_diagram} is provided. The components demonstrated on diagram follow the usual pattern of splitting React Components into stateful and stateless and can be  described as follows:
+\begin{itemize}
+	\item \textit{StoragePageController} is an root React component that wraps both individual and shared application views. It stores states representing the tab index and depending on the selected index it switches the components to be rendered in \textit{render()} function.
+	\item \textit{StorageAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
+	\item \textit{StorageSharedAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations that were shared with the User. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
+	\item \textit{StorageAppsBrowserCardComponent} is a child component that represents a reusable card representing an individual \lpa{} configuration in a grid of cards.
+\end{itemize}
+
+The user interface is inspired by the mock at \autoref{fig:lpas_ui_dashboard_mock}, however it is more refined an optimized to fit the general style of \lpa{} frontend. Similar to Authentication view, the final rendered UI of this implementation will be provided in the end of this chapter under \autoref{ssec:overview_of_implemented_requirements}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=10cm]{storage_dashboard_implementation_diagram.png}
+\caption{Diagram representing the chain of \textit{render()} method invocations among components representing Storage Dashboard.}
+\label{fig:storage_dashboard_implementation_diagram}
+\end{figure}
+
+\subsubsection{Overview of main functionality}
+
+In contrast with Authentication View, the structure of sub components is rather complex to describe in detail, therefore a set of main states and methods responsible for core functionality of the webpage will be described instead.
+
+In general both \textit{StorageAppsBrowser*} and \textit{StorageSharedAppsBrowser*} components and containers share similar states and functions the only difference is the way stored \lpa{} configurations are fetched. The fetching itself is done by invoking the corresponding methods called \textit{getAppConfigurationsMetadata()} and \textit{getSharedApplicationsMetadata()} methods from \textit{StorageToolbox} class. In general, the \textit{StorageToolbox} invokes lower-level wrappers in \textit{StorageBackend} that utilize the \texttt{rdflib} library from \lpas{} package and converts the RDF resource representing the \lpa{} configuration into a JavaScript object that is processed by \textit{StorageAppsBrowserCardComponent} view.
+
+\subsection{Storage Control Panel}
+
+The Storage Control Panel is rather simple set of React Component that heavily rely on \textit{FileManager} abstraction from \lpas{} package.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines]{json}
@@ -440,4 +537,5 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
 \label{lst:acl_creation_lpa_example}
 \end{listing}
 
-\section{Implementing requirements}
+\section{Overview of implemented requirements}
+\label{ssec:overview_of_implemented_requirements}

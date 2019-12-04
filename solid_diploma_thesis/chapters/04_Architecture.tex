@@ -325,6 +325,7 @@ This is not a strict guideline defined by \lpa{} developers. However, if a compo
 Therefore, the logical decomposition of components by their complexity is the concludes the only major design convention that was required by \lpa{} frontend. Let us go over the details of each individual component in the following sections.
 
 \subsection{Authentication View}
+\label{sssec:architecture_auth_view}
 
 Authentication is the entry for the \lpa{} platform, and \lpas{} covers the design and implementation of that view since \lpa{} relies on \solid{} to perform the WebID authentication. 
 
@@ -350,6 +351,7 @@ The additional user interface elements are defined as follows:
  
 
 \subsection{Storage Dashboard}
+\label{sssec:architecture_storage_dashboard}
 
 Referring back to the functional requirements stated in the first chapters, the ability to interact with the \lpas{} is an essential feature allowing users of \lpa{} platform to manipulate their Applications. The mock displayed on \ref{fig:lpas_ui_dashboard_mock} is a webpage accessible via the home dashboard. There are two main display modes:
 
@@ -378,6 +380,7 @@ The user of \lpa{} has a set of straightforward interactions that can be perform
 
 
 \subsection{Storage Control Panel}
+\label{sssec:architecture_storage_control_panel}
 
 An ability to authenticate, create, and publish an application using \solid{} are essential requirements stated by \lpa{}. However, users also need to have basic functionality to manipulate the data stored by the \lpas{} within their PODs. Therefore a mock design demonstrated on \autoref{fig:lpas_change_folder_mock} provides the basic functionality described as follows:
 
