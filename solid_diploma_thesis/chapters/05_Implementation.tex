@@ -359,6 +359,7 @@ To sum up, the \lpas{} ontology was implemented using two open-source frameworks
 The following section will continue the \autoref{ssec:lpas_storage_component_design} by providing the details on implementation of individual components interacting with \solid{} POD. 
 
 \subsection{Preliminaries}
+\label{sssec:preliminaries_storage_frontend}
 
 To simplify the understanding of this section, it is important to recap the conventions and specifics of \lpa{} frontend implementation by providing some extended details, as they were strictly taken into consideration while developing \lpas{} components inside the \lpa{} frontend codebase.
 
@@ -401,6 +402,7 @@ The implementation of the \lpa{} frontend is located at the \texttt{src/frontend
 \end{itemize}
 
 \subsection{Storage folder structure}
+\label{sssec:storage_folder_structure}
 
 As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe the internals of \textit{storage} folder inside \lpa{} frontend codebase. 
 
@@ -415,6 +417,7 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
 \end{itemize}
 
 \subsection{Authentication View}
+\label{sssec:authentication_view_implementation}
 
 This section continues the architecture and mocks provided in \autoref{ssec:lpas_storage_component_design}, and describes the implementation of the React Component in detail.
 In order to comply to conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
@@ -479,10 +482,11 @@ The set of methods inside the \textit{AuthenticationComponent} class can be desc
 The final rendered UI of this implementation will be provided in the of this chapter under \autoref{ssec:overview_of_implemented_requirements}, where a detailed overview of a final implementation satisfying each of the original \lpa{} requirements are provided.
 
 \subsection{Storage Dashboard}
+\label{sssec:storage_dashboard_implementation}
 
-The Storage Dashboard webpage described at \autoref{sssec:architecture_storage_dashboard} was a challenging component to implement. To simplify the understanding of the structure in which components and containers are invoked the \autoref{fig:storage_dashboard_implementation_diagram} is provided. The components demonstrated on diagram follow the usual pattern of splitting React Components into stateful and stateless and can be  described as follows:
+The Storage Dashboard webpage described at \autoref{sssec:architecture_storage_dashboard} was a challenging component to implement. To simplify the understanding of the structure in which components and containers are invoked the \autoref{fig:storage_dashboard_implementation_diagram} is provided. The components demonstrated on diagram follow the usual pattern of splitting React Components into stateful and stateless and can be described as follows:
 \begin{itemize}
-	\item \textit{StoragePageController} is an root React component that wraps both individual and shared application views. It stores states representing the tab index and depending on the selected index it switches the components to be rendered in \textit{render()} function.
+	\item \textit{StoragePageController} is a root React component that wraps both individual and shared application views. It stores states representing the tab index and depending on the selected index it switches the components to be rendered in \textit{render()} function.
 	\item \textit{StorageAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
 	\item \textit{StorageSharedAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations that were shared with the User. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
 	\item \textit{StorageAppsBrowserCardComponent} is a child component that represents a reusable card representing an individual \lpa{} configuration in a grid of cards.
@@ -504,38 +508,115 @@ In contrast with Authentication View, the structure of sub components is rather 
 In general both \textit{StorageAppsBrowser*} and \textit{StorageSharedAppsBrowser*} components and containers share similar states and functions the only difference is the way stored \lpa{} configurations are fetched. The fetching itself is done by invoking the corresponding methods called \textit{getAppConfigurationsMetadata()} and \textit{getSharedApplicationsMetadata()} methods from \textit{StorageToolbox} class. In general, the \textit{StorageToolbox} invokes lower-level wrappers in \textit{StorageBackend} that utilize the \texttt{rdflib} library from \lpas{} package and converts the RDF resource representing the \lpa{} configuration into a JavaScript object that is processed by \textit{StorageAppsBrowserCardComponent} view.
 
 \subsection{Storage Control Panel}
+\label{sssec:storage_control_panel_implementation}
 
-The Storage Control Panel is rather simple set of React Component that heavily rely on \textit{FileManager} abstraction from \lpas{} package.
+The Storage Control Panel is rather simple set of React Components that heavily rely on \textit{FileManager} abstraction from \lpas{} package. As initially described in \autoref{sssec:architecture_storage_control_panel}, the functionality should provide user options to perform basic operations with the root folder for all \lpa{} configurations in his \solid{} POD. Those operations include changing the title of the root folder, moving within pod or copying within pod. The implementation consist of the following classes:
+\begin{itemize}
+	\item \textit{StorageAccessControlDialog} is a stateful React Component based on \textit{Dialog} Component from \textit{Material UI} framework. Due to simplicity of the elements to be rendered, it did not require splitting into stateful and stateless components.
+	\item \textit{SettingsPageComponent} is a stateless React Component that renders the simple label with the current path to the root storage folder in \textit{Solid} and a simple button to change it by invoking the \textit{StorageAccessControlDialog}.
+	\item \textit{SettingsPageContainer} is a stateful React Component that serves to connect the \textit{StorageAccessControlDialog} and \textit{SettingsPageComponent}.
+\end{itemize}
 
-\begin{listing}[H]    
-\begin{minted}[breaklines]{json}
-{
-  "@graph": [
-    {
-      "@context": "https://w3id.org/def/lpapps",
-      "@type": "VisualizerConfiguration",
-      "applicationData": "undefined",
-      "author": {
-        "@id": "https://w3id.org/profile/card#me"
-      },
-      "backgroundColor": "#671570",
-      "configurationId": "1afbe0f2-3a58-424e-91ec-6a41ae8717b3",
-      "endpoint": "chord",
-      "etlExecutionIri": "{example execution iri}",
-      "filteredBy": {
-        "@id": "_:b0"
-      },
-      "graphIri": "{example iri}",
-      "published": "2019-11-24T16:27:51.043Z",
-      "title": "Chord application",
-      "visualizerType": "CHORD"
-    }
-  ]
-}
-\end{minted}
-\caption{An example \lpa{} configuration in \textit{JSON-LD} format} 
-\label{lst:acl_creation_lpa_example}
-\end{listing}
+\subsubsection{Overview of main functionality}
 
-\section{Overview of implemented requirements}
+In general, the main functionality is located in the \textit{StorageAccessControlDialog} class, it strictly follows the mock at \autoref{fig:lpas_change_folder_mock} and can be described as follows:
+\begin{itemize}
+	\item \textit{handleFolderConfirm()} a method invoked when user clicks on \textit{Update} button. The component then invokes the \textit{StorageToolbox} class that communicates with \textit{FileManager} abstraction in \lpas{} package. For more detailed description of how \lpas{} package performs the \texttt{CRUD} operations on resources in \solid{} PODs refer back to \autoref{chap:num_4}.
+	\item \textit{handleFolderCopy()} a method invoked when user clicks on \textit{Copy} button. The rest is similar to \textit{handleFolderConfirm()} where \textit{StorageToolbox} is invoked and it communicates with \textit{FileManager} abstraction in \lpas{} package. 
+	\item \textit{handleFolderMove()} a method invoked when user clicks on \textit{Move} button. The proceeding invocation chain is identical to methods before.
+\end{itemize}
+
+The final rendered UI of this implementation will be provided in \autoref{ssec:overview_of_implemented_requirements}, demonstrating the \textit{StorageAccessControlDialog}, \textit{SettingsPageComponent} and \textit{SettingsPageContainer}.
+
+%
+%
+%\begin{listing}[H]    
+%\begin{minted}[breaklines]{json}
+%{
+%  "@graph": [
+%    {
+%      "@context": "https://w3id.org/def/lpapps",
+%      "@type": "VisualizerConfiguration",
+%      "applicationData": "undefined",
+%      "author": {
+%        "@id": "https://w3id.org/profile/card#me"
+%      },
+%      "backgroundColor": "#671570",
+%      "configurationId": "1afbe0f2-3a58-424e-91ec-6a41ae8717b3",
+%      "endpoint": "chord",
+%      "etlExecutionIri": "{example execution iri}",
+%      "filteredBy": {
+%        "@id": "_:b0"
+%      },
+%      "graphIri": "{example iri}",
+%      "published": "2019-11-24T16:27:51.043Z",
+%      "title": "Chord application",
+%      "visualizerType": "CHORD"
+%    }
+%  ]
+%}
+%\end{minted}
+%\caption{An example \lpa{} configuration in \textit{JSON-LD} format} 
+%\label{lst:acl_creation_lpa_example}
+%\end{listing}
+
+\section{Implemented functional requirements}
+\label{ssec:overview_of_implemented_requirements}
+
+This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved implementation of React components, a detailed renders of final User Interfaces will be provided. 
+
+\subsection{User Authentication}
+
+To recap the User Authentication functional requirement, the user of the platform should be able to register an account in the application, log in and log out. In order to fulfil the requirement the Authentication View component described at \autoref{chap:num_1} was implemented. The final render on \autoref{fig:lpa_login_webpage} provides an intuitive User Interface that allows authentication by selecting a default \solid{} provider, as demonstrated on \autoref{fig:lpa_login_webpage_dropdown} or by specifying the WebID for authentication directly. The \textit{Learn more about WebID and SOLID} button serves as a guide for users new to \solid{}, clicking the button will get them redirected to the official \texttt{inrupt} website. 
+
+\begin{figure}[hbt]
+\minipage{0.5\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_login_webpage.png}}
+  \caption{The final render of an Authentication View webpage}
+  \label{fig:lpa_login_webpage}
+\endminipage\hfill
+\minipage{0.5\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_login_webpage_dropdown.png}}
+  \caption{And example of the \textit{providers} dropdown in expanded state.}
+  \label{fig:lpa_login_webpage_dropdown}
+\endminipage\hfill
+\end{figure}
+
+After user provides the authentication inputs and clicks on \textit{Authenticate} button, the default \solid{} server authentication popup will appear as demonstrated on \autoref{fig:solid_login_webpage} and \autoref{fig:solid_register_webpage}. Depending on whether user has a WebID and a \solid{} POD or if user selected the authentication option using default providers he will be given an option to either \textit{Login} or \textit{Register} on specified \solid{} server. 
+
+\begin{figure}[hbt]
+\minipage{0.6\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{solid_login_webpage.png}}
+  \caption{Example of a login popup provided by \solid{} server.}
+  \label{fig:solid_login_webpage}
+\endminipage\hfill
+\minipage{0.3\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{solid_register_webpage.png}}
+  \caption{Example of a register popup provided by \solid{} server}
+  \label{fig:solid_register_webpage}
+\endminipage\hfill
+\end{figure}
+
+The \textit{logout} functionality is available under several components in \lpa{}. Those can be described as follows:
+\begin{itemize}
+	\item \textit{User Profile Page}, this page is located under settings tab in \lpa{} platform. The intent is to provide the information about current user name and his WebID under which the authentication was performed. It also provides buttons to either \textit{Reset Password} or \textit{Logout} from the platform.
+	\item \textit{Logout toolbar item}, this is a toolbar element always available in top right corner of the platform. Clicking on the button invokes the \textit{logout} and user is redirected back to the Authentication View webpage.
+\end{itemize}
+
+\begin{figure}[hbt]
+\minipage{0.5\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_user_profile_page.png}}
+  \caption{The User Profile webpage with options to reset or logout from \solid{} provider.}
+  \label{fig:solid_login_webpage}
+\endminipage\hfill
+\minipage{0.4\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_user_profile_page_logout.png}}
+  \caption{The global control toolbar of \lpa{} platform. The logout button allows to quickly logout from authenticated \solid{} provider.}
+  \label{fig:solid_register_webpage}
+\endminipage\hfill
+\end{figure}
+
+\subsection{Create Application}
+
+\section{Implemented non-functional requirements}
 \label{ssec:overview_of_implemented_requirements}
