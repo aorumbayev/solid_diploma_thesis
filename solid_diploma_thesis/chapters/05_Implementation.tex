@@ -616,7 +616,23 @@ The \textit{logout} functionality is available under several components in \lpa{
 \endminipage\hfill
 \end{figure}
 
-\subsection{Create Application}
+\subsection{Create and Publish Application}
+
+The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD, this also implies that application is published because the URI to configuration inside the POD is publicly available by default. Therefore, the section will only cover the parts of this functional requirement that directly related to interactions with \solid{} server. 
+
+The \lpa{} platform has a process called \textit{Application data preparation workflow}. It consist of four steps during which a user of platform provides data sources to visualize and if successfull, the \lpa{} redirects him to a \textit{Create Application} webpage. At this point the platform assembles a visualizer configuration object in memory until user provides a title for his application and decides to publish it. The diagram on \autoref{chap:num_1} demonstrates the user interface component on \textit{Create Application} that consist of a textfield and two buttons:
+\begin{itemize}
+	\item \textit{Publish} a button that invokes a chain of methods that parse the prepared visualizer object into \texttt{text/turtle} and uploads the file into his \solid{} POD.
+	\item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the \texttt{HTML} \texttt{iframe} to incorporate the visualizer into a webpage.
+\end{itemize}
+
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_create_application_page.png}}
+\caption{A part of \textit{Create Application} page that invokes creation and publishing of an application.}
+\label{fig:storage_dashboard_implementation_diagram}
+\end{figure}
 
 \section{Implemented non-functional requirements}
 \label{ssec:overview_of_implemented_requirements}
