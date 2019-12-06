@@ -110,6 +110,7 @@ To sum up, the \textit{AuthenticationManager} is a simple and straightforward si
 %\subsubsection{Deleting resources}
 
 \subsection{File Manager}
+\label{sssec:file_manager_implementation}
 
 In this subsection, we will continue on the \textit{FileManager} abstraction described in \autoref{sssec:file_manager}, provide the specifics on implementation as well as a detailed overview of each method inside the abstraction.  
 
@@ -355,6 +356,7 @@ The initial configuration or startup guide to \textit{Ontology} consist of the f
 To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host application. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available at \url{http://w3id.org/def/lpapps}. 
 
 \section{Storage Frontend}
+\label{ssec:storage_frontend_implementation}
 
 The following section will continue the \autoref{ssec:lpas_storage_component_design} by providing the details on implementation of individual components interacting with \solid{} POD. 
 
@@ -414,6 +416,7 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
     \item \textit{containers} - contains complex layouts for storage specific web-pages. Each folder is named after individual webpage.     
     \item \textit{StorageBackend.jsx} - represents a class wrapping various utilities on top of basic \lpas{} storage abstractions. The logic related to fetching the \lpa{} configurations is implemented in this file.
     \item \textit{StorageToolbox.jsx} - represents a class wrapping the \textit{StorageBackend.jsx} utilities into simple methods to be invoked directly from internal methods of Storage React Components. In other words, it serves as a middleware layer between React Components and low level and generic functionality of \lpas{} package abstractions.
+    \item \textit{StorageSparqlClient.jsx} - a class containing a single generic method that utilises the \textit{fetch()} function from \textit{AuthenticationManager} to submit \texttt{SPARQL} requests modifying certain parameters of \lpa{} configuration RDF files. 
 \end{itemize}
 
 \subsection{Authentication View}
@@ -528,38 +531,6 @@ In general, the main functionality is located in the \textit{StorageAccessContro
 
 The final rendered UI of this implementation will be provided in \autoref{ssec:overview_of_implemented_requirements}, demonstrating the \textit{StorageAccessControlDialog}, \textit{SettingsPageComponent} and \textit{SettingsPageContainer}.
 
-%
-%
-%\begin{listing}[H]    
-%\begin{minted}[breaklines]{json}
-%{
-%  "@graph": [
-%    {
-%      "@context": "https://w3id.org/def/lpapps",
-%      "@type": "VisualizerConfiguration",
-%      "applicationData": "undefined",
-%      "author": {
-%        "@id": "https://w3id.org/profile/card#me"
-%      },
-%      "backgroundColor": "#671570",
-%      "configurationId": "1afbe0f2-3a58-424e-91ec-6a41ae8717b3",
-%      "endpoint": "chord",
-%      "etlExecutionIri": "{example execution iri}",
-%      "filteredBy": {
-%        "@id": "_:b0"
-%      },
-%      "graphIri": "{example iri}",
-%      "published": "2019-11-24T16:27:51.043Z",
-%      "title": "Chord application",
-%      "visualizerType": "CHORD"
-%    }
-%  ]
-%}
-%\end{minted}
-%\caption{An example \lpa{} configuration in \textit{JSON-LD} format} 
-%\label{lst:acl_creation_lpa_example}
-%\end{listing}
-
 \section{Implemented functional requirements}
 \label{ssec:overview_of_implemented_requirements}
 
@@ -616,9 +587,9 @@ The \textit{logout} functionality is available under several components in \lpa{
 \endminipage\hfill
 \end{figure}
 
-\subsection{Create and Publish Application}
+\subsection{Create, Store and Publish Application}
 
-The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD, this also implies that application is published because the URI to configuration inside the POD is publicly available by default. Therefore, the section will only cover the parts of this functional requirement that directly related to interactions with \solid{} server. 
+The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD. Having a stored configuration also implies that application described by this configuration is published because the URI to configuration inside the POD is publicly available by default. In other words, storing creation and publishing of the application are closely related requirements that are easier to cover at once. The section will also focus on the parts of these functional requirements that directly related to interactions with \solid{} server. Additionally, It is important to mention that there is no actual application being stored in the \solid{} pod, the app itself is a React Component that is re-rendered from scratch based on the \lpa{} configuration that is loaded from the storage. 
 
 The \lpa{} platform has a process called \textit{Application data preparation workflow}. It consist of four steps during which a user of platform provides data sources to visualize and if successfull, the \lpa{} redirects him to a \textit{Create Application} webpage. At this point the platform assembles a visualizer configuration object in memory until user provides a title for his application and decides to publish it. The diagram on \autoref{chap:num_1} demonstrates the user interface component on \textit{Create Application} that consist of a textfield and two buttons:
 \begin{itemize}
@@ -626,13 +597,324 @@ The \lpa{} platform has a process called \textit{Application data preparation wo
 	\item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the \texttt{HTML} \texttt{iframe} to incorporate the visualizer into a webpage.
 \end{itemize}
 
-
 \begin{figure}[h]
 \centering
 \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_create_application_page.png}}
 \caption{A part of \textit{Create Application} page that invokes creation and publishing of an application.}
 \label{fig:storage_dashboard_implementation_diagram}
 \end{figure}
+
+A method source code demonstrated on \autoref{lst:save_app_to_solid_chunk} is invoked by \textit{CreateVisualizerPage} and its underlying sub components. As the first step, it simply checks whether the \texttt{webId} is provided. Afterwards, the \texttt{applicationConfigurationObject} is assembled which is a JavaScript \textit{object} with fields corresponding to \lpas{} Ontology. When passed into \textit{StorageBackend} the object is parsed into an \texttt{rdflib} graph, serialized into \texttt{text/turtle} and uploaded into \solid{} using \lpas{} package.
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+async saveAppToSolid(
+  applicationConfiguration,
+  filtersConfiguration,
+  webId,
+  appFolder
+): Promise<ApplicationMetadata> {
+  if (!webId) {
+    Log.error('No webID available', 'StorageToolbox');
+    return;
+  }
+
+  const applicationConfigurationObject = ApplicationConfiguration.fromRawParameters(
+    applicationConfiguration,
+    filtersConfiguration,
+    webId
+  );
+
+  return StorageBackend.uploadApplicationConfiguration(
+    applicationConfigurationObject,
+    appFolder,
+    webId
+  );
+}
+\end{minted}
+\caption{A method from \textit{StorageToolbox} class in\lpa{} frontend, that assembles configuration object and saves it to \solid{}} 
+\label{lst:save_app_to_solid_chunk}
+\end{listing}
+
+The resulting \lpa{} configuration uploaded to solid with the method from listing \autoref{lst:save_app_to_solid_chunk} is demonstrated on listing \autoref{lst:lpapp_configuration_example}. The fields with unique identifiers were replaced by sample text to improve readability of the example. 
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{turtle}
+@prefix : <#>.
+@prefix lp: <https://w3id.org/def/lpapps#>.
+@prefix c: </profile/card#>.
+
+<>
+    a lp:VisualizerConfiguration;
+    lp:applicationData "undefined";
+    lp:author c:me;
+    lp:backgroundColor "#106368";
+    lp:configurationId "sample id";
+    lp:endpoint "chord";
+    lp:etlExecutionIri "sample etl iri";
+    lp:filteredBy
+            [
+                a lp:FilterConfiguration;
+                lp:enabled "true";
+                lp:filterGroups [];
+                lp:visible "true"
+            ];
+    lp:graphIri "sample graph iri";
+    lp:published "2019-12-05T13:11:37.788Z";
+    lp:title "My cool visualizer";
+    lp:visualizerType "CHORD".
+\end{minted}
+\caption{An example of stored \lpa{} configuration for \textit{CHORD} visualizer in \texttt{text/turtle}} 
+\label{lst:lpapp_configuration_example}
+\end{listing}
+
+As the last step of creation and publishing the \lpa{} application, the popup at \autoref{fig:lpapp_configuration_example} is presented indicating the successful publishing of the application. 
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_published_popup.png}}
+\caption{A popup presented after configuration is stored and a published url is ready to be shared.}
+\label{fig:lpa_published_app_popup}
+\end{figure}
+
+This concludes the demonstration of components and functionality of both \lpa{} and \lpas{} package that implement the functional requirements on storing, publishing and creating \lpa{} configurations. 
+
+\subsection{Configuring Application}
+
+The ability to configure the published applications had a clear and straightforward set of terms to implement. After publishing an application \lpa{} users  to \textit{rename}, \textit{delete} the configuration as well as configure and modify the filters available for the visualiser.
+
+\subsubsection{Renaming application}
+
+Renaming the published application is performed by executing a simple \texttt{SPARQL} query. The \textit{fetch()} method available in \textit{AuthenticationManager} abstraction from \lpas{} package is used to send the constructed request. 
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+const sparqlQuery = `
+        @prefix lpa: <https://w3id.org/def/lpapps#> .
+
+        DELETE
+        { ?configuration lpa:title ?titleValue . }
+        INSERT
+        { ?configuration lpa:title "${newTitle}" .}
+        WHERE
+        { ?configuration lpa:title ?titleValue . }
+`;
+\end{minted}
+\caption{An example of \texttt{SPARQL} query to update the application title in configuration stored in \solid{}.} 
+\label{lst:lpapp_sample_rename_app_sparql}
+\end{listing}
+
+Example on listing \autoref{lst:lpapp_sample_rename_app_sparql} demonstrate the \texttt{SPARQL} query used for renaming the title of \lpa{} configuration. The source code on listing \autoref{lst:lpapp_patch_file_with_query} demonstrate how the query is constructed and submitted to \solid{} using a class called \textit{StorageSparqlClient}.
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+patchFileWithQuery = async (url, query) => {
+  try {
+    await StorageAuthenticationManager.fetch(url, {
+      method: 'PATCH',
+      body: query,
+      headers: {
+        'Content-Type': 'application/sparql-update'
+      }
+    });
+    return true;
+  } catch (error) {
+    if (error instanceof Response && error.status === 404) return false;
+    throw error;
+  }
+};
+\end{minted}
+\caption{The \textit{patchFileWithQuery} method in \textit{StorageSparqlClient} class is used for executing the \texttt{PATCH} requests to \solid{} servers.} 
+\label{lst:lpapp_patch_file_with_query}
+\end{listing}
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_rename_visualzer.png}}
+\caption{A popup presented after user pressed \textit{Rename} button.}
+\label{fig:lpa_rename_visualzer}
+\end{figure}
+
+On the frontend side the rename is invoked by pressing the \textit{Rename} button from \textit{Application Control and Setup} webpage. User is presented with a simple popup dialog demonstrated on \autoref{fig:lpa_rename_visualzer}, where he gets an option to choose the new title of his application. This invokes the execution of \texttt{SPARQL} query mentioned earlier.
+
+\subsubsection{Deleting application}
+
+Deleting an application that was previously published is a trivial task from the standpoint of \lpas{}. When user wants to delete the application he simply invokes the \textit{Delete} button either from individual application card in \textit{Storage Dashboard} webpage or inside the \textit{Application Control and Setup} webpage. Executing the deletion invokes the \textit{StorageToolbox} class that uses the \textit{deleteResource()} function from \textit{FileManager} abstraction in \lpas{} package described in \autoref{sssec:file_manager_implementation}.
+
+\begin{figure}[hbt]
+\minipage{0.3\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_delete_from_configuration_page.png}}
+  \caption{Option to invoke the deletion confirmation popup on \textit{Application Control and Setup} webpage}
+  \label{fig:lpa_delete_from_configuration_page}
+\endminipage\hfill
+\minipage{0.6\textwidth}
+  \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_delete_app_confirmation.png}}
+  \caption{Popup displayed before removing published application configuration.}
+  \label{fig:lpa_delete_app_confirmation}
+\endminipage\hfill
+\end{figure}
+
+The popups that appear to user when he presses the \textit{Delete} button on \autoref{fig:lpa_delete_from_configuration_page} is presented on \autoref{fig:lpa_delete_app_confirmation}.
+
+\subsubsection{Updating filters}
+\label{ssssec:updating_filters_implementation}
+
+The ability to modify the filters on a published visualizer is another important part of the \textit{Configure Application} functional requirement. The process of updating filters on published applications is invoked when a user modifies available \textit{node} or \textit{scheme} filters. For example, the UI elements on \autoref{chap:num_1} demonstrate a \textit{CHORD} visualizer containing multiple \textit{node} filters. User has an option to control \textit{state} of the filter, \textit{visibility} to the end user and \textit{interactivity} or the ability for public viewers to interact with the visualizer using the individual filters. 
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.5\linewidth]{lpa_filters_ui.png}}
+\caption{A user interface components to interact with filters available for a visualizer.}
+\label{fig:lpa_rename_visualzer}
+\end{figure}
+
+
+The implementation of methods processing these operations are done in \textit{StorageToolbox}, \textit{StorageBackend} and \textit{StorageSparqlClient} classes, and similar to \textit{Renaming Application} procedure, the core logic simply constructs the required \texttt{SPARQL} queries and executes them using \texttt{HTTP} \texttt{PATCH} request. Example on listing \autoref{lst:lpapp_sample_set_filter_sparql} demonstrates the construction of \texttt{SPARQL} query that processes multiple filter selections in a single \texttt{PATCH} call.  
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+let sparqlQuery = '@prefix lpa: <https://w3id.org/def/lpapps#> .';
+const deleteStatements = [];
+const insertStatements = [];
+const whereStatements = [];
+
+for (const node of nodes) {
+  deleteStatements.push(`?selectedOption${cnt} lpa:uri "${node.uri}" .
+  ?selectedOption${cnt} lpa:selected ?selected${cnt} .
+  ?selectedOption${cnt} lpa:visible ?visible${cnt} .
+  ?selectedOption${cnt} lpa:enabled ?enabled${cnt} .`);
+
+  insertStatements.push(`?selectedOption${cnt} lpa:uri "${node.uri}" .
+  ?selectedOption${cnt} lpa:selected "${node.selected}" .
+  ?selectedOption${cnt} lpa:visible "${node.visible}" .
+  ?selectedOption${cnt} lpa:enabled "${node.enabled}" .`);
+
+  whereStatements.push(`?selectedOption${cnt} lpa:uri "${node.uri}" .
+  ?selectedOption${cnt} lpa:selected ?selected${cnt} .
+  ?selectedOption${cnt} lpa:visible ?visible${cnt} .
+  ?selectedOption${cnt} lpa:enabled ?enabled${cnt} . `);
+}
+
+sparqlQuery += `
+  DELETE { ${deleteStatements.join('\n')} }
+  INSERT { ${insertStatements.join('\n')} }
+  WHERE { ${whereStatements.join('\n')} }
+`;
+\end{minted}
+\caption{An example of \texttt{SPARQL} query to update the state of multiple \textit{node} filters selected by user.} 
+\label{lst:lpapp_sample_set_filter_sparql}
+\end{listing}
+
+One of the additional features implemented within the bounds of that requirements is ability to reflect the applied changes in any field of the application configuration RDF file using socket listeners. In other words, if user is editing filters on his visualizer and some other user is looking at his visualizer on some webpage where it is published, he will see the changes being applied in real time. This is implemented using the \texttt{rdflib.js} library that is accessed via \lpas{} package. The listing \autoref{lst:lpap_add_listeners_function} demonstrates a simple utility function available at \textit{StorageBackend} and it is invoked when application configuration is being fetched for the first time. 
+
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+registerChanges(url: string, callbackOnRefresh: Function = undefined) {
+  if (this.alreadyAddedDownstreamListeners.indexOf(url) === -1) {
+    const doc = $rdf.sym(url).doc();
+    this.updater.addDownstreamChangeListener(doc, callbackOnRefresh);
+    this.alreadyAddedDownstreamListeners.push(url);
+  }
+}
+\end{minted}
+\caption{Implementation of helper utility that uses feature of \texttt{rdflib} to invoke any callback when a change in a specified RDF resource is detected.} 
+\label{lst:lpap_add_listeners_function}
+\end{listing}
+
+\subsection{Storage Management}
+
+The Storage Management functional requirement defines an implementation request to have an ability to \textit{move}, \textit{rename} or \textit{copy} the root folder with all configurations inside the storage. From the perspective of \lpas{} it implies controlling the root LDP Basic Container that stores all configurations.
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.7\linewidth]{lpa_updating_root_folder.png}}
+\caption{A final render of Storage Control Panel component.}
+\label{fig:lpa_updating_root_folder}
+\end{figure}
+
+Since the description in \autoref{sssec:storage_control_panel_implementation} already provided all details on implementing this requirement, this section will demonstrate the final renders of implemented components to perform the operations stated in the requirement. The user interface demonstrated on \autoref{fig:lpa_updating_root_folder}, performs the functionality as requested in the definition of the requirement. It is invoked via \textit{Settings} webpage under \textit{Application Storage} tab when user clicks on \textit{Change folder} tab. 
+
+\subsection{Visualizer Access Control}
+
+The Visualizer Access Control requirement defines how the creator of an application can control public access to visualizer or share it with only a specified set of contacts. From the \lpas{} standpoint, this implies controlling the \texttt{ACL} files of individual \lpa{} configurations expressed in RDF.
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.7\linewidth]{lpa_access_control_setup.png}}
+\caption{Access control configuration popup for published application.}
+\label{fig:lpa_access_control_setup}
+\end{figure}
+
+The implementation of \textit{AccessControlManager} abstraction in \autoref{fig:high-level-arch} is the essential building block that was used to implement a set of React Components to allow modifying access control privileges of published visualizers. The \autoref{fig:lpa_access_control_setup} demonstrate an final render of a React Component that is presented to user when he clicks on \texttt{Access Control} drop down item on \textit{Application Control and Setup} webpage. The component is implemented in \textit{StorageAccessControlDialog.jsx} file which is a simple stateful React Component. The main elements of that popup can be described as follows:
+\begin{itemize}
+    \item \textit{Public access} switch, this element controls the default public access to a published application. By default, \lpa{} sets the \textit{READ} public access so that anyone can access the published application by default. However, the user has an option to toggle the control element and disable default public visibility. 
+    \item \textit{List of collaborators}, this element lists the contacts knows to user's \textit{WebID}. The querying of knows contacts is performed using \texttt{rdflib} library accessed via \lpas{} package. 
+    \item \textit{Friends and Contacts} dropdown, this element is a selector for sending invitations to share the published visualizer with other users of the platform. The next subsection will provide more details on the collaborative sharing feature implemented as an additional functionality on top of the initial functional requirement. Collaborative sharing features implementation is inspired by \TODO{cite ldn} and uses the \textit{ActivityStreams} vocabulary \TODO{cite activity streams}. However, due to the specificity of \lpa{}, it does not strictly follow all requirements of that specification. 
+\end{itemize}
+
+\subsubsection{Collaborative sharing}
+
+Collaborative sharing allows users of \lpa{} platform to share their visualizers with other users of the platform. The sharing process implementation is inspired by LinkedData Notifications specification \TODO{cite here}, and involves generation of an invitation file that send send to recipients inbox. The \autoref{fig:lpas_sharing_application} demonstrates the process of sending an invitation in detail.
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpas_sharing_application.png}}
+\caption{A sequence diagram of implemented sharing functionality for collaborative editing.}
+\label{fig:lpas_sharing_application}
+\end{figure}
+  
+The steps can be described as follows:
+\begin{enumerate}
+	\item Firstly, the \textit{sendInvitation()} function is invoked from \textit{StorageAccessControlDialog} React Component, specifically when users chooses his available list of contacts and presses submit invitation button.
+	\item As a next step, \textit{StorageToolbox} redirects the request to lower-level \textit{StorageBackend} class.
+	\item The \textit{StorageBackend} class generates the invitation RDF in JSON-LD format using \texttt{rdflib} library from \lpas{} package.
+	\item The \textit{StorageBackend} class sends the invitation file to recepients inbox folder using \textit{FileManager} abstraction from \lpas{} package. The exact inbox path is known by parsing the recipient's profile card associated with his WebID.
+	\item Asyncronous response is returned of the operations is propagated back to \textit{StorageAccessControlDialog} for further processing. 
+\end{enumerate}
+ 
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.7\linewidth]{lpa_inbox_with_invitations.png}}
+\caption{An inbox dialog popup with two new invitations to collaborate on application.}
+\label{fig:lpa_inbox_with_invitations}
+\end{figure}
+  
+ 
+It is important to note that recepient is assumed to be a user of \lpa{} platform. Once invitation is send, whenever recepient opens the platform, the listener inside \textit{AppRouter} class will check the inbox for new invitations and display new invitations in inbox popup demonstrated on \autoref{fig:lpa_inbox_with_invitations}. If user \textit{Accepts} the invitation, the invitation JSON-LD file is transformed into a shared configuration file by extracting uri to an application and placing it under a folder named \textit{sharedApplications} in the root storage folder and a response notification is send back to the sender. Once sender receives the \textit{Accept} notification, it sets the \textit{READ} and \textit{WRITE} access to the application configuration for the recipient. If user \textit{Declines} the invitation, the invitation is simply deleted from the inbox without any further processing.
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.7\linewidth]{lpa_shared_visualizer_card.png}}
+\caption{A shared visualizer card displayed to recipient in his Storage Dashboard after he accepts the invitation.}
+\label{fig:lpa_shared_visualizer_card}
+\end{figure}
+
+The \autoref{chap:num_1} demonstrates the shared application appearing in the shared applications storage dashboard of the recipient. In addition to that, the listing on \autoref{lpa_example_invitation_json_ld} demonstrates the example of the generated invitation being send to recipient in JSON-LD format using \textit{ActivityStreams} vocabulary. 
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{json}
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "type": "Invite",
+  "actor": "https://sender.lpapps.co:8443/profile/card#me",
+  "name": "lpapps_invite",
+  "object": {
+    "type": "Link",
+    "href": "https://sender.lpapps.co:8443/
+    linkedpipes/configurations/1575551497789.473.ttl"
+  },
+  "published": "2019-12-06T20:04:02Z",
+  "target": "https://recipient.lpapps.co:8443/profile/card#me"
+}
+\end{minted}
+\caption{An example invitation to collaborate on a published application.} 
+\label{lst:lpa_example_invitation_json_ld}
+\end{listing}
+
+The collaborative aspect is basic and only allows the recipient to rename the title of the application and modify and persist the selection of available filters. The changes are reflected in real-time using socket connection to \solid{} server as initially described in \autoref{ssssec:updating_filters_implementation}.
+
+To sum up, the following section iterated over each functional requirement stated by \lpa{} and demonstrated the detailed description of implementation to comply with those requirements. The section also continued the storage-related React Components implementation details provided in \autoref{sssec:storage_frontend_implementation} and demonstrated finalized renders of those components that closely follow the initial mocks designed in \autoref{chap:num_4}. 
 
 \section{Implemented non-functional requirements}
 \label{ssec:overview_of_implemented_requirements}
