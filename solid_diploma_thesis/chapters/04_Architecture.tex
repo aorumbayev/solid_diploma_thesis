@@ -247,7 +247,7 @@ The Web Ontology Language or OWL, is a commonly used knowledge representation la
 	\item Defining domain specific classes and properties.
 \end{itemize}
 
-As a first step, the JavaScript object that was used to represent \lpa{} configurations was formalized into a JSON Schema \footnote{https://json-schema.org}. Based on that Schema, the initial OWL ontology was designed using Stanford Protege \footnote{https://protege.stanford.edu}, which is a convenient open-source ontology editing tool. The class hierarchy on \autoref{fig:lpas_vocabulary_visualization} demonstrates the draft of the ontology created based on that Schema.
+As a first step, the JavaScript object that was used to represent \lpa{} configurations was formalized into a JSON Schema \footnote{\url{https://json-schema.org}}. Based on that Schema, the initial OWL ontology was designed using Stanford Protege \footnote{\url{https://protege.stanford.edu}}, which is a convenient open-source ontology editing tool. The class hierarchy on \autoref{fig:lpas_vocabulary_visualization} demonstrates the draft of the ontology created based on that Schema.
 
 \begin{figure}[h]
 \centering
@@ -283,7 +283,7 @@ The \textit{FilterGroup} class is closely related to Filter and FilterConfigurat
 \label{fig:lpas_vocabulary_usage}
 \end{figure}
 
-In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{https://json-ld.org}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into \texttt{turtle} files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
+In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{\url{https://json-ld.org}}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into \texttt{turtle} files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
 %TODO add reference to implementation   
 
 
@@ -292,7 +292,7 @@ In order to simplify adoption of this ontology in \lpa{} frontend, the resulting
 
 It is important to note that the \lpas{} is not just the external package completely isolated from the \lpa{} frontend, it is also a set of React components that attempt to blend in into the user interface guidelines of the frontend. Now when the major components of the \lpas{} package as well as the \lpas{} vocabulary are described, let us dive deeper into the design considerations done on the frontend side inside the \lpa{} codebase. 
 
-The \lpa{} frontend codebase was implemented using React\footnote{https://reactjs.org} and was utilising a modern stack of frontend development tools, all of those had to be taken into consideration to design React Component responsible for interactions with the storage. This section will cover the design conventions inherited from \lpa{} as well as a detailed overview of User Interfaces conforming to Material Design\footnote{https://material.io/design} conventions that were strongly utilized in \lpa{} frontend. In addition to that, it will also revisit the functional requirements and provide UI design proposals that are later implemented in the implementation section.
+The \lpa{} frontend codebase was implemented using React\footnote{\url{https://reactjs.org}} and was utilising a modern stack of frontend development tools, all of those had to be taken into consideration to design React Component responsible for interactions with the storage. This section will cover the design conventions inherited from \lpa{} as well as a detailed overview of User Interfaces conforming to Material Design\footnote{\url{https://material.io/design}} conventions that were strongly utilized in \lpa{} frontend. In addition to that, it will also revisit the functional requirements and provide UI design proposals that are later implemented in the implementation section.
 
 \subsection{Designing React Components}
 
@@ -331,7 +331,7 @@ Authentication is the entry for the \lpa{} platform, and \lpas{} covers the desi
 
 As previously demonstrated in \autoref{sssec:authentication_manager}, the \lpas{} package handles the authentication by redirecting the requests and responses between the browser of the user and the \solid{} provider server. The mock user interface on \autoref{fig:lpas_authenticate_mock} demonstrates a basic mock for a authentication webpage. There are several ways to authentication available to a \lpa{} user with a WebID profile in any \solid provider:
 \begin{itemize}
-    \item \textit{Provider authentication}, user clicks on a dropdown pane and selects the name of the default providers. The default providers supported by \lpas{} are \textit{inrupt.net} \footnote{https://inrupt.net} , \textit{solid.community}\footnote{https://solid.community} and a self-hosted LinkedPipes server available at \textit{lpapps.co:8443} \footnote{https://lpapps.co:8443}.
+    \item \textit{Provider authentication}, user clicks on a dropdown pane and selects the name of the default providers. The default providers supported by \lpas{} are \textit{inrupt.net} \footnote{\url{https://inrupt.net}} , \textit{solid.community} \footnote{\url{https://solid.community}} and a self-hosted LinkedPipes server available at \textit{lpapps.co:8443} \footnote{\url{https://lpapps.co:8443}}.
     \item \textit{WebID authentication}, similar to previous option but instead user is able to provide his WebID and be redirected right into the login page of his provider.
 \end{itemize} 
 

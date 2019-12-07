@@ -1,24 +1,51 @@
 \chapter{Related work}
 \label{chap:num_2}
 
-This chapter provides an overview of currently available alternatives to \solid{}, as well as research projects that share similarities with the main concept of decentralized social platforms.
+This chapter provides an overview of currently available alternatives to \solid{} project, as well as research projects that share similarities with the core concepts of decentralized social platforms. The first set of sections provides a general description of alternative technologies, the last \autoref{sssec:comparison_of_technologies} provides a comparison between the alternative software solutions and \solid{}.
 
-A big difference between Solid and (federated) services mentioned below is that Solid sets a standard way of operating through data model (RDF) and does not dictate how instances should behave as part of a federation.
+\section{Diaspora}
 
-Solid could be defined as a more lower level abstraction than federated services like Diaspora and Mastodon in the sense that similar services such could be built upon Solid. For instance, Diaspora and Mastodon could be integrated into Solid by allowing their users to sign in using their WebID, and then allow users to store the data produced by them on the services on their own POD. 
+Out of all currently available solutions, the conceptually closest software platform to \solid{} is Diaspora \footnote{\url{https://diasporafoundation.org}}. In general, it is a decentralized social network platform that enables users to choose the server where their data is hosted and even run their own data hosting server. In that sense, it is similar to \solid{}. However, the main focus in Diaspora is to act as a social network, where social data is shared between users using specific APIs, and not running diverse applications on stored data. Unfortunately, it does not offer a well-defined way to use the same data with different applications. Note that Diaspora uses the term pod to refer to a data hosting server. A Diaspora POD is what \solid{} would refer to as a \solid{} server.
 
-% \usepackage[normalem]{ulem}
-% \usepackage{graphicx}
+\section{WebBox}
 
+WebBox is a decentralized social network platform that decouples data from applications (\cite{van2012decentralized}). As \solid{}, it stores user’s data as Linked Data in a decentralized way. Also similar to \solid{}, system rely on WebID for decentralized identity, authentication, and access control. In WebBox, each data storage service exposes a SPARQL endpoint, and applications manipulate the data via SPARQL queries and updates, or via \texttt{HTTP} \texttt{GET} requests. In contrast, \solid{} offers the full power of LDP for simple data interactions (e.g., hierarchical data organization, fine-grained manipulation) and additionally allows the use of link-following SPARQL for complex data retrieval. It also works as a generic storage platform upon which a significantly larger number of applications can be built. As a last remark, WebBox was mainly mentioned due to the similarities in functionality with \solid{} project, however, the platform was never released out of the bounds of a research prototype.
 
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
+\section{OwnCloud}
+
+OwnCloud \footnote{\url{https://owncloud.org}} is a self-hosted open source file sync and share server. In regards to previously defined requirements, this solution is somewhat too generic to the goals of the project, but due to certain features such as decentralization of the storage using manually setup instances, and various scalability features, building a platform based on the provided API is possible. Similar to Dropbox, Google Drive, Box, and others, ownCloud lets you access your files, calendar, contacts, and other data. You can synchronize everything between your devices and share files with others. In contrast with \solid{}, the solution is still a generic cloud storage. It does not support LinkedData out of the box and does not provide a trivial way to decouple data from applications using the data. 
+
+\section{Mastodon}
+
+Mastodon is an online, self-hosted social media, and social networking service (\cite{zignani2018follow}). It allows anyone to host their own server node in the network, and its various separately operated user bases are federated across many different sites (called "instances"). These instances are connected as a federated social network, allowing users from different instances to interact with each other seamlessly. Mastodon is a part of the wider Fediverse, allowing its users to also interact with users on other platforms that support the same protocol, such as PeerTube, Misskey, Friendica and Pleroma.
+
+Mastodon has microblogging features similar to Twitter, or Weibo, although it is distinct from them, and unlike a typical software as a service platform, it is not centrally hosted. Each user is a member of a specific, independently operated instance. Users post short messages called "toots" for others to see, and can adjust each of their post's privacy settings. The specific privacy options may vary between sites, but typically include direct messaging, followers only, public but not listed in the public feed, and public and posted to the public feed. The Mastodon mascot is a brown or grey woolly mammoth, sometimes depicted using a tablet or smartphone.
+
+Because there is no central server for Mastodon, each instance has its own code of conduct, terms of service, and moderation policies. This differs from traditional social networks by allowing users to choose an instance which has policies they agree with, or to leave an instance that has policies they disagree with, without losing access to Mastodon's social network.
+
+\section{Hubzilla}
+
+Hubzilla \footnote{\url{https://fediverse.party/en/hubzilla/}} is a modular webserver based operating system which includes technologies for publishing, social media, file sharing, photo sharing, chat and more (including the ability to develop custom modules). These services are accessed and connected across server and administrative boundaries through the communication protocol Zot which provides a high level of privacy and security customization and a nomadic identity for the users. A webserver running Hubzilla is called a "hub".
+
+\section{Centralized cloud storage solutions}
+
+Modern commercial and enterprise cloud storage solutions from such companies as Google and Amazon provide a great set of features as platforms for any generic use cases when reliable file storage is needed. However, in contrast with \solid{}, this approach is the most distant from the main concepts of LinkedPipes Applications project’s requirements. As a main disadvantage of the approach is the fact that even though the developer is offered a great set of flexibility within the platform, the data storing aspects are not fully decentralized. It also means that the end-user is uploading his data into a centralized data silo where commercial terms of services policies regulate ownership of his data. Another issue is platform dependency meaning that migrating, sharing, and interchanging the data between platforms is not trivial since all interactions with data within storage are defined by a set of APIs and SDKs specific to the selected platform. 
+
+\subsection{Pitfals of centralized cloud storages}
+
+In the past, having control over content or information people store and access online was a common case for many technologies on the Web. However, during the past 20 years, that situation changed significantly. Various tech giants and media platforms like Facebook and Google gain control over the personal data of millions of users using their services. The data that is under the control of the fixed authority separated from the rest of the organization or community is often referred to as data silos.  From the standpoint of the company, having centralized control over the data of all users of their platforms brings many benefits. It simplifies the development of services within the organization, allows to perform various analytics processes and understand the users better. However, from the users perspective, it significantly reduces the control of their data stored within centralized platforms.
+
+\section{Comparison of technologies}
+\label{sssec:comparison_of_technologies}
+
+A significant difference between Solid and services mentioned below is that \solid{} sets a standard way of operating through a data model (RDF) and does not dictate how instances should behave as part of a "federation". In addition to that, \solid{} is not just a software technology, and it represents specifications built on top of open web standards, an extensive set of guidelines for developers, a community of active researchers and contributors. When it comes to direct comparison, \solid{} could be defined as a lower-level abstraction than federated services like Diaspora and Mastodon in the sense that \solid{} can serve as an infrastructure for building those platforms. For instance, Diaspora and Mastodon could be integrated into Solid by allowing their users to sign in using their WebID, and then allow users to store the data produced by them on the services on their POD. 
+
 \begin{table}[hbt]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\textbf{Technology} & \textbf{\begin{tabular}[c]{@{}c@{}}Personal \\ Data Store\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Reusability\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Decentralized\\  infrastructure\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}LinkedData \\ support\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Open \\ Source\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Used in \\ production\end{tabular}} \\ \hline
+\textbf{Technology} & \textbf{\begin{tabular}[c]{@{}c@{}}Provides Personal \\ Data Store?\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Is stored data\\ easily reusable?\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Has decentralized\\  infrastructure?\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Has Linked Data \\ support?\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Is Open \\ Source?\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Is used in \\ production?\end{tabular}} \\ \hline
 SOLID & Yes & Yes & Yes & Yes & Yes & No \\ \hline
 Diaspora & Yes & No & Yes & Yes & Yes & Yes \\ \hline
 WebBox & Yes & Yes & Yes & Yes & No & No \\ \hline
@@ -28,32 +55,7 @@ HubZilla & Yes & Yes & Yes & No & Yes & Yes \\ \hline
 \begin{tabular}[c]{@{}c@{}}Centralized cloud \\ storage solutions\end{tabular} & No & No & No & No & No & Yes \\ \hline
 \end{tabular}%
 }
+\caption {A comparison table between \solid{} and alternative technologies with similar concepts.}
 \end{table}
 
-\section{Diaspora}
-
-Out of all currently available solutions, the closest software platform to \solid{} is Diaspora. In general, it is a decentralized social network platform that enables users to choose the server where their data is hosted and even run their own data hosting server. In that sense, it is similar to \solid{}. However, the main focus in Diaspora is to act as a social network, where social data is shared between users using specific APIs, and not running diverse applications on stored data. Unfortunately, it does not offer a well-defined way to use the same data with different applications. Note that Diaspora uses the term pod to refer to a data hosting server. A Diaspora “pod” is what \solid{} would refer to as a “pod server”.
-
-\section{WebBox}
-
-WebBox is a decentralized social network platform that decouples data from applications. As \solid{}, it stores user’s data as Linked Data in a decentralized way. Also similar to \solid{}, system rely on WebID for decentralized identity, authentication, and access control. In WebBox, each data storage service exposes a SPARQL endpoint, and applications manipulate the data via SPARQL queries and updates, or via \texttt{HTTP} \texttt{GET} requests. In contrast, \solid{} offers the full power of LDP for simple data interactions (e.g., hierarchical data organization, fine-grained manipulation) and additionally allows the use of link-following SPARQL for complex data retrieval. It also works as a generic storage platform upon which a significantly larger number of applications can be built. As a last remark, WebBox was mainly mentioned due to the similarities in functionality with \solid{} project, however, the platform was never released out of the bounds of a research prototype.
-
-\section{OwnCloud}
-
-In regards to previously defined requirements, this solution is somewhat too generic to the goals of the project, but due to certain features such as decentralization of the storage using manually setup instances, and various scalability features, building a platform based on the provided API is possible. In general, OwnCloud is a self-hosted open source file sync and share server. Similar to Dropbox, Google Drive, Box, and others, ownCloud lets you access your files, calendar, contacts, and other data. You can synchronize everything between your devices and share files with others. In contrast with \solid{}, the solution is still a generic cloud storage. It does not support LinkedData out of the box and does not provide a trivial way to decouple data from applications using the data. 
-
-\section{Mastodon}
-
-Mastodon is an online, self-hosted social media, and social networking service. It allows anyone to host their own server node in the network, and its various separately operated user bases are federated across many different sites (called "instances"). These instances are connected as a federated social network, allowing users from different instances to interact with each other seamlessly. Mastodon is a part of the wider Fediverse, allowing its users to also interact with users on other platforms that support the same protocol, such as PeerTube, Misskey, Friendica and Pleroma.
-
-Mastodon has microblogging features similar to Twitter, or Weibo, although it is distinct from them, and unlike a typical software as a service platform, it is not centrally hosted. Each user is a member of a specific, independently operated instance. Users post short messages called "toots" for others to see, and can adjust each of their post's privacy settings. The specific privacy options may vary between sites, but typically include direct messaging, followers only, public but not listed in the public feed, and public and posted to the public feed. The Mastodon mascot is a brown or grey woolly mammoth, sometimes depicted using a tablet or smartphone.
-
-Because there is no central server for Mastodon, each instance has its own code of conduct, terms of service, and moderation policies. This differs from traditional social networks by allowing users to choose an instance which has policies they agree with, or to leave an instance that has policies they disagree with, without losing access to Mastodon's social network.
-
-\section{Hubzilla}
-
-Hubzilla is a modular webserver based operating system which includes technologies for publishing, social media, file sharing, photo sharing, chat and more (including the ability to develop custom modules). These services are accessed and connected across server and administrative boundaries through the communication protocol Zot which provides a high level of privacy and security customization and a nomadic identity for the users. A webserver running Hubzilla is called a "hub".
-
-\section{Centralized cloud storage solutions}
-
-Modern commercial and enterprise cloud storage solutions from such companies as Google and Amazon, provide a great set of features as platforms for any generic use cases when reliable file storage is needed. However, in contrast with \solid{}, this approach is the most distant from the main concepts of LinkedPipes Applications project’s requirements. As a main con of the approach is the fact that even though the developer is offered a great set of flexibility within the platform, the data storing aspects are not fully decentralized. Another issue is platform dependency meaning that migrating, sharing and interchanging the data between platforms is not trivial since all interactions with data within storage are defined by a set of APIs and SDKs specific to the selected platform. 
+\subsection{Why \solid{}?}

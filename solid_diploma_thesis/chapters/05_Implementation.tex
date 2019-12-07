@@ -5,7 +5,7 @@ The following chapter is going to cover the implementation of \lpas{} package, t
  
 \section{Storage Package}
 
-The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{http://es6-features.org} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{https://babeljs.io} compiler and \texttt{Webpack} \footnote{https://webpack.js.org} package bundler. As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{}. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
+The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{}. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
 
 \subsection{Preliminaries}
 
@@ -19,7 +19,7 @@ As briefly mentioned earlier, there several main libraries used inside the \lpas
     \item \texttt{istanbul.js}, a test coverage tool used along with \texttt{ava.js}. The library provides a convenient command-line interface that was used for improving Continuous Integration and Delivery jobs. More details on CI and CD are covered in the testing chapter.
 \end{itemize}
 
-Due to the complexity of the usage of the stated libraries, specifically \texttt{rdflib}, having an environment and a language that provides a fully-featured object-oriented programming and static type-checking would directly affect the code maintainability and usage. Hence, the codebase of \lpas{} was implemented using \texttt{TypeScript} \footnote{https://www.typescriptlang.org}. TypeScript is a strict syntactical superset of JavaScript that provides optional static typing and better object-oriented programming capabilities.  
+Due to the complexity of the usage of the stated libraries, specifically \texttt{rdflib}, having an environment and a language that provides a fully-featured object-oriented programming and static type-checking would directly affect the code maintainability and usage. Hence, the codebase of \lpas{} was implemented using \texttt{TypeScript} \footnote{\url{https://www.typescriptlang.org}}. TypeScript is a strict syntactical superset of JavaScript that provides optional static typing and better object-oriented programming capabilities.  
 
 \begin{figure}[h]
 \centering
@@ -83,7 +83,7 @@ Referring back to \autoref{fig:lps_authentication_sequence_diagram}, there are s
 \begin{itemize}
     \item \textit{Component layouts} are special high-level react containers that wrap every other container inside \lpa{} frontend. They are differentiated by \textit{public} and \textit{private}. The \textit{private} components reactively monitor the authenticated session of a user and redirect them back to the authentication screen whenever the value of the session becomes \texttt{undefined}. It is important to note that the session object from \textit{AuthenticationManger} is duplicated in \lpa{} frontend as a Redux state. Therefore, any changes in the original session object are reflected on that state and triggers re-rendering of layout components. 
     \item \textit{Authentication component functions}, are the functions being invoked when user attempts to perform the authentication. In other words, this is the input that triggers the flow demonstrated earlier on \autoref{fig:lps_authentication_sequence_diagram}.
-    \item \textit{The App router}, the main class in \lpa{} that serves as an entry point and utilizing the \texttt{react-router} \footnote{https://www.npmjs.com/package/react-router} package, contains a function that invokes the \textit{trackSession()} method in \textit{AuthenticationManager}. This directly links to the session object and updates the changes from original session to internal Redux state.
+    \item \textit{The App router}, the main class in \lpa{} that serves as an entry point and utilizing the \texttt{react-router} \footnote{\url{https://www.npmjs.com/package/react-router}} package, contains a function that invokes the \textit{trackSession()} method in \textit{AuthenticationManager}. This directly links to the session object and updates the changes from original session to internal Redux state.
 \end{itemize}
 
 The usage of both \textit{currentSession()} and \textit{login()} methods from \textit{AuthenticationManager} can be observed below:
@@ -331,11 +331,11 @@ The resulting ontology created in \texttt{Protégé} was represented as an \text
 
 \subsection{Using \textit{Ontoology}}
 
-The \textit{Ontoology} itself is an open source project that can be instantiated and configured manually, it is however, also available as a standalone running instance \footnote{http://ontoology.linkeddata.es}. The publishing of the \lpas{} Ontology was done using the available instance instead of manually configuring one, this greatly reduced the development time needed to publish and host the vocabulary to be used in \lpa{} frontend.
+The \textit{Ontoology} itself is an open source project that can be instantiated and configured manually, it is however, also available as a standalone running instance \footnote{\url{http://ontoology.linkeddata.es}}. The publishing of the \lpas{} Ontology was done using the available instance instead of manually configuring one, this greatly reduced the development time needed to publish and host the vocabulary to be used in \lpa{} frontend.
 
 The initial configuration or startup guide to \textit{Ontology} consist of the following steps: 
 \begin{enumerate}
-	\item \textit{Setup a GitHub repository}, an exported \texttt{.owl} file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{https://github.com/aorumbayev/linkedpipesapplicationsontology} and placed at the root.
+	\item \textit{Setup a GitHub repository}, an exported \texttt{.owl} file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
 	\item \textit{Add repository to Ontoology}, add the repository by name into Ontology and press \textit{Watch this repo} button. This is pretty much the last step involving any manual work. The following steps are all invoked in automated fashion, demonstrating the full list of benefits provided by this software.
 	\item \textit{Merge initial PR from Ontoology}, once repository is connected, an automated PR will be opened that will contain a following list of elements:
 	\begin{enumerate}
@@ -390,7 +390,7 @@ The main entities displayed on \ref{fig:lpa_frontend_architecture} can be descri
 \subsubsection{Frontend code structure}
 \label{ssssec:lpa_frontend_code_structure}
 
-The implementation of the \lpa{} frontend is located at the \texttt{src/frontend} path at official \lpa{} repository \footnote{https://github.com/linkedpipes/applications}  and structured as follows:
+The implementation of the \lpa{} frontend is located at the \texttt{src/frontend} path at official \lpa{} repository \footnote{\url{https://github.com/linkedpipes/applications}}  and structured as follows:
 
 \begin{itemize}
     \item \textit{constants} - contains all constants used throughout the frontend component implementation.
@@ -461,7 +461,7 @@ AuthenticationManager.trackSession(session => {
 \label{lst:track_session_example}
 \end{listing}
 
-The User Interface strictly follows initial mock design demonstrated at \autoref{fig:lpas_authenticate_mock}. User has an ability to perform authentication either by choosing an individual \solid{} provider or use a supply his WebID directly if his \solid{} provider is not available in the list of default providers. At the moment of writing this part, the project provides support for \texttt{inrupt.net} \footnote{https://inrupt.net}, \texttt{solid.community} \footnote{https://solid.community} and self-hosted provider made specifically for LinkedPipes available at \textit{lpapps.co} \footnote{https://lpapps.co:8443}. After performing the authentication use is redirected into the Dashboard webpage of \lpa{} frontend.
+The User Interface strictly follows initial mock design demonstrated at \autoref{fig:lpas_authenticate_mock}. User has an ability to perform authentication either by choosing an individual \solid{} provider or use a supply his WebID directly if his \solid{} provider is not available in the list of default providers. At the moment of writing this part, the project provides support for \texttt{inrupt.net} \footnote{\url{https://inrupt.net}}, \texttt{solid.community} \footnote{\url{https://solid.community}} and self-hosted provider made specifically for LinkedPipes available at \textit{lpapps.co} \footnote{\url{https://lpapps.co:8443}}. After performing the authentication use is redirected into the Dashboard webpage of \lpa{} frontend.
 
 \subsubsection{Overview of states and methods}
 
