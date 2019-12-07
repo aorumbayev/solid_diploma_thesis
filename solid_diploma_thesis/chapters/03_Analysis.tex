@@ -99,3 +99,58 @@ The following library adds support of the LDflex language to \solid{} by:
     \item Exposing useful data paths.
     \item LDflex expressions occur for example on Solid React components, where they make it easy for developers to specify what data they want to show. They can also be used as an expression language in any other Solid project or framework.
 \end{itemize}
+
+
+\subection{Functional requirements}
+
+The following sections describes the main functional requirements defined for the \lpa{}. 
+
+\subsection{User authentication}
+
+The user of the platform should be able to register an account in the application, log in and log out. Moreover, once logged in, the platform should be provide functionality to create, configure and publish applications visualizing LinkedData. However, to view an application, it is not necessary to be logged in or even registered.
+
+\subsection{Create Application}
+
+The Create Application functionality could be described as a core feature of the LinkedPipes Application.
+
+The platform needs to provide the a tooling to specify the data sources to be utilized so that an instance of an interactive application would be created based on provided data sources. In addition to that, there needs to be four ways to provide the data source:
+
+\begin{itemize}
+\item Provide a set of dataset \acrshort{IRI}s which the tool will de-reference to get the dataset.
+\item Specify a \acrshort{SPARQL} endpoint from which data will be queried and extracted.
+\item Upload a file in \acrshort{TTL} format, containing data source specifications.
+\item Use some sample dataset provided by the tool
+\end{itemize}
+
+\subsection{Configure Application}
+
+%TODO : rewrite
+After the creation of the application, platform also need to provide functionality to configure previously created applications. Each application, depending on the visualization, will have particular settings that can be set. Furthermore, users must be able to control, with the use of filters, which data is to be used and displayed. The available filters should be automatically derived based on the properties and semantics of the data. 
+
+The set of configure operations for filters can be described as follows:
+
+\begin{itemize}
+\item Removing whole data filters to ignore the values of specific data properties.
+\item Removing selected values of some filters.
+\item Setting fixed values for some filters.
+\item Set/change a name for the application.
+\end{itemize}
+
+\subsection{Publish Application}
+
+Another important requirement is an ability to publish the application and make it publically available for sharing the visualization to anyone via the permanent link. Furthermore, when a third party accesses this \textit{permalink}, the browser should open the LinkedPipes Applications website with the respective application opened, as configured by the publisher.
+
+Besides, when publishing an application I want the tool to offer the possibility to choose one of the below two settings:
+
+\begin{itemize}
+\item Use and display cached data, making the published application a fixed view.
+\item Regularly refresh the data from the previously chosen data sources of the interactive application.
+\end{itemize}
+
+The tool will also need to provide the ability to embed the published view into a data journalist's web page, for example, using an iFrame.
+
+\subsection{Store Application}
+
+Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as LinkedData, therefore the persistent storage tooling needs to be optimized for files in RDF format. 
+User needs to be able to browse the stored and published applications and optionally allow other people to collaborate or edit a specific shared application. 
+
