@@ -28,7 +28,7 @@ Due to the complexity of the usage of the stated libraries, specifically \texttt
 \label{fig:lpas_implementation_transpilation_diagram}
 \end{figure}
 
-As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible Javascript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Webpack. The assets mainly consist of a set of media files such as \texttt{.png} and \texttt{.svg} files and a large \texttt{.js} file that contain the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
+As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible Javascript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Webpack. The assets mainly consist of a set of media files such as \texttt{.png} and \texttt{.svg} files and a large \texttt{.js} file that contains the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
 
 \subsubsection{Project structure}
 
@@ -40,7 +40,7 @@ The structure of the \lpas{} package is simple and straightforward and can be de
 - src         # Root project folder
   - lib       # Main library codebase
     - common  # Utilities and helper functions
-   	- ...     # TypeScript tests and core abstractions
+       - ...     # TypeScript tests and core abstractions
   - types     # Custom user-defined type definitions
 - docs        # Static html with library documentation
 _ ...         # Readme and various configuration files
@@ -101,7 +101,7 @@ login = async (idp, callbackUri) => {
 };
 \end{lstlisting}
 
-To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever an \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
+To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
 
 
 %\subsubsection{Creating resources}
@@ -140,7 +140,7 @@ Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstract
     \item \textit{createAccessControlStatement()}, \textit{createAccessControlList}, \textit{updateACL()}, \textit{createACL()}, following methods can be found described in \autoref{sssec:access_control_manager_implementation}, as they relate to interacting with \texttt{ACL} resources.
 \end{itemize}
 
-It is important to note that the class is not a singleton in contrast with \textit{AuthenticationManager}. This is due to the fact that all classes are exposed as public and static, this design makes the abstraction generic for many use cases within and outside the bounds of requirements of \lpa{}.
+It is important to note that the class is not a singleton in contrast with \textit{AuthenticationManager}. This is because all classes are exposed as public and static. The design makes the abstraction generic for many use cases within and outside the bounds of requirements of \lpa{}.
 
 The \solid{} resource within the \lpas{} package is represented by \textit{ResourceConfiguration} abstraction that is a basic required input for most of the operations in \textit{FileManager} that involve execution of \texttt{HTTP} requests. The proceeding \autoref{ssssec:lpas_resource_config_implementation} will provide more details on implementation of this class and the relation to \textit{FileManager}.
  
@@ -216,10 +216,10 @@ This subsection provides details on implementation of the \textit{AccessControlM
 
 Referring back to \autoref{fig:lpas_filemanager_implementation_class}, the main methods related to the abstraction are described as follows:
 \begin{itemize}
-	\item \textit{updateACL()}, a method constructing the array of RDF triples that is later serialized into a \texttt{text/turtle} and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server, replacing the previous resource under that path.
-	\item \textit{createACL()}, a method constructing the array of RDF triples that is later serialized into a \texttt{text/turtle} and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server.
-	\item \textit{createAccessControlStatement()}, a method constructing the array of RDF triples expressing access control for a particular WebID. 
-	\item \textit{createAccessControlList()}, a method assembling an array of access control statements for multiple requested WebIDs using \textit{createAccessControlStatement()}, and as result serializes the array of statements into a raw \texttt{text/turtle} \texttt{string} using \texttt{rdflib}.
+    \item \textit{updateACL()}, a method constructing the array of RDF triples that is later serialized into a \texttt{text/turtle} and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server, replacing the previous resource under that path.
+    \item \textit{createACL()}, a method constructing the array of RDF triples that is later serialized into a \texttt{text/turtle} and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server.
+    \item \textit{createAccessControlStatement()}, a method constructing the array of RDF triples expressing access control for a particular WebID. 
+    \item \textit{createAccessControlList()}, a method assembling an array of access control statements for multiple requested WebIDs using \textit{createAccessControlStatement()}, and as result serializes the array of statements into a raw \texttt{text/turtle} \texttt{string} using \texttt{rdflib}.
 \end{itemize}
 
 The functionality implemented by \textit{AccessControlManager} is not conforming to entire Web Access Control specification, since it was not needed and not required to satisfy the \lpa{} requirements. Therefore, methods described earlier such as \textit{updateACL()} and \textit{createACL()} as seen on \autoref{fig:lps_acl_update_flow}, were based on the default \texttt{.acl} files that \texttt{NSS} generates. At the moment of writing this thesis, the default \textit{.acl} files generated by \texttt{NSS v5.2.0} looks as follows:
@@ -244,25 +244,25 @@ n1:accessTo test:; n1:agentClass n0:Agent; n1:default test:; n1:mode n1:Read.
 \label{lst:acl_file_example}
 \end{listing}
 
-As seen on \autoref{lst:acl_file_example}, the example describes access control privileges to a folder named \textit{test}. The first semantic triple contains a subject named \texttt{:owner}, this refers to the WebID of the owner of this \solid{} POD. The predicates of the Owner subject can be described as follows:
+As seen on \autoref{lst:acl_file_example}, the example describes access control privileges to a folder named \textit{test}. The first semantic triple contains a subject named \texttt{:owner}, and this refers to the WebID of the owner of this \solid{} POD. The predicates of the Owner subject can be described as follows:
 \begin{itemize}
-	\item \textit{accessTo}, the information resource to which the access is being granted. In this case we are granting access to a folder named \textit{test}
-	\item \textit{agent}, a person or an entity to whom the rights are being given. Since this is an owner of the \solid{} pod, the reference is given to himself.
-	\item \textit{default}, this is a special predicate that behaves as follows. If the underlying resources have no \texttt{.acl} files specified they will keep referring to a parent resources until it will reach the resource containing the \texttt{.acl} file with \textit{default} predicate. In this case the statement says that the underlying resources without explicitly set \textit{.acl} files will have the same access control rights as the \textit{test} folder.
-	\item \textit{mode}, a predicate describing the access control modes. In this case the object are defined as follows: 
-		\subitem \textit{Control}, a semantic object describing full read and write access to an \texttt{ACL} of the resource.
-		\subitem \textit{Read}, a semantic object giving a full read access to a resource.
-		\subitem \textit{Write}, a semantic object giving a full write access to a resource.
+    \item \textit{accessTo}, the information resource to which the access is being granted. In this case, we are granting access to a folder named \textit{test}
+    \item \textit{agent}, a person or an entity to whom the rights are being given. Since this is an owner of the \solid{} pod, the reference is given to himself.
+    \item \textit{default}, this is a special predicate that behaves as follows. If the underlying resources have no \texttt{.acl} files specified they would keep referring to parent resources until it will reach the resource containing the \texttt{.acl} file with \textit{default} predicate. In this case, the statement says that the underlying resources without explicitly set \textit{.acl} files will have the same access control rights as the \textit{test} folder.
+    \item \textit{mode}, a predicate describing the access control modes. In this case, the object is defined as follows: 
+        \subitem \textit{Control}, a semantic object describing full read and write access to an \texttt{ACL} of the resource.
+        \subitem \textit{Read}, a semantic object, is giving full read access to a resource.
+        \subitem \textit{Write}, a semantic object is giving full write access to a resource.
 \end{itemize}
 
-On the other hand, the subject named \textit{public}, only has an ability to \textit{Read} the folder and its content. The \textit{public} subject is just a generic simplification for cases when there is no need to explicitly set specific WebIDs, however, using \texttt{ACL} easily allows to list specific users as well, giving a lot of flexibility to have a very complex access control privileges setup per any resource in a \solid{} POD. As mentioned earlier, the ability to manipulate access control to any resource and own your own data is one of the core benefits proposed by \solid{} project. 
+On the other hand, the subject named \textit{public} only has an ability to \textit{Read} the folder and its content. The \textit{public} subject is just a generic simplification for cases when there is no need to set specific WebIDs explicitly. However, using \texttt{ACL} easily allow listing particular users as well, giving a lot of flexibility to have a very sophisticated access control privileges setup per any resource in a \solid{} POD. As mentioned earlier, the ability to manipulate access control to any resource and own your data is one of the core benefits proposed by \solid{} project. 
 
 \subsubsection{Access Control Configuration}
 
 Aside from the main \textit{AccessControlManager} abstraction, as demonstrated on \autoref{chap:num_1}, the original \textit{ResourceConfig} class from \textit{FileManager} required to be extended by introducing several subclasses called:
 \begin{itemize}
-	\item \textit{AccessControlConfig}, a subclass of \textit{ResourceConfig} that adds a property listing available control modes to a resource for specified WebID, and adds methods to construct the proper absolute path to a resource. The only difference between those methods and methods described in \autoref{ssssec:lpas_resource_config_implementation} such as \textit{fullPath()} and \textit{fullPathWithAppending()}, is that the hardcoded keyword \texttt{.acl} for files and hardcoded keyword \texttt{/.acl} for folder are being appended.
-	\item \textit{AccessControlStatementConfig}, a subclass of \textit{AccessControlConfig}, contains additional references to \texttt{rdflib} nodes to simplify construction of \texttt{ACL} triples in \textit{AccessControlManager} abstraction.
+    \item \textit{AccessControlConfig}, a subclass of \textit{ResourceConfig} that adds a property listing available control modes to a resource for specified WebID, and adds methods to construct the proper absolute path to a resource. The only difference between those methods and methods described in \autoref{ssssec:lpas_resource_config_implementation} such as \textit{fullPath()} and \textit{fullPathWithAppending()}, is that the hardcoded keyword \texttt{.acl} for files and hardcoded keyword \texttt{/.acl} for folder are being appended.
+    \item \textit{AccessControlStatementConfig}, a subclass of \textit{AccessControlConfig}, contains additional references to \texttt{rdflib} nodes to simplify construction of \texttt{ACL} triples in \textit{AccessControlManager} abstraction.
 \end{itemize}
 
 \begin{figure}[h]
@@ -301,14 +301,14 @@ To sum up, the section provided an overview of three main abstractions inside \l
 
 \section{Hosting Storage Ontology}
 
-This section is going to continue the details on implementation of the \lpas{} ontology, firstly described in \autoref{ssec:lpas_application_ontology_arch}. As mentioned earlier, the intent to design the ontology was to better utilize the benefits of \solid{} and the ways in which every entity is represented as an RDF resource. The ontology itself was implemented using a set of open source tools that will be described in the first part of this section. 
+This section is going to continue the details on implementation of the \lpas{} ontology, firstly described in \autoref{ssec:lpas_application_ontology_arch}. As mentioned earlier, the intent to design the ontology was to utilize the benefits of \solid{} better and the ways in which every entity is represented as an RDF resource. The ontology itself was implemented using a set of open-source tools that will be described in the first part of this section. 
 
 \subsection{Preliminaries}
 
-There are two main open-source frameworks that were used to implement and publish the \lpas{} ontology:
+Two open-source frameworks were used to implement and publish the \lpas{} ontology:
 \begin{itemize}
-	\item \texttt{Protégé} \cite{noy2003protege}, is an open-source ontology editing framework developed at Stanford University and written in Java programming language. It provides an intuitive graphic user interface for defining and developing ontologies. The version of the software used at the moment of implementing the ontology is \texttt{v5.5.0}.
-	\item \texttt{Ontoology} \cite{alobaid2015ontoology}, is an open-source software solution for collaborative development of ontologies on GitHub. However, in the scope of implementing \lpas{} ontology it was mainly chosen for its additional features such as an ability to publish ontologies under permanent \texttt{w3id.org} url, an ability to host the ontology as a static \texttt{HTML} under GitHub Pages. 
+    \item \texttt{Protégé} \cite{noy2003protege}, is an open-source ontology editing framework developed at Stanford University and written in Java programming language. It provides an intuitive graphical user interface for defining and developing ontologies. The version of the software used at the moment of implementing the ontology is \texttt{v5.5.0}.
+    \item \texttt{Ontoology} \cite{alobaid2015ontoology}, is an open-source software solution for collaborative development of ontologies on GitHub. However, in the scope of implementing \lpas{} ontology, it was mainly chosen for its additional features, such as an ability to publish ontologies under permanent \texttt{w3id.org} URL, an ability to host the ontology as a static \texttt{HTML} under GitHub Pages. 
 \end{itemize}
 
 \begin{figure}[h]
@@ -322,28 +322,28 @@ There are two main open-source frameworks that were used to implement and publis
 
 After defining the main entities and designing the hierarchical structure of the ontology in \autoref{ssec:lpas_application_ontology_arch}, the ontology was implemented using \texttt{Protégé} ontology editor. The editor allows defining the ontology entities by specifying them under:
 \begin{itemize}
-	\item \textit{Classes}, tab represents the \textit{asserted} and \textit{inferred} class hierarchies as a tree, where each node represents a particular class. The \textit{asserted} class view is a default and primary navigation device for browsing class hierarchies in \textit{Protégé}, the \textit{inferred} classes view on the other hand differs from \textit{asserted} by requiring a reasoner to be setup to render the complete hierarchy view. If no reasoner is provided the \textit{inferred} classes view will be empty.
-	\item \textit{Object properties} tab,  represents the graphical user interface to create and define relations between instances of the classes. The view under that tab is similar to the \textit{Classes} tab, the properties are represented as a tree with nodes identifying individual object property. For instance, each \textit{VisualizerConfiguration} can be filtered by a \textit{FilteredConfiguration}, this relation can be expressed by defining an object property calls \textit{filteredBy}.
-	\item \textit{Data properties} tab, represents the graphical user to create and define relations between instances of classes and RDF literals or datatypes. For instance, a \textit{VisualizerConfiguration} class has a \textit{backgroundColor} data property which is a \textit{String} datatype. 
+    \item \textit{Classes}, tab represents the \textit{asserted} and \textit{inferred} class hierarchies as a tree, where each node represents a particular class. The \textit{asserted} class view is a default and primary navigation device for browsing class hierarchies in \textit{Protégé}, the \textit{inferred} classes view on the other hand differs from \textit{asserted} by requiring a reasoner to be setup to render the complete hierarchy view. If no reasoner is provided the \textit{inferred} classes view will be empty.
+    \item \textit{Object properties} tab,  represents the graphical user interface to create and define relations between instances of the classes. The view under that tab is similar to the \textit{Classes} tab, the properties are represented as a tree with nodes identifying individual object property. For instance, each \textit{VisualizerConfiguration} can be filtered by a \textit{FilteredConfiguration}, this relation can be expressed by defining an object property calls \textit{filteredBy}.
+    \item \textit{Data properties} tab, represents the graphical user to create and define relations between instances of classes and RDF literals or datatypes. For instance, a \textit{VisualizerConfiguration} class has a \textit{backgroundColor} data property which is a \textit{String} datatype. 
 \end{itemize}
 
 The resulting ontology created in \texttt{Protégé} was represented as an \texttt{.owl} which is a format for Web Ontology Language described earlier in \autoref{sssec:using_web_ontology_language}. The following subsection will describe the process of publishing the ontology using the \textit{Ontoology} software. 
 
 \subsection{Using \textit{Ontoology}}
 
-The \textit{Ontoology} itself is an open source project that can be instantiated and configured manually, it is however, also available as a standalone running instance \footnote{\url{http://ontoology.linkeddata.es}}. The publishing of the \lpas{} Ontology was done using the available instance instead of manually configuring one, this greatly reduced the development time needed to publish and host the vocabulary to be used in \lpa{} frontend.
+The \textit{Ontoology} itself is an open-source project that can be instantiated and configured manually. It is, however, also available as a standalone running instance \footnote{\url{http://ontoology.linkeddata.es}}. The publishing of the \lpas{} Ontology was done using the available instance instead of manually configuring one, this significantly reduced the development time needed to publish and host the vocabulary to be used in \lpa{} frontend.
 
 The initial configuration or startup guide to \textit{Ontology} consist of the following steps: 
 \begin{enumerate}
-	\item \textit{Setup a GitHub repository}, an exported \texttt{.owl} file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
-	\item \textit{Add repository to Ontoology}, add the repository by name into Ontology and press \textit{Watch this repo} button. This is pretty much the last step involving any manual work. The following steps are all invoked in automated fashion, demonstrating the full list of benefits provided by this software.
-	\item \textit{Merge initial PR from Ontoology}, once repository is connected, an automated PR will be opened that will contain a following list of elements:
-	\begin{enumerate}
-		\item Diagrams, a folder with pre-generated class hierarchy visualizations of the ontology.
-		\item Documentation, an automatically generated ontology documentation hosted on GitHub Pages on the same repository, and available at \textit{w3id.org} permanent url redirecting users to GitHub Pages.
-		\item Evaluation report, \textit{Ontoology} generates a report that checks various aspects of the implementation of the ontology, providing hints when, for instance, some parts in description of an entity is missing.
-		\item JSON-LD, an original \texttt{.owl} file is automatically converted into a JSON-LD file.  
-	\end{enumerate}
+    \item \textit{Setup a GitHub repository}, an exported \texttt{.owl} file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
+    \item \textit{Add repository to Ontoology}, add the repository by name into Ontology, and press \textit{Watch this repo} button. This is pretty much the last step involving any manual work. The following steps are all invoked in an automated fashion, demonstrating the full list of benefits provided by this software.
+    \item \textit{Merge initial PR from Ontoology}, once the repository is connected, an automated PR will be opened that will contain a following list of elements:
+    \begin{enumerate}
+        \item Diagrams, a folder with pre-generated class hierarchy visualizations of the ontology.
+        \item Documentation, an automatically generated ontology documentation hosted on GitHub Pages on the same repository, and available at \textit{w3id.org} permanent URL redirecting users to GitHub Pages.
+        \item Evaluation report, \textit{Ontoology} generates a report that checks various aspects of the implementation of the ontology, providing hints when, for instance, some parts in the description of an entity is missing.
+        \item JSON-LD, an original \texttt{.owl} the file is automatically converted into a JSON-LD file.  
+    \end{enumerate}
 \end{enumerate}
 
 \begin{figure}[h]
@@ -353,7 +353,7 @@ The initial configuration or startup guide to \textit{Ontology} consist of the f
 \label{fig:misc_ontoology_ui}
 \end{figure}
 
-To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host application. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available at \url{http://w3id.org/def/lpapps}. 
+To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host applications. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available at \url{http://w3id.org/def/lpapps}. 
 
 \section{Storage Frontend}
 \label{ssec:storage_frontend_implementation}
@@ -378,12 +378,12 @@ The main entities displayed on \ref{fig:lpa_frontend_architecture} can be descri
 
 \begin{itemize}
     \item \textit{React Component}, a JavaScript class or function that optionally accepts inputs, i.e., properties(props), and returns a React element that describes how a section of the UI (User Interface) should appear. 
-    \item \textit{Redux}, represents a container that stores various states of the web application per individual webpage.
+    \item \textit{Redux} represents a container that stores various states of the web application per individual webpage.
         \begin{itemize}
             \item \textit{State}, refers to the single state value that is managed by the store and returned by \texttt{getState()}. It represents the entire state of a Redux application, which is often a deeply nested object.
-            \item \textit{Reducer}, specifies how the application's state changes in response to actions sent to the store.
-            \item \textit{Actions}, are payloads of information that send data from your application to your store. They are the only source of information for the store. It is invoked by sending them to the store using \texttt{store.dispatch()}.
-            \item \textit{Selector}, is simply any function that accepts the Redux store state (or part of the state) as an argument, and returns data that is based on that state.
+            \item \textit{Reducer} specifies how the application's state changes in response to actions sent to the store.
+            \item \textit{Actions} are payloads of information that send data from your application to your store. They are the only source of information for the store. It is invoked by sending them to the store using \texttt{store.dispatch()}.
+            \item \textit{Selector} is simply any function that accepts the Redux store state (or part of the state) as an argument and returns data that is based on that state.
         \end{itemize}
 \end{itemize}
 
@@ -423,11 +423,11 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
 \label{sssec:authentication_view_implementation}
 
 This section continues the architecture and mocks provided in \autoref{ssec:lpas_storage_component_design}, and describes the implementation of the React Component in detail.
-In order to comply to conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
+To comply with conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
 \begin{itemize}
-	\item \textit{AuthenticationContainer}, a file containing the stateful React Component. In other words, it manages local views specific states as well as global states related to Redux.
-	\item \textit{AuthenticationComponent.jsx}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
-	\item \textit{SolidProviderComponent.jsx}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
+    \item \textit{AuthenticationContainer}, a file containing the stateful React Component. In other words, it manages local views specific states as well as global states related to Redux.
+    \item \textit{AuthenticationComponent.jsx}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
+    \item \textit{SolidProviderComponent.jsx}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
 \end{itemize}
 
 \begin{listing}[H]    
@@ -465,21 +465,21 @@ The User Interface strictly follows initial mock design demonstrated at \autoref
 
 \subsubsection{Overview of states and methods}
 
-As general details on structure of the implementation is defined now, let us dive deeper into description main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
+As general details on the structure of the implementation are defined now, let us dive deeper into the description main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
 \begin{itemize}
-	\item \textit{webIdFieldValue}, a \texttt{string} value holding input at the \textit{textfield} for supplying WebID value.
-	\item \textit{withWebIdStatus}, a \texttt{boolean} value representing the current input state and whether is chosen to use available providers or entered his WebID manually.
-	\item \textit{session}, an \texttt{object} representing current session returned from \textit{AuthenticationManager} abstraction.
-	\item \textit{providerTitle}, a \texttt{string} value holding the title of selected provider. This is needed to be supplied into \textit{login()} method of \textit{AuthenticationManager} abstraction that invokes the \texttt{solid-auth-client} library.  
+    \item \textit{webIdFieldValue}, a \texttt{string} value holding input at the \textit{textfield} for supplying WebID value.
+    \item \textit{withWebIdStatus}, a \texttt{boolean} value representing the current input state and whether is chosen to use available providers or entered his WebID manually.
+    \item \textit{session}, an \texttt{object} representing current session returned from \textit{AuthenticationManager} abstraction.
+    \item \textit{providerTitle}, a \texttt{string} value holding the title of selected provider. This is needed to be supplied into \textit{login()} method of \textit{AuthenticationManager} abstraction that invokes the \texttt{solid-auth-client} library.  
 \end{itemize}
 
 The set of methods inside the \textit{AuthenticationComponent} class can be described as follows:
 \begin{itemize}
-	\item \textit{handleProviderChange()} a methods that is passed as a \texttt{prop} to \textit{AuthenticationComponent}, and invoked every time user selects or update his selection of default providers.
-	\item \textit{handleSignIn} a method that is invoked when is pressing the \textit{Authenticate} button, this redirects a call to \textit{AuthenticationManager} abstraction that initiates the sequence flow described at \autoref{fig:lps_authentication_sequence_diagram}.
-	\item \textit{handleWebIdFieldChange} a method invoked when user inputs or modifies the input at the \textit{textfield} used for WebID.
-	\item \textit{isWebIdValid} a method that uses \textit{regex} to validate whether provided WebID is in valid format.
-	\item \textit{onSetWithWebId} a method invoked when the \textit{withWebIdStatus} status changes.  
+    \item \textit{handleProviderChange()} a methods that is passed as a \texttt{prop} to \textit{AuthenticationComponent}, and invoked every time user selects or update his selection of default providers.
+    \item \textit{handleSignIn} a method that is invoked when is pressing the \textit{Authenticate} button, this redirects a call to \textit{AuthenticationManager} abstraction that initiates the sequence flow described at \autoref{fig:lps_authentication_sequence_diagram}.
+    \item \textit{handleWebIdFieldChange} a method invoked when user inputs or modifies the input at the \textit{textfield} used for WebID.
+    \item \textit{isWebIdValid} a method that uses \textit{regex} to validate whether provided WebID is in valid format.
+    \item \textit{onSetWithWebId} a method invoked when the \textit{withWebIdStatus} status changes.  
 \end{itemize}
 
 The final rendered UI of this implementation will be provided in the of this chapter under \autoref{ssec:overview_of_implemented_requirements}, where a detailed overview of a final implementation satisfying each of the original \lpa{} requirements are provided.
@@ -487,15 +487,15 @@ The final rendered UI of this implementation will be provided in the of this cha
 \subsection{Storage Dashboard}
 \label{sssec:storage_dashboard_implementation}
 
-The Storage Dashboard webpage described at \autoref{sssec:architecture_storage_dashboard} was a challenging component to implement. To simplify the understanding of the structure in which components and containers are invoked the \autoref{fig:storage_dashboard_implementation_diagram} is provided. The components demonstrated on diagram follow the usual pattern of splitting React Components into stateful and stateless and can be described as follows:
+The Storage Dashboard webpage described at \autoref{sssec:architecture_storage_dashboard} was a challenging component to implement. To simplify the understanding of the structure in which components and containers are invoked, the \autoref{fig:storage_dashboard_implementation_diagram} is provided. The components demonstrated on diagram follow the usual pattern of splitting React Components into stateful and stateless and can be described as follows:
 \begin{itemize}
-	\item \textit{StoragePageController} is a root React component that wraps both individual and shared application views. It stores states representing the tab index and depending on the selected index it switches the components to be rendered in \textit{render()} function.
-	\item \textit{StorageAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
-	\item \textit{StorageSharedAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations that were shared with the User. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
-	\item \textit{StorageAppsBrowserCardComponent} is a child component that represents a reusable card representing an individual \lpa{} configuration in a grid of cards.
+    \item \textit{StoragePageController} is a root React component that wraps both individual and shared application views. It stores states representing the tab index and depending on the selected index it switches the components to be rendered in \textit{render()} function.
+    \item \textit{StorageAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
+    \item \textit{StorageSharedAppsBrowser*}, both container and component represent a view that fetches and displays \lpa{} configurations that were shared with the User. The stateless part relies on the \textit{Grid} layout system from \texttt{MaterialUI} framework.
+    \item \textit{StorageAppsBrowserCardComponent} is a child component that represents a reusable card representing an individual \lpa{} configuration in a grid of cards.
 \end{itemize}
 
-The user interface is inspired by the mock at \autoref{fig:lpas_ui_dashboard_mock}, however it is more refined an optimized to fit the general style of \lpa{} frontend. Similar to Authentication view, the final rendered UI of this implementation will be provided in the end of this chapter under \autoref{ssec:overview_of_implemented_requirements}.
+The user interface is inspired by the mock at \autoref{fig:lpas_ui_dashboard_mock}. However, it is more refined and optimized to fit the general style of \lpa{} frontend. Similar to the Authentication view, the final rendered UI of this implementation will be provided at the end of this chapter under \autoref{ssec:overview_of_implemented_requirements}.
 
 \begin{figure}[h]
 \centering
@@ -506,27 +506,27 @@ The user interface is inspired by the mock at \autoref{fig:lpas_ui_dashboard_moc
 
 \subsubsection{Overview of main functionality}
 
-In contrast with Authentication View, the structure of sub components is rather complex to describe in detail, therefore a set of main states and methods responsible for core functionality of the webpage will be described instead.
+In contrast with Authentication View, the structure of sub-components is rather complex to describe in detail. Therefore a set of primary states and methods responsible for the core functionality of the webpage will be described instead.
 
 In general both \textit{StorageAppsBrowser*} and \textit{StorageSharedAppsBrowser*} components and containers share similar states and functions the only difference is the way stored \lpa{} configurations are fetched. The fetching itself is done by invoking the corresponding methods called \textit{getAppConfigurationsMetadata()} and \textit{getSharedApplicationsMetadata()} methods from \textit{StorageToolbox} class. In general, the \textit{StorageToolbox} invokes lower-level wrappers in \textit{StorageBackend} that utilize the \texttt{rdflib} library from \lpas{} package and converts the RDF resource representing the \lpa{} configuration into a JavaScript object that is processed by \textit{StorageAppsBrowserCardComponent} view.
 
 \subsection{Storage Control Panel}
 \label{sssec:storage_control_panel_implementation}
 
-The Storage Control Panel is rather simple set of React Components that heavily rely on \textit{FileManager} abstraction from \lpas{} package. As initially described in \autoref{sssec:architecture_storage_control_panel}, the functionality should provide user options to perform basic operations with the root folder for all \lpa{} configurations in his \solid{} POD. Those operations include changing the title of the root folder, moving within pod or copying within pod. The implementation consist of the following classes:
+The Storage Control Panel is rather a simple set of React Components that heavily rely on \textit{FileManager} abstraction from \lpas{} package. As initially described in \autoref{sssec:architecture_storage_control_panel}, the functionality should provide user options to perform basic operations with the root folder for all \lpa{} configurations in his \solid{} POD. Those operations include changing the title of the root folder, moving within the pod, or copying within the pod. The implementation consist of the following classes:
 \begin{itemize}
-	\item \textit{StorageAccessControlDialog} is a stateful React Component based on \textit{Dialog} Component from \textit{Material UI} framework. Due to simplicity of the elements to be rendered, it did not require splitting into stateful and stateless components.
-	\item \textit{SettingsPageComponent} is a stateless React Component that renders the simple label with the current path to the root storage folder in \textit{Solid} and a simple button to change it by invoking the \textit{StorageAccessControlDialog}.
-	\item \textit{SettingsPageContainer} is a stateful React Component that serves to connect the \textit{StorageAccessControlDialog} and \textit{SettingsPageComponent}.
+    \item \textit{StorageAccessControlDialog} is a stateful React Component based on \textit{Dialog} Component from \textit{Material UI} framework. Due to simplicity of the elements to be rendered, it did not require splitting into stateful and stateless components.
+    \item \textit{SettingsPageComponent} is a stateless React Component that renders the simple label with the current path to the root storage folder in \textit{Solid} and a simple button to change it by invoking the \textit{StorageAccessControlDialog}.
+    \item \textit{SettingsPageContainer} is a stateful React Component that serves to connect the \textit{StorageAccessControlDialog} and \textit{SettingsPageComponent}.
 \end{itemize}
 
 \subsubsection{Overview of main functionality}
 
 In general, the main functionality is located in the \textit{StorageAccessControlDialog} class, it strictly follows the mock at \autoref{fig:lpas_change_folder_mock} and can be described as follows:
 \begin{itemize}
-	\item \textit{handleFolderConfirm()} a method invoked when user clicks on \textit{Update} button. The component then invokes the \textit{StorageToolbox} class that communicates with \textit{FileManager} abstraction in \lpas{} package. For more detailed description of how \lpas{} package performs the \texttt{CRUD} operations on resources in \solid{} PODs refer back to \autoref{chap:num_4}.
-	\item \textit{handleFolderCopy()} a method invoked when user clicks on \textit{Copy} button. The rest is similar to \textit{handleFolderConfirm()} where \textit{StorageToolbox} is invoked and it communicates with \textit{FileManager} abstraction in \lpas{} package. 
-	\item \textit{handleFolderMove()} a method invoked when user clicks on \textit{Move} button. The proceeding invocation chain is identical to methods before.
+    \item \textit{handleFolderConfirm()} a method invoked when user clicks on \textit{Update} button. The component then invokes the \textit{StorageToolbox} class that communicates with \textit{FileManager} abstraction in \lpas{} package. For more detailed description of how \lpas{} package performs the \texttt{CRUD} operations on resources in \solid{} PODs refer back to \autoref{chap:num_4}.
+    \item \textit{handleFolderCopy()} a method invoked when user clicks on \textit{Copy} button. The rest is similar to \textit{handleFolderConfirm()} where \textit{StorageToolbox} is invoked and it communicates with \textit{FileManager} abstraction in \lpas{} package. 
+    \item \textit{handleFolderMove()} a method invoked when user clicks on \textit{Move} button. The proceeding invocation chain is identical to methods before.
 \end{itemize}
 
 The final rendered UI of this implementation will be provided in \autoref{ssec:overview_of_implemented_requirements}, demonstrating the \textit{StorageAccessControlDialog}, \textit{SettingsPageComponent} and \textit{SettingsPageContainer}.
@@ -534,11 +534,11 @@ The final rendered UI of this implementation will be provided in \autoref{ssec:o
 \section{Implemented functional requirements}
 \label{ssec:overview_of_implemented_requirements}
 
-This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved implementation of React components, a detailed renders of final User Interfaces will be provided. 
+This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved the implementation of React components, detailed renders of final User Interfaces will be provided. 
 
 \subsection{User Authentication}
 
-To recap the User Authentication functional requirement, the user of the platform should be able to register an account in the application, log in and log out. In order to fulfil the requirement the Authentication View component described at \autoref{chap:num_1} was implemented. The final render on \autoref{fig:lpa_login_webpage} provides an intuitive User Interface that allows authentication by selecting a default \solid{} provider, as demonstrated on \autoref{fig:lpa_login_webpage_dropdown} or by specifying the WebID for authentication directly. The \textit{Learn more about WebID and SOLID} button serves as a guide for users new to \solid{}, clicking the button will get them redirected to the official \texttt{inrupt} website. 
+To recap the User Authentication functional requirement, the user of the platform should be able to register an account in the application, log in, and log out. To fulfill the requirement, the Authentication View component described at \autoref{chap:num_1} was implemented. The final render on \autoref{fig:lpa_login_webpage} provides an intuitive User Interface that allows authentication by selecting a default \solid{} provider, as demonstrated on \autoref{fig:lpa_login_webpage_dropdown} or by specifying the WebID for authentication directly. The \textit{Learn more about WebID, and SOLID} button serves as a guide for users new to \solid{}, clicking the button will get them redirected to the official \texttt{inrupt} website. 
 
 \begin{figure}[hbt]
 \minipage{0.5\textwidth}
@@ -570,8 +570,8 @@ After user provides the authentication inputs and clicks on \textit{Authenticate
 
 The \textit{logout} functionality is available under several components in \lpa{}. Those can be described as follows:
 \begin{itemize}
-	\item \textit{User Profile Page}, this page is located under settings tab in \lpa{} platform. The intent is to provide the information about current user name and his WebID under which the authentication was performed. It also provides buttons to either \textit{Reset Password} or \textit{Logout} from the platform.
-	\item \textit{Logout toolbar item}, this is a toolbar element always available in top right corner of the platform. Clicking on the button invokes the \textit{logout} and user is redirected back to the Authentication View webpage.
+    \item \textit{User Profile Page}, this page is located under settings tab in \lpa{} platform. The intent is to provide the information about the current user name and his WebID under which the authentication was performed. It also provides buttons to either \textit{Reset Password} or \textit{Logout} from the platform.
+    \item \textit{Logout toolbar item}, this is a toolbar element always available in the top right corner of the platform. Clicking on the button invokes the \textit{logout}, and the user is redirected back to the Authentication View webpage.
 \end{itemize}
 
 \begin{figure}[hbt]
@@ -589,12 +589,12 @@ The \textit{logout} functionality is available under several components in \lpa{
 
 \subsection{Create, Store and Publish Application}
 
-The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD. Having a stored configuration also implies that application described by this configuration is published because the URI to configuration inside the POD is publicly available by default. In other words, storing creation and publishing of the application are closely related requirements that are easier to cover at once. The section will also focus on the parts of these functional requirements that directly related to interactions with \solid{} server. Additionally, It is important to mention that there is no actual application being stored in the \solid{} pod, the app itself is a React Component that is re-rendered from scratch based on the \lpa{} configuration that is loaded from the storage. 
+The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD. Having a stored configuration also implies that the application described by this configuration is published because the URI to configuration inside the POD is publicly available by default. In other words, storing creation and publishing of the application are closely related requirements that are easier to cover at once. The section will also focus on the parts of these functional requirements that directly related to interactions with \solid{} server. Additionally, It is important to mention that there is no actual application being stored in the \solid{} pod, the app itself is a React Component that is re-rendered from scratch based on the \lpa{} configuration that is loaded from the storage. 
 
-The \lpa{} platform has a process called \textit{Application data preparation workflow}. It consist of four steps during which a user of platform provides data sources to visualize and if successfull, the \lpa{} redirects him to a \textit{Create Application} webpage. At this point the platform assembles a visualizer configuration object in memory until user provides a title for his application and decides to publish it. The diagram on \autoref{chap:num_1} demonstrates the user interface component on \textit{Create Application} that consist of a textfield and two buttons:
+The \lpa{} platform has a process called \textit{Application data preparation workflow}. It consists of four steps during which a user of the platform provides data sources to visualize, and if successful, the \lpa{} redirects him to a \textit{Create Application} webpage. At this point, the platform assembles a visualizer configuration object in memory until the user provides a title for his application and decides to publish it. The diagram on \autoref{chap:num_1} demonstrates the user interface component on \textit{Create Application} that consist of a text field and two buttons:
 \begin{itemize}
-	\item \textit{Publish} a button that invokes a chain of methods that parse the prepared visualizer object into \texttt{text/turtle} and uploads the file into his \solid{} POD.
-	\item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the \texttt{HTML} \texttt{iframe} to incorporate the visualizer into a webpage.
+    \item \textit{Publish} a button that invokes a chain of methods that parse the prepared visualizer object into \texttt{text/turtle} and uploads the file into his \solid{} POD.
+    \item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the \texttt{HTML} \texttt{iframe} to incorporate the visualizer into a webpage.
 \end{itemize}
 
 \begin{figure}[h]
@@ -668,7 +668,7 @@ The resulting \lpa{} configuration uploaded to solid with the method from listin
 \label{lst:lpapp_configuration_example}
 \end{listing}
 
-As the last step of creation and publishing the \lpa{} application, the popup at \autoref{fig:lpapp_configuration_example} is presented indicating the successful publishing of the application. 
+As the last step of creating and publishing the \lpa{} application, the popup at \autoref{fig:lpapp_configuration_example} is presented, indicating the successful publishing of the application. 
 
 \begin{figure}[h]
 \centering
@@ -735,7 +735,7 @@ patchFileWithQuery = async (url, query) => {
 \label{fig:lpa_rename_visualzer}
 \end{figure}
 
-On the frontend side the rename is invoked by pressing the \textit{Rename} button from \textit{Application Control and Setup} webpage. User is presented with a simple popup dialog demonstrated on \autoref{fig:lpa_rename_visualzer}, where he gets an option to choose the new title of his application. This invokes the execution of \texttt{SPARQL} query mentioned earlier.
+On the frontend side, the rename is invoked by pressing the \textit{Rename} button from the \textit{Application Control and Setup} webpage. The user is presented with a simple popup dialog demonstrated on \autoref{fig:lpa_rename_visualzer}, where he gets an option to choose the new title of his application. This invokes the execution of the \texttt{SPARQL} query mentioned earlier.
 
 \subsubsection{Deleting application}
 
@@ -805,7 +805,7 @@ sparqlQuery += `
 \label{lst:lpapp_sample_set_filter_sparql}
 \end{listing}
 
-One of the additional features implemented within the bounds of that requirements is ability to reflect the applied changes in any field of the application configuration RDF file using socket listeners. In other words, if user is editing filters on his visualizer and some other user is looking at his visualizer on some webpage where it is published, he will see the changes being applied in real time. This is implemented using the \texttt{rdflib.js} library that is accessed via \lpas{} package. The listing \autoref{lst:lpap_add_listeners_function} demonstrates a simple utility function available at \textit{StorageBackend} and it is invoked when application configuration is being fetched for the first time. 
+One of the additional features implemented within the bounds of that requirement is the ability to reflect the applied changes in any field of the application configuration RDF file using socket listeners. In other words, if a user is editing filters on his visualizer and some other user is looking at his visualizer on some webpage where it is published, he will see the changes being applied in real-time. This is implemented using the \texttt{rdflib.js} library that is accessed via \lpas{} package. The listing \autoref{lst:lpap_add_listeners_function} demonstrates a simple utility function available at \textit{StorageBackend} and it is invoked when application configuration is being fetched for the first time. 
 
 
 \begin{listing}[H]    
@@ -837,7 +837,7 @@ Since the description in \autoref{sssec:storage_control_panel_implementation} al
 
 \subsection{Visualizer Access Control}
 
-The Visualizer Access Control requirement defines how the creator of an application can control public access to visualizer or share it with only a specified set of contacts. From the \lpas{} standpoint, this implies controlling the \texttt{ACL} files of individual \lpa{} configurations expressed in RDF.
+The Visualizer, Access Control requirement, defines how the creator of an application can control public access to visualizer or share it with only a specified set of contacts. From the \lpas{} standpoint, this implies controlling the \texttt{ACL} files of individual \lpa{} configurations expressed in RDF.
 
 \begin{figure}[h]
 \centering
@@ -855,7 +855,7 @@ The implementation of \textit{AccessControlManager} abstraction in \autoref{fig:
 
 \subsubsection{Collaborative sharing}
 
-Collaborative sharing allows users of \lpa{} platform to share their visualizers with other users of the platform. The sharing process implementation is inspired by LinkedData Notifications specification \TODO{cite here}, and involves generation of an invitation file that send send to recipients inbox. The \autoref{fig:lpas_sharing_application} demonstrates the process of sending an invitation in detail.
+Collaborative sharing allows users of \lpa{} platform to share their visualizers with other users of the platform. The sharing process implementation is inspired by LinkedData Notifications specification \TODO{cite here} and involves the generation of an invitation file that send to the recipients inbox. The \autoref{fig:lpas_sharing_application} demonstrates the process of submitting an invitation in detail.
 
 \begin{figure}[h]
 \centering
@@ -866,11 +866,11 @@ Collaborative sharing allows users of \lpa{} platform to share their visualizers
   
 The steps can be described as follows:
 \begin{enumerate}
-	\item Firstly, the \textit{sendInvitation()} function is invoked from \textit{StorageAccessControlDialog} React Component, specifically when users chooses his available list of contacts and presses submit invitation button.
-	\item As a next step, \textit{StorageToolbox} redirects the request to lower-level \textit{StorageBackend} class.
-	\item The \textit{StorageBackend} class generates the invitation RDF in JSON-LD format using \texttt{rdflib} library from \lpas{} package.
-	\item The \textit{StorageBackend} class sends the invitation file to recepients inbox folder using \textit{FileManager} abstraction from \lpas{} package. The exact inbox path is known by parsing the recipient's profile card associated with his WebID.
-	\item Asyncronous response is returned of the operations is propagated back to \textit{StorageAccessControlDialog} for further processing. 
+    \item Firstly, the \textit{sendInvitation()} function is invoked from \textit{StorageAccessControlDialog} React Component, specifically when users chooses his available list of contacts and presses submit invitation button.
+    \item As a next step, \textit{StorageToolbox} redirects the request to lower-level \textit{StorageBackend} class.
+    \item The \textit{StorageBackend} class generates the invitation RDF in JSON-LD format using \texttt{rdflib} library from \lpas{} package.
+    \item The \textit{StorageBackend} class sends the invitation file to recepients inbox folder using \textit{FileManager} abstraction from \lpas{} package. The exact inbox path is known by parsing the recipient's profile card associated with his WebID.
+    \item Asyncronous response is returned of the operations is propagated back to \textit{StorageAccessControlDialog} for further processing. 
 \end{enumerate}
  
 \begin{figure}[h]
@@ -881,7 +881,7 @@ The steps can be described as follows:
 \end{figure}
   
  
-It is important to note that recepient is assumed to be a user of \lpa{} platform. Once invitation is send, whenever recepient opens the platform, the listener inside \textit{AppRouter} class will check the inbox for new invitations and display new invitations in inbox popup demonstrated on \autoref{fig:lpa_inbox_with_invitations}. If user \textit{Accepts} the invitation, the invitation JSON-LD file is transformed into a shared configuration file by extracting uri to an application and placing it under a folder named \textit{sharedApplications} in the root storage folder and a response notification is send back to the sender. Once sender receives the \textit{Accept} notification, it sets the \textit{READ} and \textit{WRITE} access to the application configuration for the recipient. If user \textit{Declines} the invitation, the invitation is simply deleted from the inbox without any further processing.
+It is important to note that the recipient is assumed to be a user of \lpa{} platform. Once invitation is send, whenever recipient opens the platform, the listener inside \textit{AppRouter} class will check the inbox for new invitations and display new invitations in inbox popup demonstrated on \autoref{fig:lpa_inbox_with_invitations}. If user \textit{Accepts} the invitation, the invitation JSON-LD file is transformed into a shared configuration file by extracting URI to an application and placing it under a folder named \textit{sharedApplications} in the root storage folder and a response notification is sent back to the sender. Once sender receives the \textit{Accept} notification, it sets the \textit{READ} and \textit{WRITE} access to the application configuration for the recipient. If user \textit{Declines} the invitation, the invitation is deleted from the inbox without any further processing.
 
 \begin{figure}[h]
 \centering
