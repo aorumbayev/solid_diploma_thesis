@@ -365,7 +365,7 @@ The initial configuration or startup guide to \textit{Ontology} consist of the f
 To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host applications. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available at \url{http://w3id.org/def/lpapps}. 
 
 \section{Storage Frontend}
-\label{ssec:storage_frontend_implementation}
+\label{sssec:lpas_storage_frontend_implementation}
 
 The following section will continue the \autoref{ssec:lpas_storage_component_design} by providing the details on implementation of individual components interacting with \solid{} POD. 
 
@@ -587,12 +587,12 @@ The \textit{logout} functionality is available under several components in \lpa{
 \minipage{0.5\textwidth}
   \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_user_profile_page.png}}
   \caption{The User Profile webpage with options to reset or logout from \solid{} provider.}
-  \label{fig:solid_login_webpage}
+  \label{fig:solid_user_profile_login_webpage}
 \endminipage\hfill
 \minipage{0.4\textwidth}
   \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_user_profile_page_logout.png}}
   \caption{The global control toolbar of \lpa{} platform. The logout button allows to quickly logout from authenticated \solid{} provider.}
-  \label{fig:solid_register_webpage}
+  \label{fig:solid_toolbar_logout}
 \endminipage\hfill
 \end{figure}
 
@@ -610,7 +610,7 @@ The \lpa{} platform has a process called \textit{Application data preparation wo
 \centering
 \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_create_application_page.png}}
 \caption{A part of \textit{Create Application} page that invokes creation and publishing of an application.}
-\label{fig:storage_dashboard_implementation_diagram}
+\label{fig:create_app_implementation_diagram}
 \end{figure}
 
 A method source code demonstrated on \autoref{lst:save_app_to_solid_chunk} is invoked by \textit{CreateVisualizerPage} and its underlying sub components. As the first step, it simply checks whether the \texttt{webId} is provided. Afterwards, the \texttt{applicationConfigurationObject} is assembled which is a JavaScript \textit{object} with fields corresponding to \lpas{} Ontology. When passed into \textit{StorageBackend} the object is parsed into an \texttt{rdflib} graph, serialized into \texttt{text/turtle} and uploaded into \solid{} using \lpas{} package.
@@ -677,7 +677,7 @@ The resulting \lpa{} configuration uploaded to solid with the method from listin
 \label{lst:lpapp_configuration_example}
 \end{listing}
 
-As the last step of creating and publishing the \lpa{} application, the popup at \autoref{fig:lpapp_configuration_example} is presented, indicating the successful publishing of the application. 
+As the last step of creating and publishing the \lpa{} application, the popup at \autoref{fig:lpa_published_app_popup} is presented, indicating the successful publishing of the application. 
 
 \begin{figure}[h]
 \centering
@@ -774,7 +774,7 @@ The ability to modify the filters on a published visualizer is another important
 \centering
 \fcolorbox{black}{white}{\includegraphics[width=0.5\linewidth]{lpa_filters_ui.png}}
 \caption{A user interface components to interact with filters available for a visualizer.}
-\label{fig:lpa_rename_visualzer}
+\label{fig:lpa_filters_interactions}
 \end{figure}
 
 
@@ -855,7 +855,7 @@ The Visualizer, Access Control requirement, defines how the creator of an applic
 \label{fig:lpa_access_control_setup}
 \end{figure}
 
-The implementation of \textit{AccessControlManager} abstraction in \autoref{fig:high-level-arch} is the essential building block that was used to implement a set of React Components to allow modifying access control privileges of published visualizers. The \autoref{fig:lpa_access_control_setup} demonstrate an final render of a React Component that is presented to user when he clicks on \texttt{Access Control} drop down item on \textit{Application Control and Setup} webpage. The component is implemented in \textit{StorageAccessControlDialog.jsx} file which is a simple stateful React Component. The main elements of that popup can be described as follows:
+The implementation of \textit{AccessControlManager} abstraction in \autoref{sssec:access_control_manager_implementation} is the essential building block that was used to implement a set of React Components to allow modifying access control privileges of published visualizers. The \autoref{fig:lpa_access_control_setup} demonstrate an final render of a React Component that is presented to user when he clicks on \texttt{Access Control} drop down item on \textit{Application Control and Setup} webpage. The component is implemented in \textit{StorageAccessControlDialog.jsx} file which is a simple stateful React Component. The main elements of that popup can be described as follows:
 \begin{itemize}
     \item \textit{Public access} switch, this element controls the default public access to a published application. By default, \lpa{} sets the \textit{READ} public access so that anyone can access the published application by default. However, the user has an option to toggle the control element and disable default public visibility. 
     \item \textit{List of collaborators}, this element lists the contacts knows to user's \textit{WebID}. The querying of knows contacts is performed using \texttt{rdflib} library accessed via \lpas{} package. 
@@ -899,7 +899,7 @@ It is important to note that the recipient is assumed to be a user of \lpa{} pla
 \label{fig:lpa_shared_visualizer_card}
 \end{figure}
 
-The \autoref{chap:num_1} demonstrates the shared application appearing in the shared applications storage dashboard of the recipient. In addition to that, the listing on \autoref{lpa_example_invitation_json_ld} demonstrates the example of the generated invitation being send to recipient in JSON-LD format using \textit{ActivityStreams} vocabulary. 
+The \autoref{chap:num_1} demonstrates the shared application appearing in the shared applications storage dashboard of the recipient. In addition to that, the listing on \autoref{lst:lpa_example_invitation_json_ld} demonstrates the example of the generated invitation being send to recipient in JSON-LD format using \textit{ActivityStreams} vocabulary. 
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{json}
@@ -923,10 +923,10 @@ The \autoref{chap:num_1} demonstrates the shared application appearing in the sh
 
 The collaborative aspect is basic and only allows the recipient to rename the title of the application and modify and persist the selection of available filters. The changes are reflected in real-time using socket connection to \solid{} server as initially described in \autoref{ssssec:updating_filters_implementation}.
 
-To sum up, the following section iterated over each functional requirement stated by \lpa{} and demonstrated the detailed description of implementation to comply with those requirements. The section also continued the storage-related React Components implementation details provided in \autoref{sssec:storage_frontend_implementation} and demonstrated finalized renders of those components that closely follow the initial mocks designed in \autoref{chap:num_4}. 
+To sum up, the following section iterated over each functional requirement stated by \lpa{} and demonstrated the detailed description of implementation to comply with those requirements. The section also continued the storage-related React Components implementation details provided in \autoref{sssec:lpas_storage_frontend_implementation} and demonstrated finalized renders of those components that closely follow the initial mocks designed in \autoref{chap:num_4}. 
 
 \section{Implemented non-functional requirements}
-\label{ssec:non_functional_requirements}
+\label{ssec:non_functional_requirements_implementation}
 
 The section provides a general overview of implementation of non-functional requirements stated in \autoref{ssec:non_functional_requirements}. Due to the majority of requirements being covered simply by the core functionality of the \solid{} project itself the implementation details of individual requirements are less descriptive than descriptions in \autoref{ssec:overview_of_implemented_requirements}.
 
