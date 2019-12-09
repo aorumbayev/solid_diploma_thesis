@@ -26,12 +26,15 @@
 % \setlength\headheight{0mm}
 % \let\openright=\cleardoublepage
 
+\usepackage{xcolor}
+
 %% Generate PDF/A-2u
 \usepackage[a-2u]{pdfx}
 
 %% Character encoding: usually latin2, cp1250 or utf8:
 \usepackage[utf8]{inputenc}
 
+\usepackage[english]{babel}
 %% Prefer Latin Modern fonts
 \usepackage{lmodern}
 
@@ -52,10 +55,8 @@
 \usepackage{booktabs}       % improved horizontal lines in tables
 \usepackage{paralist}       % improved enumerate and itemize
 \usepackage{xspace}
-\usepackage{xcolor}
 \usepackage{soul}
 \usepackage{listings}
-\usepackage[cache=false]{minted}
 \usepackage{tcolorbox}
 \usepackage{etoolbox}
 
@@ -66,6 +67,7 @@
 \usepackage[normalem]{ulem} % tables
 
 
+\usepackage[cache=false]{minted}
 %%JaKl comment macros - to be removed when cleaning the thesis
 \newcommand{\TODO}[1]{{\color{red}{\textbf{TODO: {#1}}\xspace}}}
 \newcommand{\CONSIDER}[1]{{\color{blue}{\textbf{CONSIDER: {#1}}\xspace}}}
