@@ -24,7 +24,7 @@ The Resource Description Framework is a language for representing resources in W
 Consider the following example on listing \autoref{lst:intro_triple_example}. A \textit{subject} is a person identified by a URI, a \textit{predicate} identified by a URI describes the kind of relationship and lastly the \textit{object} is a resource similar to \textit{subject} and identified by a URI. In other words, the example demonstrating a sentence \textit{Person A knows Person B} expressed in RDF triple notation. A typical RDF document consists of many triple statements, together they can be represented as a directed \textit{graph}, where relation is presented as a directed edge between two vertices. The term graph will be often referred in \autoref{chap:num_4}  and \autoref{chap:num_5}.
  
 \begin{listing}[H]    
-\begin{minted}[breaklines]{text}
+\begin{minted}[breaklines,frame=single,framerule=1pt]{text}
 http://example.name#Altynbek http://xmlns.com/foaf/0.1/knows http://example.name#Tim
 \end{minted}
 \caption{An example of an RDF expressed in triple notation.} 
@@ -50,7 +50,7 @@ As mentioned at the beginning of \autoref{sssec:semantic_web_intro}, SPARQL is y
 An example of listing \autoref{lst:intro_triple_example} demonstrates a sample SPARQL query that retrieves the name and email of the person. The first line on the example is a declaration of prefixes for abbreviating URIs, and it uses the FOAF vocabulary that we already demonstrated earlier on \autoref{lst:intro_triple_example}. A \textit{SELECT} keyword is a form of a query used to extract raw values from a SPARQL endpoint. The \textit{WHERE} clause provides a generic graph pattern to match against the data graph. The variable name \texttt{?person} representing the subject is chosen to improve readability. On the contrary, the variable name can be any arbitrary string. The result of the query is rows with raw values representing name and email of the person. Assuming that a person has multiple email addresses, the response of the query can contain multiple rows representing unique names per each of the email addresses. 
 
 \begin{listing}[H]    
-\begin{minted}[breaklines]{sparql}
+\begin{minted}[breaklines,frame=single,framerule=1pt]{sparql}
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name 
        ?email
