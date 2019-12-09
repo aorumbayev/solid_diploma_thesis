@@ -1,7 +1,7 @@
 \chapter{Implementation}
 \label{chap:num_5}
 
-The following chapter is going to cover the implementation of \lpas{} package, the frontend components as well as the ontology. The first part of the chapter dedicated to the implementation of the package will provide a detailed overview of the decisions made on the development stack, the main challenges invoked in refactoring the original \lpa{} codebase, and making the \solid{} related functionality more generic. The frontend components section will dive deeper into the implementation of the mocks provided in \autoref{chap:num_4}, main decisions, and challenges while developing under React. The ontology section \TODO{link} will describe how the designed \lpas{} vocabulary was converted into a \texttt{.owl} file, converted into \texttt{.jsonld} Schema and later integrated into the \lpa{} frontend. Lastly, an overview of the implementation results will be presented by reiterating over the defined \lpa{} requirements and how they were satisfied by the implementation.
+The following chapter is going to cover the implementation of \lpas{} package, the frontend components as well as the ontology. The first part of the chapter dedicated to the implementation of the package will provide a detailed overview of the decisions made on the development stack, the main challenges invoked in refactoring the original \lpa{} codebase, and making the \solid{} related functionality more generic. The frontend components section will dive deeper into the implementation of the mocks provided in \autoref{chap:num_4}, main decisions, and challenges while developing under React. The ontology \autoref{ssec:storage_ontology_implementation} will describe how the designed \lpas{} vocabulary was converted into a \texttt{.owl} file, converted into \texttt{.jsonld} Schema and later integrated into the \lpa{} frontend. Lastly, an overview of the implementation results will be presented by reiterating over the defined \lpa{} requirements and how they were satisfied by the implementation.
  
 \section{Storage Package}
 
@@ -34,7 +34,8 @@ As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, inte
 
 The structure of the \lpas{} package is simple and straightforward and can be demonstrated as follows:
 
-\begin{lstlisting}
+\begin{listing}[H]    
+\begin{minted}[breaklines]{text}
 - build       # Transpiled JS code    
 - markdown    # Markdown assets
 - src         # Root project folder
@@ -44,7 +45,10 @@ The structure of the \lpas{} package is simple and straightforward and can be de
   - types     # Custom user-defined type definitions
 - docs        # Static html with library documentation
 _ ...         # Readme and various configuration files
-\end{lstlisting}
+\end{minted}
+\caption{\lpas{} package folder structure description.} 
+\label{lst:lpas_folder_structure}
+\end{listing}
 
 The proceeding sections will describe the individual abstractions mentioned in \autoref{ssec:storage} section.
 
@@ -87,7 +91,9 @@ Referring back to \autoref{fig:lps_authentication_sequence_diagram}, there are s
 \end{itemize}
 
 The usage of both \textit{currentSession()} and \textit{login()} methods from \textit{AuthenticationManager} can be observed below:
-\begin{lstlisting}[language=JavaScript]
+
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
 login = async (idp, callbackUri) => {
     const session = await AuthenticationManager.currentSession();
     if (!session)
@@ -99,15 +105,12 @@ login = async (idp, callbackUri) => {
       return session;
     }
 };
-\end{lstlisting}
+\end{minted}
+\caption{An implementation of \textit{login()} wrapper.} 
+\label{lst:lpas_login_wrapper}
+\end{listing}
 
 To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
-
-
-%\subsubsection{Creating resources}
-%\subsubsection{Reading resources}
-%\subsubsection{Renaming resources}
-%\subsubsection{Deleting resources}
 
 \subsection{File Manager}
 \label{sssec:file_manager_implementation}
@@ -123,8 +126,6 @@ In this subsection, we will continue on the \textit{FileManager} abstraction des
 
 Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstraction is implemented as a TypeScript class providing a set of public static methods. It is responsible for all core \textit{CRUD} operations with \solid{} resources. It is important to note that all \texttt{HTTP} requests to \solid{} server are made using the \textit{fetch()} method invoked via \textit{AuthenticationManager}. In other words \textit{FileManager} relies on \textit{AuthenticationManager} when performing \texttt{HTTP} requests. To follow up a class representation on \autoref{fig:lpas_filemanager_implementation_class}, the methods can be described as follows:
 \begin{itemize}
-%    \item \textit{updateACL}, a function is responsible for applying changes to existing \texttt{ACL} files. For instance, changes access privileges for a specific user, or adding a new member to access a resource by his WebID. This function is closely related to \textit{Access Control Manager}
-%    \item \textit{createACL}, a function is responsible for creating a new \texttt{Acce}
     \item \textit{createResource()}, a function is responsible for creating new \solid{} resources. 
     \item \textit{deleteFolderContents()}, a function is mainly used for cleaning up the content of a particular folder. It iterates the contents and recursively deletes underlying folders and files.
     \item \textit{deleteResource()}, a function responsible for deleting individual resources from a \solid{} POD. Following the sequence flow presented on \autoref{fig:lps_rename_resource}, depending on the type of the resource it will either remove it directly or attempt to clean it recursively if the resource is an \textit{LDP-BC}.
@@ -153,12 +154,16 @@ One of the challenges when \lpa{} frontend initially contained the code for \sol
     \item \textit{SolidResource}, an interface required for each object representing the \solid{} resource to be conforming to. 
 \end{enumerate}
 
-\begin{lstlisting}[label={lst:lpas_resource_type_enum},language=javascript]
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
 enum SolidResourceType {
   Folder = '<http://www.w3.org/ns/ldp#BasicContainer>; rel="type"',
   File = '<http://www.w3.org/ns/ldp#Resource>; rel="type"'
 }
-\end{lstlisting}
+\end{minted}
+\caption{Definition of \textit{SolidResourceType} enumerator.} 
+\label{lst:lpas_resource_type_enum}
+\end{listing}
 
 The \textit{SolidResource} interface consist of the following:
 \begin{itemize}
@@ -192,8 +197,9 @@ The \textit{FileManager} class is extensively used throughout the whole \lpa{} f
 
 The example below demonstrated a simple use case on how \lpas{} package can be used to create a \solid{} resource using the \textit{FileManager} abstraction. 
 
-\begin{lstlisting}[language=javascript]
-const configurationsFolderConfig: ResourceConfig = new ResourceConfig(
+\begin{listing}[H]    
+\begin{minted}[breaklines]{javascript}
+const folderConfig: ResourceConfig = new ResourceConfig(
         {
           path: rootResourceConfig.fullPath(),
           title: 'configurations',
@@ -202,8 +208,11 @@ const configurationsFolderConfig: ResourceConfig = new ResourceConfig(
         webId
       );
       
-const response = await StorageFileManager.createResource(configurationsFolderConfig)
-\end{lstlisting}
+const response = await StorageFileManager.createResource(folderConfig)
+\end{minted}
+\caption{An example usage of \textit{FileManager} abstraction to create a folder in \solid{} pod.} 
+\label{lst:resource_generation_example}
+\end{listing}
 
 In this particular case, a folder resource \textit{ResourceConfig} class instance is being created named \textit{configurationsFolderConfig}. Afterwards it is being passed to a public static \textit{createResource()} method that creates the resource as described on \autoref{fig:lpas_create_resource}. This concludes the description of the implementation of \textit{FileManager} abstraction. The proceeding section is dedicated to an \textit{AccessControlManager} abstraction, following up the first introduction in the \autoref{sssec:access_control_manager_arch}.
 
@@ -300,6 +309,7 @@ In this case, a folder resource is expressed as a \textit{ResourceConfig} class 
 To sum up, the section provided an overview of three main abstractions inside \lpas{} package. The \textit{AuthenticationManager} used as a main class to deal with WebID based authentications for \lpa{} platform. The \textit{FileManager}, responsible for managing all \texttt{HTTP} requests to manipulate resources in a \solid{} resource. \textit{AccessControlManager} abstraction that significantly simplified the interactions with \solid{} inside \lpa{} frontend significantly and gave an ability to implement more advanced access control related features to configure the published \lpa{} visualizers. This will be demonstrated in detail in \autoref{sssec:lpas_storage_frontend_implementation}. The consequitive section will describe the \lpas{} Ontology originally described in \autoref{fig:lps_acl_update_flow}, its implementation and hosting.
 
 \section{Hosting Storage Ontology}
+\label{ssec:storage_ontology_implementation}
 
 This section is going to continue the details on implementation of the \lpas{} ontology, firstly described in \autoref{ssec:lpas_application_ontology_arch}. As mentioned earlier, the intent to design the ontology was to utilize the benefits of \solid{} better and the ways in which every entity is represented as an RDF resource. The ontology itself was implemented using a set of open-source tools that will be described in the first part of this section. 
 
@@ -465,7 +475,7 @@ The User Interface strictly follows initial mock design demonstrated at \autoref
 
 \subsubsection{Overview of states and methods}
 
-As general details on the structure of the implementation are defined now, let us dive deeper into the description main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
+As general details on the structure of the implementation are defined now, let us dive deeper into the description of main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
 \begin{itemize}
     \item \textit{webIdFieldValue}, a \texttt{string} value holding input at the \textit{textfield} for supplying WebID value.
     \item \textit{withWebIdStatus}, a \texttt{boolean} value representing the current input state and whether is chosen to use available providers or entered his WebID manually.
@@ -917,4 +927,31 @@ The collaborative aspect is basic and only allows the recipient to rename the ti
 To sum up, the following section iterated over each functional requirement stated by \lpa{} and demonstrated the detailed description of implementation to comply with those requirements. The section also continued the storage-related React Components implementation details provided in \autoref{sssec:storage_frontend_implementation} and demonstrated finalized renders of those components that closely follow the initial mocks designed in \autoref{chap:num_4}. 
 
 \section{Implemented non-functional requirements}
-\label{ssec:overview_of_implemented_requirements}
+\label{ssec:non_functional_requirements}
+
+The section provides a general overview of implementation of non-functional requirements stated in \autoref{ssec:non_functional_requirements}. Due to the majority of requirements being covered simply by the core functionality of the \solid{} project itself the implementation details of individual requirements are less descriptive than descriptions in \autoref{ssec:overview_of_implemented_requirements}.
+
+\subsection{Compatibility with latest tools}
+
+The implemented solution consists from three parts:
+\begin{itemize}
+    \item The \lpas{} package, an \texttt{npm} package containing the generic abstractions performing low-level interactions with instances of \solid{} servers. Relies on \texttt{rdflib}, \texttt{solid-auth-client} and \texttt{solid-auth-cli} libraries. All third party packages are pinned, stable and indirectly unit tested, more details on testing is provided in \autoref{chap:num_7}. 
+    \item The Storage React components, a set of frontend components written in ES6 inside the \lpa{} package. No additional third party packages are introduces to \lpa{} with these components, except for \lpas{} package. 
+    \item The \lpas{} ontology, a vocabulary designed with \texttt{Protégé} and published with \texttt{Ontoology}. Used in \lpa{} by accessing its public hosted instance, therefore no additional third party packages are introduced.
+\end{itemize}
+
+\subsection{Clean APIs and libraries}
+
+The whole intent of creating the \lpas{} package was to refactor and redesign the abstractions interacting with solid inside \lpa{} frontend codebase. Therefore, the final refactored implementation is easier to maintain and use by LPA developers due to usage of TypeScript, extensive automated testing coverage covered in \autoref{chap:num_7}, and documentation included in \autoref{chap:num_8}.
+
+\subsection{Continuous Integration and Delivery}
+
+The \lpas{} package is located in a separate GitHub repository, has an automated continuous delivery pipeline invoking unit test, code formatting, and linting. The continuous delivery aspect publishes new \texttt{npm} versions in is semi-automated manner. The frontend storage components in \lpa{} are incorporated into frontend codebase. Hence they are validated using the \lpa{} CI and CD pipelines. Some improvements into \lpa{} testing pipelines were introduced, and they are described in detail in \autoref{chap:num_7}.
+
+\subsection{Easy integration with \lpa{}}
+
+The \lpas{} package is distributed via \texttt{npm}, and seamlessly integrated into \lpa{} using the package management software. The frontend storage components are implemented inside the frontend codebase. However, they also maintain a consisted structure that improves code readability and defines the logical separation between functionalities of \lpa{} and \lpas{}.
+
+\subsection{Decentralized storage}
+
+The solution for this non-functional requirement is covered by \solid{} specification. Since \solid{} servers are decentralized by design, it means that the \textit{AuthenticationManager} from \lpas{} package allows the users of \lpa{} to authenticate with any arbitrary instance of their private \solid{} server instances or instances from third-party \solid{} providers. The \textit{FileManager} abstraction also allows users to move the created \lpa{} configurations between \solid{} PODs within a \solid{} server instance or between different instances of compatible \solid{} servers.
