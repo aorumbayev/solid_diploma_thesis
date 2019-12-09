@@ -24,7 +24,7 @@ The main development stack consisted of the following technologies:
 
 \section{Unit testing}
 
-Every class in \lpas{} package was unit tested using the ava.js library. The convention used required in-place creation of a file with ava.js tests definitions named identical to a \texttt{.ts} file to be tested but with \texttt{.spec.} prefix appended before the file extension. The listing on \autoref{lst:unit_testing_create_resource} demonstrates the example serial ava.js test executed in order. The asynchronous \textit{createResource} can be reused in multiple ava.js tests improving code reusability while writing new tests.
+Every class in \lpas{} package was unit tested using the ava.js library. The convention used required in-place creation of a file with ava.js tests definitions named identical to a \texttt{.ts} file to be tested but with \texttt{.spec.} prefix appended before the file extension. The code on \autoref{lst:unit_testing_create_resource} demonstrates the example serial ava.js test executed in order. The asynchronous \textit{createResource} can be reused in multiple ava.js tests improving code reusability while writing new tests.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}

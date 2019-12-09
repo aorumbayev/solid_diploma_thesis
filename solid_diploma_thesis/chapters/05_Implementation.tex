@@ -645,7 +645,7 @@ async saveAppToSolid(
 \label{lst:save_app_to_solid_chunk}
 \end{listing}
 
-The resulting \lpa{} configuration uploaded to solid with the method from listing \autoref{lst:save_app_to_solid_chunk} is demonstrated on listing \autoref{lst:lpapp_configuration_example}. The fields with unique identifiers were replaced by sample text to improve readability of the example. 
+The resulting \lpa{} configuration uploaded to solid with the method from \autoref{lst:save_app_to_solid_chunk} is demonstrated on \autoref{lst:lpapp_configuration_example}. The fields with unique identifiers were replaced by sample text to improve readability of the example. 
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{turtle}
@@ -713,7 +713,7 @@ const sparqlQuery = `
 \label{lst:lpapp_sample_rename_app_sparql}
 \end{listing}
 
-Example on listing \autoref{lst:lpapp_sample_rename_app_sparql} demonstrate the \texttt{SPARQL} query used for renaming the title of \lpa{} configuration. The source code on listing \autoref{lst:lpapp_patch_file_with_query} demonstrate how the query is constructed and submitted to \solid{} using a class called \textit{StorageSparqlClient}.
+Example on \autoref{lst:lpapp_sample_rename_app_sparql} demonstrate the \texttt{SPARQL} query used for renaming the title of \lpa{} configuration. The source code on \autoref{lst:lpapp_patch_file_with_query} demonstrate how the query is constructed and submitted to \solid{} using a class called \textit{StorageSparqlClient}.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -778,7 +778,7 @@ The ability to modify the filters on a published visualizer is another important
 \end{figure}
 
 
-The implementation of methods processing these operations are done in \textit{StorageToolbox}, \textit{StorageBackend} and \textit{StorageSparqlClient} classes, and similar to \textit{Renaming Application} procedure, the core logic simply constructs the required \texttt{SPARQL} queries and executes them using \texttt{HTTP} \texttt{PATCH} request. Example on listing \autoref{lst:lpapp_sample_set_filter_sparql} demonstrates the construction of \texttt{SPARQL} query that processes multiple filter selections in a single \texttt{PATCH} call.  
+The implementation of methods processing these operations are done in \textit{StorageToolbox}, \textit{StorageBackend} and \textit{StorageSparqlClient} classes, and similar to \textit{Renaming Application} procedure, the core logic simply constructs the required \texttt{SPARQL} queries and executes them using \texttt{HTTP} \texttt{PATCH} request. Example on \autoref{lst:lpapp_sample_set_filter_sparql} demonstrates the construction of \texttt{SPARQL} query that processes multiple filter selections in a single \texttt{PATCH} call.  
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -814,7 +814,7 @@ sparqlQuery += `
 \label{lst:lpapp_sample_set_filter_sparql}
 \end{listing}
 
-One of the additional features implemented within the bounds of that requirement is the ability to reflect the applied changes in any field of the application configuration RDF file using socket listeners. In other words, if a user is editing filters on his visualizer and some other user is looking at his visualizer on some webpage where it is published, he will see the changes being applied in real-time. This is implemented using the \texttt{rdflib.js} library that is accessed via \lpas{} package. The listing \autoref{lst:lpap_add_listeners_function} demonstrates a simple utility function available at \textit{StorageBackend} and it is invoked when application configuration is being fetched for the first time. 
+One of the additional features implemented within the bounds of that requirement is the ability to reflect the applied changes in any field of the application configuration RDF file using socket listeners. In other words, if a user is editing filters on his visualizer and some other user is looking at his visualizer on some webpage where it is published, he will see the changes being applied in real-time. This is implemented using the \texttt{rdflib.js} library that is accessed via \lpas{} package. The \autoref{lst:lpap_add_listeners_function} demonstrates a simple utility function available at \textit{StorageBackend} and it is invoked when application configuration is being fetched for the first time. 
 
 
 \begin{listing}[H]    
@@ -899,7 +899,7 @@ It is important to note that the recipient is assumed to be a user of \lpa{} pla
 \label{fig:lpa_shared_visualizer_card}
 \end{figure}
 
-The \autoref{chap:num_1} demonstrates the shared application appearing in the shared applications storage dashboard of the recipient. In addition to that, the listing on \autoref{lst:lpa_example_invitation_json_ld} demonstrates the example of the generated invitation being send to recipient in JSON-LD format using \textit{ActivityStreams} vocabulary. 
+The \autoref{chap:num_1} demonstrates the shared application appearing in the shared applications storage dashboard of the recipient. In addition to that, the code on \autoref{lst:lpa_example_invitation_json_ld} demonstrates the example of the generated invitation being send to recipient in JSON-LD format using \textit{ActivityStreams} vocabulary. 
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{json}
