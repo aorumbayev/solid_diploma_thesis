@@ -5,18 +5,17 @@ The following chapter is going to cover the implementation of \lpas{} package, t
  
 \section{Storage Package}
 
-The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{}. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
+The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{} package. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
 
 \subsection{Preliminaries}
 
-As briefly mentioned earlier, there several main libraries used inside the \lpas{} package:
+As briefly mentioned earlier, there are several main libraries used inside the \lpas{} package:
 
 \begin{itemize}
     \item \texttt{rdflib} is a low-level RDF library, that mainly provides the functionality to Read and Write RDF in many popular formats, a querying store and an ability to use SPARQL queries.
-    \item \texttt{solid-auth-client}, a browser library that implements \solid{} specifications for providing authentication. This is the main library used to enable the authentication into \lpa{} platform.    
-%    Todo add ref for testing chapter
-    \item \texttt{ava.js}, is a simple JavaScript unit tests runner with TypeScript support. More on testing will be described in a Testing chapter. It is important to note that proper unit testing was one of the other major factors for splitting the \solid{} functionality into a separate package. Easier code maintainability, along with features of TypeScript, significantly improved test-driven development of the package. 
-    \item \texttt{istanbul.js}, a test coverage tool used along with \texttt{ava.js}. The library provides a convenient command-line interface that was used for improving Continuous Integration and Delivery jobs. More details on CI and CD are covered in the testing chapter.
+    \item \texttt{solid-auth-client}, a browser library that implements \solid{} specifications for providing authentication. This is the main library used to enable the authentication into \lpa{} platform. 
+    \item \texttt{ava.js}, is a simple JavaScript unit tests runner with TypeScript support. More on testing will be described in a Testing chapter. It is important to note that proper unit testing was one of the other major factors for splitting the \solid{} functionality into a separate package. Easier code maintainability, along with features of TypeScript, significantly improved test-driven development of the package. More details on CI and CD are covered in the \autoref{chap:num_7}.
+    \item \texttt{istanbul.js}, a test coverage tool used along with \texttt{ava.js}. The library provides a convenient command-line interface that was used for improving Continuous Integration and Delivery jobs. More details on CI and CD are covered in the \autoref{chap:num_7}.
 \end{itemize}
 
 Due to the complexity of the usage of the stated libraries, specifically \texttt{rdflib}, having an environment and a language that provides a fully-featured object-oriented programming and static type-checking would directly affect the code maintainability and usage. Hence, the codebase of \lpas{} was implemented using \texttt{TypeScript} \footnote{\url{https://www.typescriptlang.org}}. TypeScript is a strict syntactical superset of JavaScript that provides optional static typing and better object-oriented programming capabilities.  
@@ -28,7 +27,7 @@ Due to the complexity of the usage of the stated libraries, specifically \texttt
 \label{fig:lpas_implementation_transpilation_diagram}
 \end{figure}
 
-As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible Javascript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Webpack. The assets mainly consist of a set of media files such as \texttt{.png} and \texttt{.svg} files and a large \texttt{.js} file that contains the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
+As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible JavaScript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Webpack. The assets mainly consist of a set of media files such as \texttt{.png} and \texttt{.svg} files and a large \texttt{.js} file that contains the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
 
 \subsubsection{Project structure}
 
@@ -50,14 +49,14 @@ _ ...         # Readme and various configuration files
 \label{lst:lpas_folder_structure}
 \end{listing}
 
-The proceeding sections will describe the individual abstractions mentioned in \autoref{ssec:storage} section.
+The proceeding sections will describe the individual abstractions mentioned in \autoref{ssec:storage}.
 
 \subsection{Authentication Manager}
 \label{sssec:authentication_manager_implementation}
 
 This section will continue the architectural description of the Authentication manager described in \autoref{sssec:authentication_manager}, describe the implementation, and provide examples of how the abstraction is used inside \lpa{}.
 
-The \textit{AuthenticationManager} is a Singleton class, instantiated only once and utilised both in the package itself as well as being invoked from \lpa{} frontend codebase. The reason for the class being implemented as a singleton is due to the fact that it wraps the functionality of \texttt{solid-auth-client} library. Aside from providing the WebID authentication,  \texttt{solid-auth-client} implements a WebID OIDC specific \textit{fetch} functionality. The \textit{FETCH API} is originally a JavaScript API that provides an ability to send asynchronous \texttt{HTTP} calls. The implementation in \texttt{solid-auth-client}, is based on \texttt{isomorpic-fetch}, which is a third party framework that implements the \textit{Fetch API} both for browsers and node.js. Hence, the abstraction is used for:
+The \textit{AuthenticationManager} is a Singleton class, instantiated only once and utilized both in the package itself as well as being invoked from \lpa{} frontend codebase. The reason for the class being implemented as a singleton is due to the fact that it wraps the functionality of \texttt{solid-auth-client} library, and it provides a singleton instance as well. Aside from providing the WebID authentication,  \texttt{solid-auth-client} implements a WebID OIDC specific \textit{fetch} functionality. The \textit{FETCH API} is originally a JavaScript API that provides an ability to send asynchronous \texttt{HTTP} calls. The implementation in \texttt{solid-auth-client}, is based on \texttt{isomorpic-fetch}, which is a third party framework that implements the \textit{Fetch API} both for browsers and node.js. Hence, the abstraction is used for:
 \begin{itemize}
     \item Authentication, and ability to track the user session with callbacks. 
     \item Sending \texttt{HTTP} calls to \solid{} server.
@@ -110,7 +109,7 @@ login = async (idp, callbackUri) => {
 \label{lst:lpas_login_wrapper}
 \end{listing}
 
-To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} frontend. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
+To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} package. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
 
 \subsection{File Manager}
 \label{sssec:file_manager_implementation}
@@ -375,7 +374,7 @@ The following section will continue the \autoref{ssec:lpas_storage_component_des
 
 To simplify the understanding of this section, it is important to recap the conventions and specifics of \lpa{} frontend implementation by providing some extended details, as they were strictly taken into consideration while developing \lpas{} components inside the \lpa{} frontend codebase.
 
-As mentioned earlier in \TODO{add reference to introduction chapter}, the frontend provides a way for the user to interact with the \lpa{}. As demonstrated on the \autoref{fig:lpa_frontend_architecture}, the frontend uses Redux and React as a primary framework for building the components and managing states.
+As mentioned earlier in \autoref{sssec:lpa_preliminaries_component_overview}, the frontend provides a way for the user to interact with the \lpa{}. As demonstrated on the \autoref{fig:lpa_frontend_architecture}, the frontend uses Redux and React as a primary framework for building the components and managing states.
 
 \begin{figure}[h]
 \centering
