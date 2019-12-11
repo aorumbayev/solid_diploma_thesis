@@ -7,7 +7,7 @@ Aside from definitions of specific requirements, it is important to note that th
 \begin{itemize}
     \item \textit{Data journalists}, this category of actors are one of main target users of \lpa{} platform. They are defined as people familiar with, at least, basics of Semantic Web. They can provide Linked  Data sources to \lpa{} for further visualization and publishing of apps. They are also assumed to have an actual account in the \lpa{} platform.
     \item \textit{Lay users}, this is a second target category of users of \lpa{} platform. They do not have any prior experience with Semantic Web and in most cases, browse the published visualizers created by Data journalists. They are not obliged to have an actual account in the \lpa{} platform.
-    \item \textit{LPA Developers}, a developers implementing on \lpa{} platform codebase and main users of \lpas{} features, APIs and functionality to be developed. The majority of details in \autoref{chap:num_5} are focused on developing a developer-friendly software for this category of users.
+    \item \textit{\gls{LPA} Developers}, a developers implementing on \lpa{} platform codebase and main users of \lpas{} features, APIs and functionality to be developed. The majority of details in \autoref{chap:num_5} are focused on developing a developer-friendly software for this category of users.
 \end{itemize}
 
 \section{Functional requirements}
@@ -123,11 +123,11 @@ In addition to this, there is work done on supporting tools, such as Solid React
 
 \subsubsection{gold}
 
-\texttt{gold} is a reference Linked Data Platform server for the \solid{} platform. The implementation is written in Go, based on initial work done by William Waites [include reference].
+\texttt{gold} is a reference Linked Data Platform server for the \solid{} platform. The implementation is written in Go, based on initial work done by William Waites \cite{solid_gold_server}.
 
 \subsubsection{node-solid-server}
 
-Following solution is an implementation of a server based on \solid{} specifications written entirely in \texttt{node.js}.
+Following solution is an implementation of a server based on \solid{} specifications in Node.js \cite{node_solid_server}.
 One of the main advantages is that it could be launched as a \solid{} server on top of the local file-system. Interaction with server can be performed as follows:
 \begin{itemize}
 	\item Command line tool.

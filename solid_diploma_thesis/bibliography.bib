@@ -11,13 +11,28 @@
 %
 %  ===========================================================================
 
-@misc{world_wide_web_foundation,
-title = "30 years on, what's next #ForTheWeb?", 
-url =  "https://webfoundation.org/2019/03/web-birthday-30/", 
-journal = "World Wide Web Foundation"
+@ONLINE{www_foundation_intro,
+author = {Sebastian Ismael Garrido Simon},
+title = "30 years on, what's next \#ForTheWeb?",
+year = {2019},
+url = {https://webfoundation.org/2019/03/web-birthday-30/}
 }
 
-@TechReport{Speicher:15:LDP,
+@ONLINE{turtle,
+  author = {World Wide Web Consortium (W3C)},
+  title = {{RDF} 1.1 {T}urtle - {T}erse {RDF} {T}riple {L}anguage},
+  year = {2014},
+  url = {http://www.w3.org/TR/turtle/}
+}
+
+@ONLINE{ld,
+  author = {Heath, Tom and Linked Data Community},
+  title = {{L}inked {D}ata: {C}onnect {D}istributed {D}ata across the {W}eb},
+  year = {2013},
+  url = {http://linkeddata.org/}
+}
+
+@TechReport{lpd_specification,
   author      = "Steve Speicher and John Arwe and Ashok Malhotra",
   title       = "Linked Data Platform 1.0",
   month       = feb,
@@ -28,47 +43,108 @@ journal = "World Wide Web Foundation"
   institution = "W3C",
 }
 
-@misc{Solid:WAC, 
-title={solid/web-access-control-spec}, 
+@ONLINE{solid_wac_specification, 
+title={{Web Access Control (WAC)}}, 
 url={https://github.com/solid/web-access-control-spec}, 
-journal={GitHub}, 
-author={Solid}, 
-year={2019}, 
-month={Aug}}
+author={Solid},
+note = {Accessed: 2018-10-13}
+}
 
-@misc{Solid:OriginalPaper,
+@misc{solid_original_paper,
   title={Solid: A Platform for Decentralized Social Applications Based on Linked Data},
   author={Sambra, Andrei Vlad and Mansour, Essam and Hawke, Sandro and Zereba, Maged and Greco, Nicola and Ghanem, Abdurrahman and Zagidulin, Dmitri and Aboulnaga, Ashraf and Berners-Lee, Tim},
   year={2016}
 }
 
-@inproceedings{alobaid2015ontoology,
-  title={OnToology, a tool for collaborative development of ontologies.},
-  author={Alobaid, Ahmad and Garijo, Daniel and Poveda-Villal{\'o}n, Mar{\'\i}a and Santana-Perez, Idafen and Corcho, Oscar},
-  booktitle={ICBO},
-  year={2015}
+@inproceedings{solid_demo_paper,
+  author    = {Essam Mansour and
+               Andrei Vlad Sambra and
+               Sandro Hawke and
+               Maged Zereba and
+               Sarven Capadisli and
+               Abdurrahman Ghanem and
+               Ashraf Aboulnaga and
+               Tim Berners{-}Lee},
+  title     = {A Demonstration of the Solid Platform for Social Web Applications},
+  booktitle = {Proceedings of the 25th International Conference on World Wide Web,
+               {WWW} 2016, Montreal, Canada, April 11-15, 2016, Companion Volume},
+  pages     = {223--226},
+  year      = {2016},
+  crossref  = {DBLP:conf/www/2016c},
+  url       = {https://doi.org/10.1145/2872518.2890529},
+  doi       = {10.1145/2872518.2890529},
+  timestamp = {Tue, 06 Nov 2018 16:57:07 +0100},
+  biburl    = {https://dblp.org/rec/bib/conf/www/MansourSHZCGAB16},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@inproceedings{noy2003protege,
-  title={Prot{\'e}g{\'e}-2000: an open-source ontology-development and knowledge-acquisition environment.},
-  author={Noy, Natalya Fridman and Crub{\'e}zy, Monica and Fergerson, Ray W and Knublauch, Holger and Tu, Samson W and Vendetti, Jennifer and Musen, Mark A},
-  booktitle={AMIA Annual Symposium Proceedings},
-  volume={2003},
-  pages={953--953},
-  year={2003},
-  organization={American Medical Informatics Association}
+@ONLINE{solid_gold_server, 
+title={{A Reference Linked Data Platform server for the Solid platform}}, 
+url={https://github.com/linkeddata/gold}, 
+author={Read-Write Linked Data}, 
+year={2015}
 }
 
-@misc{erikras_2019, 
-title={erikras/ducks-modular-redux}, 
+@ONLINE{node_solid_server, 
+title={{Solid server in NodeJS}}, 
+url={https://github.com/solid/node-solid-server}, 
+author={Solid}, 
+year={2015}
+}
+
+@inproceedings{ontoology,
+  author    = {Ahmad Alobaid and
+               Daniel Garijo and
+               Mar{\'{\i}}a Poveda{-}Villal{\'{o}}n and
+               Idafen Santana{-}P{\'{e}}rez and
+               {\'{O}}scar Corcho},
+  title     = {OnToology, a tool for collaborative development of ontologies},
+  booktitle = {Proceedings of the International Conference on Biomedical Ontology,
+               {ICBO} 2015, Lisbon, Portugal, July 27-30, 2015},
+  year      = {2015},
+  crossref  = {DBLP:conf/icbo/2015},
+  url       = {http://ceur-ws.org/Vol-1515/demo3.pdf},
+  timestamp = {Tue, 28 May 2019 16:23:41 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/icbo/AlobaidGPPC15},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{protege,
+  author    = {Natalya Fridman Noy and
+               Monica Crub{\'{e}}zy and
+               Ray W. Fergerson and
+               Holger Knublauch and
+               Samson W. Tu and
+               Jennifer Vendetti and
+               Mark A. Musen},
+  title     = {Prot{\'{e}}g{\'{e}}-2000: An Open-Source Ontology-Development
+               and Knowledge-Acquisition Environment: {AMIA} 2003 Open Source Expo},
+  booktitle = {{AMIA} 2003, American Medical Informatics Association Annual Symposium,
+               Washington, DC, USA, November 8-12, 2003},
+  year      = {2003},
+  crossref  = {DBLP:conf/amia/2003},
+  url       = {http://knowledge.amia.org/amia-55142-a2003a-1.616734/t-002-1.618748/f-001-1.618749/a-336-1.619077/a-337-1.619074},
+  timestamp = {Mon, 04 Aug 2014 17:35:25 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/amia/NoyCFKTVM03},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@ONLINE{redux_ducks, 
+title={{D}ucks: {R}edux {R}educer {B}undles}, 
 url={https://github.com/erikras/ducks-modular-redux}, 
-journal={GitHub}, 
-author={Erikras}, 
-year={2019}, 
-month={Nov}
+author={Erik Rasmussen}, 
+year={2015}
 }
 
-@TechReport{Miller:04:RP,
+@ONLINE{rdf,
+  author = {W3C - RDF Core Working Group},
+  title = {{RDF} - {S}emantic {W}eb {S}tandards},
+  month = {Feb},
+  year = {2014},
+  url = {http://www.w3.org/RDF/}
+}
+
+@TechReport{rdf_primer,
   author      = "Eric Miller and Frank Manola",
   title       = "{RDF} Primer",
   month       = feb,
@@ -79,7 +155,14 @@ month={Nov}
   institution = "W3C",
 }
 
-@TechReport{Seaborne:08:SQL,
+@ONLINE{sparql_main_spec,
+  author={World Wide Web Consortium (W3C)},
+  title = {{SPARQL} 1.1 {Q}uery {L}anguage},
+  year = {2013},
+  url = {https://www.w3.org/TR/sparql11-query/}
+}
+
+@TechReport{sparql_specs,
   author      = "Andy Seaborne and Eric Prud'hommeaux",
   title       = "{SPARQL} Query Language for {RDF}",
   month       = jan,
@@ -90,33 +173,88 @@ month={Nov}
   institution = "W3C",
 }
 
-@inproceedings{klimek2016linkedpipes_discovery,
-  title={LinkedPipes visualization: simple useful linked data visualization use cases},
-  author={Kl{\'\i}mek, Jakub and Helmich, Ji{\v{r}}{\'\i} and Ne{\v{c}}ask{\`y}, Martin},
-  booktitle={European Semantic Web Conference},
-  pages={112--117},
-  year={2016},
-  organization={Springer}
+@inproceedings{discovery,
+  author    = {Jakub Kl{\'{\i}}mek and
+               Jir{\'{\i}} Helmich and
+               Martin Necask{\'{y}}},
+  title     = {{LinkedPipes Visualization: Simple Useful Linked Data Visualization
+               Use Cases}},
+  booktitle = {The Semantic Web - {ESWC} 2016 Satellite Events, Heraklion, Crete,
+               Greece, May 29 - June 2, 2016, Revised Selected Papers},
+  pages     = {112--117},
+  year      = {2016},
+  crossref  = {DBLP:conf/esws/2016s},
+  url       = {https://doi.org/10.1007/978-3-319-47602-5\_23},
+  doi       = {10.1007/978-3-319-47602-5\_23},
+  timestamp = {Tue, 14 May 2019 10:00:44 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/esws/KlimekHN16},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@inproceedings{klimek2016linkedpipes_etl,
-  title={LinkedPipes ETL: Evolved linked data preparation},
-  author={Kl{\'\i}mek, Jakub and {\v{S}}koda, Petr and Ne{\v{c}}ask{\`y}, Martin},
-  booktitle={European Semantic Web Conference},
-  pages={95--100},
-  year={2016},
-  organization={Springer}
+@inproceedings{etl,
+  author    = {Jakub Kl{\'{\i}}mek and
+               Petr Skoda and
+               Martin Necask{\'{y}}},
+  title     = {{LinkedPipes ETL: Evolved Linked Data Preparation}},
+  booktitle = {The Semantic Web - {ESWC} 2016 Satellite Events, Heraklion, Crete,
+               Greece, May 29 - June 2, 2016, Revised Selected Papers},
+  pages     = {95--100},
+  year      = {2016},
+  crossref  = {DBLP:conf/esws/2016s},
+  url       = {https://doi.org/10.1007/978-3-319-47602-5\_20},
+  doi       = {10.1007/978-3-319-47602-5\_20},
+  timestamp = {Tue, 14 May 2019 10:00:44 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/esws/KlimekSN16},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@article{van2012decentralized,
-  title={A decentralized architecture for consolidating personal information ecosystems: The WebBox},
-  author={Van Kleek, Max and Smith, Daniel Alexander and Shadbolt, Nigel and others},
-  year={2012}
+@inproceedings{webbox,
+author = {Van Kleek, Max and Smith, Daniel and Shadbolt, Nigel and schraefel,},
+year = {2012},
+month = {01},
+title = {A decentralized architecture for consolidating personal information ecosystems: {T}he {W}eb{B}ox}
 }
 
-@inproceedings{zignani2018follow,
-  title={Follow the “Mastodon”: Structure and Evolution of a Decentralized Online Social Network},
-  author={Zignani, Matteo and Gaito, Sabrina and Rossi, Gian Paolo},
-  booktitle={Twelfth International AAAI Conference on Web and Social Media},
-  year={2018}
+@ONLINE{diaspora_site,
+  author = {Diaspora},
+  title = {{D}iaspora {D}ecentralized {S}ocial {N}etwork},
+  note = {Accessed: 2018-11-03}
+  url = {https://joindiaspora.com}
+}
+
+@inproceedings{diaspora_paper,
+  author    = {Ames Bielenberg and
+               Lara Helm and
+               Anthony Gentilucci and
+               Dan Stefanescu and
+               Honggang Zhang},
+  title     = {The growth of Diaspora - {A} decentralized online social network in
+               the wild},
+  booktitle = {2012 Proceedings {IEEE} {INFOCOM} Workshops, Orlando, FL, USA, March
+               25-30, 2012},
+  pages     = {13--18},
+  year      = {2012},
+  crossref  = {DBLP:conf/infocom/2012w},
+  url       = {https://doi.org/10.1109/INFCOMW.2012.6193476},
+  doi       = {10.1109/INFCOMW.2012.6193476},
+  timestamp = {Wed, 16 Oct 2019 14:14:51 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/infocom/BielenbergHGSZ12},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{mastodon,
+  author    = {Matteo Zignani and
+               Sabrina Gaito and
+               Gian Paolo Rossi},
+  title     = {{Follow the "Mastodon": Structure and Evolution of a Decentralized
+               Online Social Network}},
+  booktitle = {Proceedings of the Twelfth International Conference on Web and Social
+               Media, {ICWSM} 2018, Stanford, California, USA, June 25-28, 2018},
+  pages     = {541--551},
+  year      = {2018},
+  crossref  = {DBLP:conf/icwsm/2018},
+  url       = {https://aaai.org/ocs/index.php/ICWSM/ICWSM18/paper/view/17862},
+  timestamp = {Mon, 25 Jun 2018 13:22:14 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/icwsm/ZignaniG018},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }

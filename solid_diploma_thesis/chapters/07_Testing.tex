@@ -7,7 +7,7 @@ The following section will provide an overview of testing practices followed dur
 
 The main development stack consisted of the following technologies: 
 \begin{itemize}
-    \item \textit{\texttt{ava.js}} \footnote{\url{https://github.com/avajs/ava}} is a \texttt{Node.js} unit testing library. It provides a clean and minimalistic syntax for writing tests, concurrent tests execution, includes TypeScript definitions and supports asyncronous functions. All of the aforementioned factors were considered when choosing this package as main unit testing library for \lpas{} package.
+    \item \textit{\texttt{ava.js}} \footnote{\url{https://github.com/avajs/ava}} is a Node.js unit testing library. It provides a clean and minimalistic syntax for writing tests, concurrent tests execution, includes TypeScript definitions and supports asyncronous functions. All of the aforementioned factors were considered when choosing this package as main unit testing library for \lpas{} package.
     
     \item \textit{\texttt{tslint}} \footnote{\url{https://palantir.github.io/tslint/}} is an extensible static analysis tool that checks TypeScript code for readability, maintainability, and functionality errors. It is widely supported across modern editors and build systems and can be customized with your own lint rules, configurations, and formatters.
     
@@ -56,13 +56,13 @@ The terms Continuous Integration stands for a development practice that requires
 
 \subsection{Using Travis CI}
 
-Travis CI was used in pairs with the GitHub platform. As the first step, the service was connected with \lpas{} package GitHub repository using Webhooks \footnote{\url{https://en.wikipedia.org/wiki/Webhook}}. Secondly, a special \texttt{.travis.yml} the configuration file was added to all branches of \lpas{} repository. The configuration file defined the integration and delivery pipelines to be executed inside Travis CI. Using a special feature called \textit{build matrix}, the \lpas{} was set to be unit tested automatically in concurrent manner on both \texttt{Node.js v10.x} and \texttt{Node.js v12.x}. 
+Travis CI was used in pairs with the GitHub platform. As the first step, the service was connected with \lpas{} package GitHub repository using Webhooks \footnote{\url{https://en.wikipedia.org/wiki/Webhook}}. Secondly, a special \texttt{.travis.yml} the configuration file was added to all branches of \lpas{} repository. The configuration file defined the integration and delivery pipelines to be executed inside Travis CI. Using a special feature called \textit{build matrix}, the \lpas{} was set to be unit tested automatically in concurrent manner on both Node.js \texttt{v10.x} and Node.js \texttt{v12.x}. 
 
 The branch protection rules were also applied to \texttt{dev} and \texttt{master} branches on \lpas{} repository. The additional step in Travis CI pipeline configuration was added for \texttt{master} branch. Every push on remote \texttt{master} on \lpas{} repository also involves deployment to \texttt{npm}. Failed build states are propagated into a special slack channel in \lpa{} Slack workspace, channel is dedicated specifically for reporting CI and CD pipeline execution statuses for all branches on \lpas{} repo.
 
 \section{Integration testing in \lpa{}}
 
-The diagram on \autoref{chap:introduction} is a detail demonstration of how \lpa{} and \lpa{} package are integration tested in automated and semi-automated manner. It is important to note that the example on diagram considers a case when \lpas{} developer merges changes into \texttt{master} branch of \lpas{} package.
+The diagram on \autoref{fig:lpas_ci_integration} is a detail demonstration of how \lpa{} and \lpa{} package are integration tested in automated and semi-automated manner. It is important to note that the example on diagram considers a case when \lpas{} developer merges changes into \texttt{master} branch of \lpas{} package.
 
 \begin{figure}[h]
 \centering

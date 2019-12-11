@@ -18,7 +18,7 @@ As additionally demonstrated, the figure \ref{fig:lpas_high_level_architecture} 
 The generic interaction flow usually involves direct communication between the \lpa{} frontend and \lpas{} package. The internal frontend component has various React components implemented using the \lpas{} package that provides navigation and interaction with \solid{} Pods. While the package is designed under the assumption that the \lpa{} is the only user of the package, some abstractions are generic enough and have the potential to be used outside of the scope of the main functional requirements. The implementation chapter will also cover a generic use-case on how quick start with application development based on \solid{}.
 
 \subsubsection{The evolution of solid specifications}
-At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions, or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \texttt{node-solid-server}, that had a simpler and more extensive ability to manipulate \texttt{ACL} files. The work within this project, however, was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
+At the moment of writing this chapter, the official \solid{} specification reached version \texttt{0.7.0} \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}}. Introducing many changes and improvements, it also adds an extra layer of complexity with every release, changing some of the conventions, or updating some fundamental paradigms. As a result, when \lpa{} was initially implemented, it was based on an older specification and older versions of \texttt{node-solid-server}, that had a simpler and more extensive ability to manipulate ACL files. The work within this project, however, was focused around putting efforts into making it generic enough so that people could use it as a guideline for any started \solid{} apps, while the implementation will fit all \lpa{} requirements.
 
 The main note to mention for the further section in this chapter is that the architecture design was derived from relying on the official specification of \solid{} while also referring to the provided functionality of \texttt{NSS} that does not always strictly follow the guidelines in the specification. 
 
@@ -53,7 +53,6 @@ As already mentioned in chapter \ref{chap:num_3}, the usage of \textit{WebID} pr
 
 Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrate an example on how the Authentication Manager will be used within the \lpa{} Frontend and how it will interact with \solid{} Providers. The user agent entity represents a typical lay \lpa{} user interacting with the platform through the frontend component. The sequence flow consists of the following steps:
 
-% TODO: cite the node-solid-server
 \begin{enumerate}
     \item The user clicks on the 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
     \item The frontend component calls the Authentication Manager and asynchronously waits for a callback. As the main input, it supplies the information about the \solid{} provider that the user would like to use.
@@ -77,7 +76,7 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 \subsection{File Manager}
 \label{sssec:file_manager}
 
-The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers (\cite{Speicher:15:LDP}). LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
+The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with LinkedData Platform specification. The LinkedData Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers \cite{lpd_specification}. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
 
 As mentioned earlier, the \solid{} specification is re-using the LDP specification to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
 
@@ -176,7 +175,7 @@ The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 \end{figure}
 
 
-One of the assumptions made in this recursive operation is the interactions with \texttt{ACL} files when a recursive delete is performed. As mentioned in the introduction to this chapter, \solid{} community is still at its beginnings, and there are many significant improvements yet to introduce. In order to make the delete operation more generic, the DELETE interactions with \texttt{ACL} files had to be removed due to a more strict access policy established between providers of the server and \solid{} apps. The following section will dive deeper into Access Control Managements and related functionality.
+One of the assumptions made in this recursive operation is the interactions with ACL files when a recursive delete is performed. As mentioned in the introduction to this chapter, \solid{} community is still at its beginnings, and there are many significant improvements yet to introduce. In order to make the delete operation more generic, the DELETE interactions with ACL files had to be removed due to a more strict access policy established between providers of the server and \solid{} apps. The following section will dive deeper into Access Control Managements and related functionality.
 
 \subsubsection{Classes overview}
 
@@ -185,7 +184,7 @@ File manager is the biggest of all three abstractions displayed on the figure \r
 \begin{itemize}
 	\item The core class available to \lpa{} developers is the \textit{StorageFileManager}. All of the functions inside are intended to be public, static and asynchronous. 
 	\item \textit{ResourceConfiguration} is a wrapper for LDP Containers and LDP Resources. It allows a developer to specify \textit{title}, \textit{path} and \textit{type} of a resource. Most of the operations within the \textit{StorageFileManager} are operated with the resources encapsulated into \textit{ResourceConfiguration} classes. It also provides a few helper getters that allow to generate an absolute path to a resource within a pod. 
-	\item The \textit{AccessControlConfig} is a subclass of \textit{ResourceConfig}. It allows to specify the access control modes to individual resources. Additionally, it introduces a few extra functions to generate the absolute path that includes the \texttt{.acl} extension.   
+	\item The \textit{AccessControlConfig} is a subclass of \textit{ResourceConfig}. It allows to specify the access control modes to individual resources. Additionally, it introduces a few extra functions to generate the absolute path that includes the ACL file extension.   
 	\item The \textit{SolidResource} is a simple interface that includes various details specific to the resource. Some of the fields provided are also directly used by \textit{StorageFileManager} abstraction during construction of CRUD calls to \solid{} providers.
 \end{itemize}
 
@@ -201,10 +200,9 @@ File manager is the biggest of all three abstractions displayed on the figure \r
 \subsection{Access Control Manager}
 \label{sssec:access_control_manager_arch}
 
-The primary responsibility of the Access Control Manager is a subset under File Manager abstraction. It is designed to support the File Manager entities and provide an ability to wrap them with Web Access Control compliant settings. In other words, this allows a developer of \lpa{} to programmatically control the Read and Write access to any resource inside an arbitrary \solid{} POD by utilizing the developer-friendly interfaces and classes defined within the scope of this abstraction. Essentially, every \texttt{ACL} file is nothing more than yet another RDF resource with few extra features. Hence, the abstraction was placed under the File Manager since the core logic is concerned with similar resource lifecycle manipulations.
-%TODO refine citations
+The primary responsibility of the Access Control Manager is a subset under File Manager abstraction. It is designed to support the File Manager entities and provide an ability to wrap them with Web Access Control compliant settings. In other words, this allows a developer of \lpa{} to programmatically control the Read and Write access to any resource inside an arbitrary \solid{} POD by utilizing the developer-friendly interfaces and classes defined within the scope of this abstraction. Essentially, every ACL file is nothing more than yet another RDF resource with few extra features. Hence, the abstraction was placed under the File Manager since the core logic is concerned with similar resource lifecycle manipulations.
 
-It is yet another wrapper on top of the functionality provided by any \solid{} compliant servers. In this case, being \solid{} compliant also assumes conforming to Web Access Control or WAC specification (\cite{Solid:WAC}). It defines the so-called Access Control Resources, which are entities serving as the declaration of access control privileges for a specific resource. Within the context of \solid{} specification this means managing access rights to resources in \solid{} PODS for various WebIDs.
+It is yet another wrapper on top of the functionality provided by any \solid{} compliant servers. In this case, being \solid{} compliant also assumes conforming to Web Access Control or WAC specification. It defines the so-called Access Control Resources, which are entities serving as the declaration of access control privileges for a specific resource. Within the context of \solid{} specification this means managing access rights to resources in \solid{} PODS for various WebIDs.
 
 The main function provided by the abstraction is an ACL file generator. The flow on the figure \ref{fig:lps_acl_update_flow} demonstrated the process of generation, parsing, and serialization of ACL files: 
 
@@ -213,7 +211,7 @@ The main function provided by the abstraction is an ACL file generator. The flow
     \item Create individual triples defining ACL configuration for a resource owner.
     \item Create individual triples for public access if the resource itself is marked as public.
     \item Gather and parse those triples into a rdflib abstraction representing an RDF Graph.
-    \item Serialize this graph instance into a string representing a \texttt{text/turtle} file.
+    \item Serialize this graph instance into a string representing a TTL file.
     \item Finally performs an \texttt{HTTP} call, that uses \texttt{PUT} to create an ACL file attached to a specified resource.
 \end{enumerate}
 
@@ -230,7 +228,7 @@ This concludes the section demonstrating the essential abstractions within the \
 \section{LinkedPipes Applications Ontology}
 \label{ssec:lpas_application_ontology_arch}
 
-Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either an RDF file or has the metadata expressed as an RDF file (\cite{Solid:OriginalPaper}).  
+Relying on LDP specification extended by \solid{} was not the only goal while designing an architecture to satisfy the requirements of \lpa{}. It was also essential to use the advantages of LinkedData in general. As stated in introductory chapters, as well as the original paper, one of the significant benefits of any \solid{} compliant server is that everything is either an RDF file or has the metadata expressed as an RDF file \cite{solid_original_paper}\cite{solid_demo_paper}.  
 
 The first task was to identify and analyze the kind of data \lpa{} is storing. The initial implementation on \lpa{} codebase was a simple application configuration JavaScript object that assembles all required configuration information for an application by the time a user of \lpa{} hits the \textit{Publish} button. In other words, we were given a JavaScript object to operate. Let us describe how this input requirement was taken into consideration while designing a solution that is both optimized for \solid{} and satisfies the requirement. 
 
@@ -281,7 +279,7 @@ The \textit{FilterGroup} class is closely related to Filter and FilterConfigurat
 \label{fig:lpas_vocabulary_usage}
 \end{figure}
 
-In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{\url{https://json-ld.org}}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into \texttt{turtle} files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
+In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{\url{https://json-ld.org}}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into TTL files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
 %TODO add reference to implementation   
 
 
