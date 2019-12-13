@@ -91,11 +91,54 @@ The core terms and concepts summarized above will be actively mentioned, and ref
 
 As mentioned in introduction \autoref{chap:introduction}, the \lpa{} project is a web platform that aims to provide a comfortable and intuitive user experience to generate interactive LinkedData based visualizations by some \textit{domain experts}. The visualization is referred to as an application after being published, and it can then be embedded in an online article or on another web page or perhaps accessed as a standalone page. 
 
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.4\linewidth]{lpa_logo.png}}
+\caption{Official \lpa{} logo designed by author as a part of separate contribution into the software project.}
+\label{fig:lpa_listing_on_solid}
+\end{figure}
+
 There are two main user groups targeted by \lpa{} platform:
 \begin{itemize}
 	\item \textit{Domain experts}, is a special set of users identified as Semantic Web enthusiasts and people familiar with basic concepts of Linked Data. They have some basic understanding of terms such as RDF, and are able to provide data sources to \lpa{} platform for creating visualizations.
 	\item \textit{Lay users}, represents an set of average internet users with no particular knowledge of Semantic Web and Linked Data. They can access and interact with applications created with \lpa{} platform by \textit{domain experts}.
 \end{itemize}
+
+\subsection{Platform description}
+
+The following subsection provides a better formal understanding of the platform and expands the definition demonstrating a simple user story on \autoref{fig:lpa_user_story}. As mentioned earlier, the platform serves as a web-app that allows Domain experts to provide Linked Data sources and visualize the data on a set of visualizers supported by the platform. At the moment of writing this work, \lpa{} supports:
+\begin{itemize}
+    \item \textit{Maps} visualizer is a generic maps visualization with markers and markers clustering.
+    \item \textit{Chord} visualizer is a diagram representing inter-relationships between data in a matrix.
+    \item \textit{TreeMap} visualizer is a generic visual representation of a data tree.
+    \item \textit{Timeline} visualizer is a generic diagram that allows displaying usage of resources over time.
+\end{itemize}  
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.4\linewidth]{lpa_logo.png}}
+\caption{Official \lpa{} logo designed by author as a part of separate contribution into that software project.}
+\label{fig:lpa_logo.png}
+\end{figure}
+
+ A simple user story demonstrate on \autoref{fig:lpa_user_story} describes the platform as follows:
+\begin{enumerate}
+    \item \textit{John creates an application}. Assume a Data Journalist user named John that has some Linked Data that he wants to visualize and publish on his website. He uses the \lpa{} and creates his application by following the platform instructions and providing the Linked Data sources to visualize.  
+    \item \textit{\lpa{} extracts and visualizes data}. After inputs from John are provided, the platform is extracting and parsing his data into a format convenient for a visualize that the user selected.
+    \item \textit{Application is published on website}. After the application is created and published, John uses the generated published application and embeds it into his website.
+    \item \textit{Bob observes the visualized application}. Bob browses through the website and explores the published visualization without being required to log in or have an account in \lpa{}.
+\end{enumerate}
+
+This general user story represents the most generic interaction flow with \lpa{} platform from the standpoint of its target users. The consecutive sections will dive into more technical details, components, and functional aspects of this platform. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{lpa_user_story.png}
+    \caption{A sample user story describing usage of \lpa{} platform}
+    \label{fig:lpa_user_story}
+\end{figure}
+
+It is important to note that the creation and publishing aspects of the \lpa{} are one of the requirements for \lpa{} that will be described in detail in \autoref{chap:num_3}. 
 
 \subsection{Components overview}
 \label{sssec:lpa_preliminaries_component_overview}

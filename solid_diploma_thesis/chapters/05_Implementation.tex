@@ -5,7 +5,16 @@ The following chapter is going to cover the implementation of \lpas{} package, t
  
 \section{Storage Package}
 
-The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{} package. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
+The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. 
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.4\linewidth]{lpas_package_logo.png}}
+\caption{Official \lpas{} package logo designed by author.}
+\label{fig:lpa_logo.png}
+\end{figure}
+
+As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{} package. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
 
 \subsection{Preliminaries}
 
@@ -310,7 +319,16 @@ To sum up, the section provided an overview of three main abstractions inside \l
 \section{Hosting Storage Ontology}
 \label{ssec:storage_ontology_implementation}
 
-This section is going to continue the details on implementation of the \lpas{} ontology, firstly described in \autoref{ssec:lpas_application_ontology_arch}. As mentioned earlier, the intent to design the ontology was to utilize the benefits of \solid{} better and the ways in which every entity is represented as an RDF resource. The ontology itself was implemented using a set of open-source tools that will be described in the first part of this section. 
+This section is going to continue the details on implementation of the \lpas{} ontology, firstly described in \autoref{ssec:lpas_application_ontology_arch}. As mentioned earlier, the intent to design the ontology was to utilize the benefits of \solid{} better and the ways in which every entity is represented as an RDF resource.
+
+\begin{figure}[h]
+\centering
+\fcolorbox{black}{white}{\includegraphics[width=0.4\linewidth]{lpa_ontology_logo.png}}
+\caption{Official \lpas{} Ontology logo designed by author.}
+\label{fig:lpa_ontology_logo}
+\end{figure}
+
+The ontology itself was implemented using a set of open-source tools that will be described in the first part of this section. 
 
 \subsection{Preliminaries}
 
