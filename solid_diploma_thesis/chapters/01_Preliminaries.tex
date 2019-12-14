@@ -12,7 +12,7 @@ There are three main technical specifications defining the Semantic Web technolo
 \begin{itemize}
 	\item \gls{RDF}, is a data modelling language designed for Semantic Web. Every information in Semantic Web is represented in the RDF.
 	\item \gls{SPARQL}, is a query language for Semantic Web. It is mainly designed for querying data across different data sets represented in RDF.
-	\item \gls{OWL}, is a knowledge representation language for Semantic Web. It allows defining entities and concepts in a way that allows high reusability for many different applications and purposes.
+    \item \gls{OWL} is a knowledge representation language for Semantic Web. It allows defining entities and concepts in a way that enables high reusability for many different applications and purposes. Additionally, it also can be represented in a corresponded \gls{MIME} type, also known as a \textit{OWL} file.
 \end{itemize}  
 
 In other words, the usage of the technology stack mentioned above is what defines a Semantic Web application and differentiates it from any other technologies related to data.
@@ -82,14 +82,14 @@ To start with, one of many definitions of SOLID project, for developers, it can 
     \item \solid{} Server, is an instance of a web server that is compliant to a \solid{} specification. It is responsible for managing users and creating, updating, or deleting instances of PODs belonging to users.
     \item \textit{WebID} is a way to uniquely identify a person, organization, or any other entity using a URI. The URI leads to a \textit{WebID Profile Document}, which is an RDF document expressed in TTL format and contains information describing the agent attached to that WebID. \solid{} servers manage the creation of such WebID Profile Documents and provide URIs to them that are commonly referred to as \textit{Solid WebID} because it is a WebID with a URI that is hosted inside a POD inside an instance of a \solid{} server.
     \item \solid{} Provider, is essentially any organization or entity that hosts a public instance of a \solid{} server. Everyone has an ability to either create and host their own instance of a \solid{} provider by following documentation on official website of \textit{Inrupt} \footnote{\url{https://inrupt.com}}. Inrupt is a startup company founded in 2017 by Sir Berners-Lee that is focused on further improvement and enrichment of \solid{} project ecosystem. They also serve as one of the most popular public \solid{} providers where everyone can create a WebID and have a POD hosted in \solid{} servers managed by Inrupt. 
-    \item \gls{ACL}, a list of permissions attached to an object in the filesystem. \solid{} project is using a specification called \textit{Web Access Control (WAC)} \cite{solid_wac_specification}. It applies the generic concepts of ACL to decentralized cross-domain access control systems and describes the management of so-called \textit{ACL resources} in \solid{} PODs. The term ACL, in consecutive chapters, is going to be referred to as an RDF resource in \solid{} conforming to WAC specification, and controlling the control privileges of resources in POD.
+    \item \gls{ACL}, a list of permissions attached to an object in the filesystem. \solid{} project is using a specification called \textit{Web Access Control (WAC)} \cite{solid_wac_specification}. It applies the generic concepts of ACL to decentralized cross-domain access control systems and describes the management of so-called \textit{ACL resources} in \solid{} PODs. The term ACL, in consecutive chapters, is going to be referred to as an RDF resource in \solid{} conforming to WAC specification, and controlling the control privileges of resources in POD. 
 \end{itemize} 
 
 The core terms and concepts summarized above will be actively mentioned, and references in the following chapters and will provide a more in-depth technical overview and definitions of \solid{} specification. 
 
 \section{\lpa{}}
 
-As mentioned in introduction \autoref{chap:introduction}, the \lpa{} project is a web platform that aims to provide a comfortable and intuitive user experience to generate interactive LinkedData based visualizations by some \textit{domain experts}. The visualization is referred to as an application after being published, and it can then be embedded in an online article or on another web page or perhaps accessed as a standalone page. 
+As mentioned in introduction \autoref{chap:introduction}, the \lpa{} project is a web platform that aims to provide a comfortable and intuitive user experience to generate interactive Linked Data based visualizations by some \textit{domain experts}. The visualization is referred to as an application after being published, and it can then be embedded in an online article or on another web page or perhaps accessed as a standalone page. 
 
 \begin{figure}[h]
 \centering
@@ -155,7 +155,7 @@ At the lower level, the \lpa{} is a bundle of various complex services and datab
 Generally, we can categorize it into three main parts: 
 
 \begin{itemize}
-    \item \textbf{\lpa{}} - the main platform from LinkedPipes bundle that defines the functional and non-functional requirements for for \lpas{} project. Combines multiple database solutions for LinkedData, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
+    \item \textbf{\lpa{}} - the main platform from LinkedPipes bundle that defines the functional and non-functional requirements for for \lpas{} project. Combines multiple database solutions for Linked Data, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
     \item \textbf{LinkedPipes Services} - a set of external services provided from LinkedPipes bundle that \lpa{} heavily utilizes. Provides a toolset for identifying how linked data can be discovered, extracted, transformed and loaded into an RDF file for further processing.
 \end{itemize}
 
@@ -172,7 +172,7 @@ As mentioned at the beginning of the chapter, the frontend provides a way for th
         \subitem \textbf{Selector} - is simply any function that accepts the Redux store state (or part of the state) as an argument, and returns data that is based on that state.
 \end{itemize}
 
-Additionally, the \lpa{} frontend is the main component that is going to be improved by \lpas{}. This is due to specifics of a \solid{} toolset where most of the open-source libraries are implemented in JavaScript and are intended for usage in web based projects.
+Additionally, the \lpa{} frontend is the main component that is going to be improved by \lpas{}. This is due to specifics of a \solid{} toolset where most of the open-source libraries are implemented in JavaScript programming language and are intended for usage in web based projects.
 
 \subsubsection{Backend}
 
@@ -209,4 +209,4 @@ LinkedPipes ETL is an RDF-based, lightweight \gls{ETL} tool for Linked Data \cit
 
 \subsubsection{Discovery} 
 
-LinkedPipes Discovery is a service used by \lpa{} platform to discover whether provided LinkedData sources can be processed and visualized by the platform \cite{discovery}. After a successful request sent to the Discovery service, it executes a session called \textit{Discovery session}. Upon successful completion of a Discovery session, service generates specific files in JSON-LD format. Those files are called \textit{pipelines}. A pipeline describes how LinkedPipes ETL needs to extract the whole LinkedData set and store the data into a Virtuoso database, which is a component used by the LinkedPipes Applications platform described earlier. 
+LinkedPipes Discovery is a service used by \lpa{} platform to discover whether provided Linked Data sources can be processed and visualized by the platform \cite{discovery}. After a successful request sent to the Discovery service, it executes a session called \textit{Discovery session}. Upon successful completion of a Discovery session, service generates specific files in JSON-LD format. Those files are called \textit{pipelines}. A pipeline describes how LinkedPipes ETL needs to extract the whole Linked Data set and store the data into a Virtuoso database, which is a component used by the LinkedPipes Applications platform described earlier. 

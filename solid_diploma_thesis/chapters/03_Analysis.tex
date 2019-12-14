@@ -11,6 +11,7 @@ Aside from definitions of specific requirements, it is important to note that th
 \end{itemize}
 
 \section{Functional requirements}
+\label{ssec:functional_requirements}
 
 In general, every functional requirement is defined as a description of services or features that software must offer. In this case \lpa{} defines a set of features expected to be handled properly by the \lpas{} project. The requirements are provided as a set of UML use-case \footnote{\url{https://www.uml-diagrams.org/use-case-diagrams.html}} diagrams as well as formal textual descriptions. 
 
@@ -65,7 +66,7 @@ The diagram is described as follows:
 
 \subsection{Managing storage and sharing published applications}
 
-The last set of requirements is related to storage management and the sharing of published applications. The storage management requires a functionality to allows platform users to \textit{move}, \textit{copy} and \textit{create} data in their authenticated spaces in storage. The sharing requirement describes the functionality to allow users to share the applications they have published and control the access control settings to them. Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as LinkedData. Therefore the persistent storage tooling needs to be optimized for files in RDF format.
+The last set of requirements is related to storage management and the sharing of published applications. The storage management requires a functionality to allows platform users to \textit{move}, \textit{copy} and \textit{create} data in their authenticated spaces in storage. The sharing requirement describes the functionality to allow users to share the applications they have published and control the access control settings to them. Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as Linked Data. Therefore the persistent storage tooling needs to be optimized for files in RDF format.
  
 \begin{figure}[h]
 \centering
@@ -193,6 +194,7 @@ The following library adds support of the LDflex language to \solid{} by:
 \end{itemize}
 
 \section{Why \solid{}?}
+\label{sssec:why_solid}
 
 Even though it is presented as a flawless dominating technology in table \ref{tab:solid_comparisons_table}, it is, in fact, far from being perfect. Some of the disadvantages include:
 \begin{itemize}

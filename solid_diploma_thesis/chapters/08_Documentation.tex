@@ -1,2 +1,62 @@
 \chapter{Documentation}
 \label{chap:num_8}
+
+The following chapter provides the information on available documentation resources implemented for both \lpas{} package and \lpa{} Storage Components. Selected code snippets demonstrate the core usage and provide detailed references for hosted documentations. The first section will give the developer guide to the documentation of \lpa{} package hosted on GitHub Pages. The second section will provide an overview of how \lpa{} Storage Components were integrated into documentation resources of \lpa{} platform.
+
+\section{\texttt{npm} package}
+
+The package is source codes are available at public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes-storage}} and corresponding page on npm \footnote{\url{https://www.npmjs.com/package/linkedpipes-storage}}. The generic documentation on repository \textit{README}, as well as on a webpage at npm, includes the installation guide and a quick start on creating, editing, and deleting resources using a folder as an example. 
+
+More detailed and developer oriented documentation is available on repository GitHub Page \footnote{\url{https://aorumbayev.github.io/linkedpipes-storage}}. The website is generated and published as a part of automated CI and CD pipeline demonstrated at \autoref{fig:lpas_ci_integration}. The documentation is generated using \texttt{typedoc} \footnote{\url{https://github.com/TypeStrong/typedoc}}, a documentation generator for TypeScript project. The codebase is annotated using \texttt{tsdoc} \footnote{\url{https://github.com/microsoft/tsdoc}}, an official TypeScript comment standard developed by Microsoft.
+
+The typedoc documentation provides the overview of entire \lpas{} project codebase in the following order:
+\begin{enumerate}
+    \item \textit{Enumerations} description of all enumeration types in codebase.
+    \item \textit{Classes} description of all class types in codebase.
+    \item \textit{Interfaces} description of all interface types in codebase.
+    \item \textit{Variables} description of all variable types in codebase.
+    \item \textit{Functions} description of all function types in codebase.
+\end{enumerate}
+
+Every individual type is expanded into a detailed description of its sub-elements. For instance, every class type documentation is structured as follows:
+\begin{enumerate}
+    \item \textit{Constructors} description of all class constructors, input parameters and return values.
+    \item \textit{Properties} description of all properties of the class, their types and inheritance hierarchy.
+    \item \textit{Constructors} description of all class method, input parameters and return values.
+\end{enumerate}
+
+For more details, refer to the package documentation website listed in the footnote at the beginning of this section.
+
+\section{Storage Components}
+
+The Storage Components documentation is a part of \lpa{} documentation. Therefore the section will firstly provide a brief description of how the \lpa{} platform is documented and finally how the Storage Components documentation was integrated.
+
+There are three main documentation sources provided by \lpa{} platform described as follows:
+\begin{itemize}
+    \item \textit{The platform documentation} \footnote{\url{https://docs.applications.linkedpipes.com}} contains non-developer oriented tutorials, introduces core concepts of the platform, and provides a detailed set of video tutorials demonstrating the available feature. This documentation was expanded by including interactions with storage components. The corresponding video tutorials were recorded to illustrate and guide users to use and interact with storage. The static webpage was generated using \texttt{hugo} framework \footnote{\url{https://gohugo.io}}.
+    \item \textit{The frontend documentation} \footnote{\url{https://docs.frontend.applications.linkedpipes.com}} contains developer-oriented guideline over frontend components of the platform generated using \texttt{docz} \footnote{\url{https://www.docz.site}}. Provide the main installation, quick start, and interactive documentation of selected components of the platform. Each of the interactive components can be immediately forked into \texttt{codesandbox} environment \footnote{\url{https://codesandbox.io}} and tested in an online web IDE environment. 
+    \item \textit{The backend documentation} \footnote{\url{https://docs.backend.applications.linkedpipes.com}} contains developer-oriented guideline over backend components of the platform generated using \texttt{orchid} \footnote{\url{https://orchid.run}}. No additional documentation for \lpas{} related code was added since no changes were required on the backend component side.
+\end{itemize}
+
+\subsection{Expanding platform documentation}
+
+Expanding the non-developer oriented documentation of the \lpa{} platform was a relatively straightforward process. The first part consisted of recording the annotated video tutorials using the latest release of the platform and publishing them on \lpa{} YouTube. The tutorials covered the following functionality, directly and non-directly affecting implemented Storage functionality:
+
+\begin{itemize}
+    \item \textit{Create, publish and embed your application} \footnote{\url{https://docs.applications.linkedpipes.com/tutorials/3.creating_applications/}} a video tutorial guiding users from start of application visualization creation to the finishing step where it is stored inside \solid{} POD, and a published URL is generated using the URI of the resource from the POD.
+    \item \textit{Configuring application and filters} \footnote{\url{https://docs.applications.linkedpipes.com/tutorials/4.configuring_published_applications/}} a video tutorial demonstrating the configuration of published applications and editing of filter settings as described in \autoref{ssssec:configuring_application_implementation}.
+    \item \textit{Adding SOLID contacts, collaborative editing} \footnote{\url{https://docs.applications.linkedpipes.com/tutorials/5.adding_solid_contacts_sharing/}} a video tutorial demonstrated a process of adding new SOLID contacts in an instance of node-solid-server, and then demonstrates the process of sharing a published app with other user of the platform user as described in \autoref{ssssec:collaborative_sharing}.
+    \item \textit{Managing platform and user settings} \footnote{\url{https://docs.applications.linkedpipes.com/tutorials/6.misc/}} a video tutorial demonstrating how to interact with the storage configuration and the \solid{} user profile settings popups. 
+\end{itemize} 
+
+\subsection{Expanding frontend documentation}
+
+As mentioned earlier in the section, the frontend documentation was documented using docz framework, which relies on a special markdown syntax called \textit{MDX} \footnote{\url{https://mdxjs.com}}. It allows for combining the advantages of generic markdown syntax and JavaScript code snippets. Therefore, inside the frontend codebase, each component representing the individual platform webpage had an MDX file added, having the same name as the JSX component file. Later on, the docz framework automatically assembles the static HTML pages based on the declared MDX files describing components. 
+
+The following Storage Components were added into general frontend documentation by implementing the corresponding MDX files:
+\begin{itemize}
+    \item \textit{StoragePage} represents a set of components rendered into a Storage Dashboard. The documentation includes the structure of stateful and stateless components that are associated with the webpage. The main properties passed to the components are also described. Lastly, a live instance of that webpage is rendered inside the documentation webpage, allowing developers to interact with the component.
+    \item \textit{SettingsPage} represents both user profile and storage control settings pages. The documentation includes the structure of stateful and stateless components that are associated with the webpage and main properties used by those components. 
+\end{itemize}
+
+The frontend documentation also contains the dedicated section describing the Storage Components in general and provides several references to \solid{} toolset that was used as well as the \lpas{} package. For more details, refer to the package documentation website listed in the footnote at the beginning of this section.

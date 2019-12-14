@@ -1,9 +1,10 @@
 \chapter{Implementation}
 \label{chap:num_5}
 
-The following chapter is going to cover the implementation of \lpas{} package, the frontend components as well as the ontology. The first part of the chapter dedicated to the implementation of the package will provide a detailed overview of the decisions made on the development stack, the main challenges invoked in refactoring the original \lpa{} codebase, and making the \solid{} related functionality more generic. The frontend components section will dive deeper into the implementation of the mocks provided in \autoref{chap:num_4}, main decisions, and challenges while developing under React. The ontology \autoref{ssec:storage_ontology_implementation} will describe how the designed \lpas{} vocabulary was converted into a \texttt{.owl} file, converted into \texttt{.jsonld} Schema and later integrated into the \lpa{} frontend. Lastly, an overview of the implementation results will be presented by reiterating over the defined \lpa{} requirements and how they were satisfied by the implementation.
+The following chapter is going to cover the implementation of \lpas{} package, the frontend components as well as the ontology. The first part of the chapter dedicated to the implementation of the package will provide a detailed overview of the decisions made on the development stack, the main challenges invoked in refactoring the original \lpa{} codebase, and making the \solid{} related functionality more generic. The frontend components section will dive deeper into the implementation of the mocks provided in \autoref{chap:num_4}, main decisions, and challenges while developing under React. The ontology \autoref{ssec:storage_ontology_implementation} will describe how the designed \lpas{} vocabulary was converted into a OWL file, converted into JSON-LD Schema and later integrated into the \lpa{} frontend. Lastly, an overview of the implementation results will be presented by reiterating over the defined \lpa{} requirements and how they were satisfied by the implementation.
  
 \section{Storage Package}
+\label{ssec_storage_package_implementation}
 
 The initial implementation of \lpa{} frontend was written in \texttt{JavaScript ES6} \footnote{\url{http://es6-features.org}} and \texttt{React} framework. The development stack also included tools such as \texttt{Babel} \footnote{\url{https://babeljs.io}} compiler and \texttt{Webpack} \footnote{\url{https://webpack.js.org}} package bundler. 
 
@@ -14,7 +15,7 @@ The initial implementation of \lpa{} frontend was written in \texttt{JavaScript 
 \label{fig:lpa_logo.png}
 \end{figure}
 
-As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate \texttt{npm} package and call it \lpas{} package. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
+As the amount of features and functionality to cover was increasing, the decision was made to separate the \solid{} storage related functionality into a separate npm package and call it \lpas{} package. This section will provide an overview of preliminaries chosen for the implementation of \lpas{} package as well as the specifics of implementations of each abstraction defined in \autoref{ssec:storage}. 
 
 \subsection{Preliminaries}
 
@@ -22,12 +23,10 @@ As briefly mentioned earlier, there are several main libraries used inside the \
 
 \begin{itemize}
     \item \texttt{rdflib} is a low-level RDF library, that mainly provides the functionality to Read and Write RDF in many popular formats, a querying store and an ability to use SPARQL queries.
-    \item \texttt{solid-auth-client}, a browser library that implements \solid{} specifications for providing authentication. This is the main library used to enable the authentication into \lpa{} platform. 
-    \item \texttt{ava.js}, is a simple JavaScript unit tests runner with TypeScript support. More on testing will be described in a Testing chapter. It is important to note that proper unit testing was one of the other major factors for splitting the \solid{} functionality into a separate package. Easier code maintainability, along with features of TypeScript, significantly improved test-driven development of the package. More details on CI and CD are covered in the \autoref{chap:num_7}.
-    \item \texttt{istanbul.js}, a test coverage tool used along with \texttt{ava.js}. The library provides a convenient command-line interface that was used for improving Continuous Integration and Delivery jobs. More details on CI and CD are covered in the \autoref{chap:num_7}.
+    \item \texttt{solid-auth-client}, a browser library that implements \solid{} specifications for providing authentication. This is the main library used to enable the authentication into \lpa{} platform.
 \end{itemize}
 
-Due to the complexity of the usage of the stated libraries, specifically \texttt{rdflib}, having an environment and a language that provides a fully-featured object-oriented programming and static type-checking would directly affect the code maintainability and usage. Hence, the codebase of \lpas{} was implemented using \texttt{TypeScript} \footnote{\url{https://www.typescriptlang.org}}. TypeScript is a strict syntactical superset of JavaScript that provides optional static typing and better object-oriented programming capabilities.  
+Due to the complexity of the usage of the stated libraries, specifically \texttt{rdflib}, having an environment and a language that provides a fully-featured object-oriented programming and static type-checking would directly affect the code maintainability and usage. Hence, the codebase of \lpas{} was implemented using \texttt{TypeScript} \footnote{\url{https://www.typescriptlang.org}}. TypeScript is a strict syntactical superset of JavaScript that provides optional static typing and better object-oriented programming capabilities. When referred to files containing TypeScript code, the consecutive sections and chapters will refer to as \textit{TS} files.
 
 \begin{figure}[h]
 \centering
@@ -36,7 +35,7 @@ Due to the complexity of the usage of the stated libraries, specifically \texttt
 \label{fig:lpas_implementation_transpilation_diagram}
 \end{figure}
 
-As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible JavaScript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Webpack. The assets mainly consist of a set of media files such as \texttt{.png} and \texttt{.svg} files and a large \texttt{.js} file that contains the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
+As demonstrated on \autoref{fig:lpas_implementation_transpilation_diagram}, integrating the package into the \lpa{} codebase was done using the TypeScript compiler that allows transpilation into ES6 compatible JavaScript syntax. The package, as well as the rest of the \lpa{} codebase,  is later bundled into a set of static assets using Weback. The assets mainly consist of a set of media files such as PNG and SVG files and a large JS file that contains the whole \lpa{} frontend. One of a few disadvantages with that approach is that the initial loading of the frontend might take a few seconds to load in the browser. Afterward, the interaction with the platform is seamless and does not involve any additional loading.
 
 \subsubsection{Project structure}
 
@@ -239,7 +238,7 @@ Referring back to \autoref{fig:lpas_filemanager_implementation_class}, the main 
     \item \textit{createAccessControlList()}, a method assembling an array of access control statements for multiple requested WebIDs using \textit{createAccessControlStatement()}, and as result serializes the array of statements into a raw TTL \texttt{string} using \texttt{rdflib}.
 \end{itemize}
 
-The functionality implemented by \textit{AccessControlManager} is not conforming to entire Web Access Control specification, since it was not needed and not required to satisfy the \lpa{} requirements. Therefore, methods described earlier such as \textit{updateACL()} and \textit{createACL()} as seen on \autoref{fig:lps_acl_update_flow}, were based on the default ACL files that \texttt{NSS} generates. At the moment of writing this thesis, the default \textit{.acl} files generated by \texttt{NSS v5.2.0} looks as follows:
+The functionality implemented by \textit{AccessControlManager} is not conforming to entire Web Access Control specification, since it was not needed and not required to satisfy the \lpa{} requirements. Therefore, methods described earlier such as \textit{updateACL()} and \textit{createACL()} as seen on \autoref{fig:lps_acl_update_flow}, were based on the default ACL files that \texttt{NSS} generates. At the moment of writing this thesis, the default ACL files generated by \texttt{NSS v5.2.0} looks as follows:
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{turtle}
@@ -265,7 +264,7 @@ As seen on \autoref{lst:acl_file_example}, the example describes access control 
 \begin{itemize}
     \item \textit{accessTo}, the information resource to which the access is being granted. In this case, we are granting access to a folder named \textit{test}
     \item \textit{agent}, a person or an entity to whom the rights are being given. Since this is an owner of the \solid{} pod, the reference is given to himself.
-    \item \textit{default}, this is a special predicate that behaves as follows. If the underlying resources have no ACL files specified they would keep referring to parent resources until it will reach the resource containing the ACL file with \textit{default} predicate. In this case, the statement says that the underlying resources without explicitly set \textit{.acl} files will have the same access control rights as the \textit{test} folder.
+    \item \textit{default}, this is a special predicate that behaves as follows. If the underlying resources have no ACL files specified they would keep referring to parent resources until it will reach the resource containing the ACL file with \textit{default} predicate. In this case, the statement says that the underlying resources without explicitly set ACL files will have the same access control rights as the \textit{test} folder.
     \item \textit{mode}, a predicate describing the access control modes. In this case, the object is defined as follows: 
         \subitem \textit{Control}, a semantic object describing full read and write access to an ACL of the resource.
         \subitem \textit{Read}, a semantic object, is giving full read access to a resource.
@@ -335,7 +334,7 @@ The ontology itself was implemented using a set of open-source tools that will b
 Two open-source frameworks were used to implement and publish the \lpas{} ontology:
 \begin{itemize}
     \item \texttt{Protégé}, is an open-source ontology editing framework developed at Stanford University and written in Java programming language \cite{protege}. It provides an intuitive graphical user interface for defining and developing ontologies. The version of the software used at the moment of implementing the ontology is \texttt{v5.5.0}.
-    \item \texttt{Ontoology}, is an open-source software solution for collaborative development of ontologies on GitHub \cite{ontoology}. However, in the scope of implementing \lpas{} ontology, it was mainly chosen for its additional features, such as an ability to publish ontologies under permanent \texttt{w3id.org} URL, an ability to host the ontology as a static \texttt{HTML} under GitHub Pages. 
+    \item \texttt{Ontoology}, is an open-source software solution for collaborative development of ontologies on GitHub \cite{ontoology}. However, in the scope of implementing \lpas{} ontology, it was mainly chosen for its additional features, such as an ability to publish ontologies under permanent \texttt{w3id.org} URL, an ability to host the ontology as a static HTML webpage under GitHub Pages. 
 \end{itemize}
 
 \begin{figure}[h]
@@ -354,7 +353,7 @@ After defining the main entities and designing the hierarchical structure of the
     \item \textit{Data properties} tab, represents the graphical user to create and define relations between instances of classes and RDF literals or datatypes. For instance, a \textit{VisualizerConfiguration} class has a \textit{backgroundColor} data property which is a \textit{String} datatype. 
 \end{itemize}
 
-The resulting ontology created in \texttt{Protégé} was represented as an \texttt{.owl} which is a format for Web Ontology Language described earlier in \autoref{sssec:using_web_ontology_language}. The following subsection will describe the process of publishing the ontology using the \textit{Ontoology} software. 
+The resulting ontology created in \texttt{Protégé} was represented as an OWL which is a format for Web Ontology Language described earlier in \autoref{sssec:using_web_ontology_language}. The following subsection will describe the process of publishing the ontology using the \textit{Ontoology} software. 
 
 \subsection{Using \textit{Ontoology}}
 
@@ -362,14 +361,14 @@ The \textit{Ontoology} itself is an open-source project that can be instantiated
 
 The initial configuration or startup guide to \textit{Ontology} consist of the following steps: 
 \begin{enumerate}
-    \item \textit{Setup a GitHub repository}, an exported \texttt{.owl} file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
+    \item \textit{Setup a GitHub repository}, an exported OWL file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
     \item \textit{Add repository to Ontoology}, add the repository by name into Ontology, and press \textit{Watch this repo} button. This is pretty much the last step involving any manual work. The following steps are all invoked in an automated fashion, demonstrating the full list of benefits provided by this software.
     \item \textit{Merge initial PR from Ontoology}, once the repository is connected, an automated PR will be opened that will contain a following list of elements:
     \begin{enumerate}
         \item Diagrams, a folder with pre-generated class hierarchy visualizations of the ontology.
         \item Documentation, an automatically generated ontology documentation hosted on GitHub Pages on the same repository, and available at \textit{w3id.org} permanent URL redirecting users to GitHub Pages.
         \item Evaluation report, \textit{Ontoology} generates a report that checks various aspects of the implementation of the ontology, providing hints when, for instance, some parts in the description of an entity is missing.
-        \item JSON-LD, an original \texttt{.owl} the file is automatically converted into a JSON-LD file.  
+        \item JSON-LD, an original OWL the file is automatically converted into a JSON-LD file.  
     \end{enumerate}
 \end{enumerate}
 
@@ -424,10 +423,10 @@ The implementation of the \lpa{} frontend is located at the \texttt{src/frontend
     \item \textit{utils} - contains various handy utility classes, variables, and methods.
     \item \textit{ducks} - contains all Redux reducers, actions and selectors. The title \textit{duck} comes from a convention proposed by Erik Rasmussen in \cite{redux_ducks}, it suggests a way to bundle Redux entities into folders that are easier to manage and maintain as they contain reducers, actions and selectors.
     \item \textit{layouts} - contains global setup for various components as well as the specification for the MaterialDesign theme used in the project.
-    \item \textit{components} - contains all \texttt{.jsx} components, visualizers and various UI elements implementations not related to interactions with \solid{}.
+    \item \textit{components} - contains all components with JSX file type, visualizers and various UI elements implementations not related to interactions with \solid{}. The JSX is a syntactic extension for JavaScript that adds ability to combine ES6 syntax with HTML tags.
     \item \textit{containers} - contains complex layouts for specific web-pages of the web app not related to interactions with \solid{}. Each folder is named after individual webpage. 
     \item \textit{storage} - contains all contributions and implementations made within the scope of \lpas{} project. Has a substructure mimicking the global folder structure to improve code maintainability and signify the difference between implementations of \lpa{} and \lpas{}.
-    \item \textit{configuration files and entry points}, contains a set of configuration files at the root, such as linter configurations, the file with global Redux store and a file called \textit{AppRouter.jsx}, which is the main controller of whole frontend since it manages the user sessions and establishes the socket connections with \lpa{} backend.
+    \item \textit{configuration files and entry points}, contains a set of configuration files at the root, such as linter configurations, the file with global Redux store and a file called \textit{AppRouter}, which is the main controller of whole frontend since it manages the user sessions and establishes the socket connections with \lpa{} backend.
 \end{itemize}
 
 \subsection{Storage folder structure}
@@ -439,11 +438,11 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
     \item \textit{utils} - contains various handy utility classes, variables, and methods for storage specific React Components.
     \item \textit{ducks} - contains all Redux reducers, actions and selectors for storage specific React Components. 
     \item \textit{models} - contains classes representing \textit{VisualizerConfiguration} and other \lpa{} specific classes that did not have to be split into the \lpas{} package.
-    \item \textit{components} - contains all \texttt{.jsx} components, visualizers and various UI elements implementations not related to interactions with \solid{}.
+    \item \textit{components} - contains all components, visualizers and various UI elements implementations not related to interactions with \solid{}.
     \item \textit{containers} - contains complex layouts for storage specific web-pages. Each folder is named after individual webpage.     
-    \item \textit{StorageBackend.jsx} - represents a class wrapping various utilities on top of basic \lpas{} storage abstractions. The logic related to fetching the \lpa{} configurations is implemented in this file.
-    \item \textit{StorageToolbox.jsx} - represents a class wrapping the \textit{StorageBackend.jsx} utilities into simple methods to be invoked directly from internal methods of Storage React Components. In other words, it serves as a middleware layer between React Components and low level and generic functionality of \lpas{} package abstractions.
-    \item \textit{StorageSparqlClient.jsx} - a class containing a single generic method that utilises the \textit{fetch()} function from \textit{AuthenticationManager} to submit \texttt{SPARQL} requests modifying certain parameters of \lpa{} configuration RDF files. 
+    \item \textit{StorageBackend} - represents a class wrapping various utilities on top of basic \lpas{} storage abstractions. The logic related to fetching the \lpa{} configurations is implemented in this file.
+    \item \textit{StorageToolbox} - represents a class wrapping the \textit{StorageBackend} utilities into simple methods to be invoked directly from internal methods of Storage React Components. In other words, it serves as a middleware layer between React Components and low level and generic functionality of \lpas{} package abstractions.
+    \item \textit{StorageSparqlClient} - a class containing a single generic method that utilises the \textit{fetch()} function from \textit{AuthenticationManager} to submit \texttt{SPARQL} requests modifying certain parameters of \lpa{} configuration RDF files. 
 \end{itemize}
 
 \subsection{Authentication View}
@@ -453,8 +452,8 @@ This section continues the architecture and mocks provided in \autoref{ssec:lpas
 To comply with conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
 \begin{itemize}
     \item \textit{AuthenticationContainer}, a file containing the stateful React Component. In other words, it manages local views specific states as well as global states related to Redux.
-    \item \textit{AuthenticationComponent.jsx}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
-    \item \textit{SolidProviderComponent.jsx}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
+    \item \textit{AuthenticationComponent}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
+    \item \textit{SolidProviderComponent}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
 \end{itemize}
 
 \begin{listing}[H]    
@@ -471,7 +470,7 @@ export const AuthorizationContainer = connect(mapStateToProps)(Authorization);
 \label{lst:map_state_to_props_example}
 \end{listing}
 
-Following that pattern, the \textit{render()} function of \textit{AuthenticationContainer.jsx} takes an instance of \textit{AuthenticationComponent.jsx} while passing both internal and Redux state as props to it. The global structure of all Redux states in \lpa{} is to specific to be described within the scope of the \lpas{} project, however an examples of states relevant to Authentication View are going to be provided. For instance, the code example at \autoref{lst:map_state_to_props_example} demonstrates a typical example of an operation that maps the Redux states to \textit{props} of a React Component, in this case we are mapping the global \textit{webID} value that is used by React Router to identify whether user is authenticated and can render the dashboard or should be redirected back to the screen. As it was mentioned earlier in \autoref{ssssec:lpa_frontend_code_structure} and \autoref{sssec:authentication_manager_implementation}, the \textit{AppRouter.jsx} is one of the main entry points to the frontend web app, and it directly utilizes both \textit{AuthenticationManager} abstraction from Authentication React component. An example code on \autoref{lst:track_session_example} demonstrates a code snippet from \textit{AppRouter.jsx} that is invoked every time user session is being authenticated or user is logging out.
+Following that pattern, the \textit{render()} function of \textit{AuthenticationContainer} takes an instance of \textit{AuthenticationComponent} while passing both internal and Redux state as props to it. The global structure of all Redux states in \lpa{} is to specific to be described within the scope of the \lpas{} project, however an examples of states relevant to Authentication View are going to be provided. For instance, the code example at \autoref{lst:map_state_to_props_example} demonstrates a typical example of an operation that maps the Redux states to \textit{props} of a React Component, in this case we are mapping the global \textit{webID} value that is used by React Router to identify whether user is authenticated and can render the dashboard or should be redirected back to the screen. As it was mentioned earlier in \autoref{ssssec:lpa_frontend_code_structure} and \autoref{sssec:authentication_manager_implementation}, the \textit{AppRouter} is one of the main entry points to the frontend web app, and it directly utilizes both \textit{AuthenticationManager} abstraction from Authentication React component. An example code on \autoref{lst:track_session_example} demonstrates a code snippet from \textit{AppRouter} that is invoked every time user session is being authenticated or user is logging out.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -492,7 +491,7 @@ The User Interface strictly follows initial mock design demonstrated at \autoref
 
 \subsubsection{Overview of states and methods}
 
-As general details on the structure of the implementation are defined now, let us dive deeper into the description of main states and functions of Authentication View components. As \textit{AuthenticationComponent.jsx} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer.jsx} as this represents the main functionality of the whole webpage. The states can be described as follows:
+As general details on the structure of the implementation are defined now, let us dive deeper into the description of main states and functions of Authentication View components. As \textit{AuthenticationComponent} is a stateless React component, it is sufficient to provide definitions for states and methods in \textit{AuthenticationContainer} as this represents the main functionality of the whole webpage. The states can be described as follows:
 \begin{itemize}
     \item \textit{webIdFieldValue}, a \texttt{string} value holding input at the \textit{textfield} for supplying WebID value.
     \item \textit{withWebIdStatus}, a \texttt{boolean} value representing the current input state and whether is chosen to use available providers or entered his WebID manually.
@@ -561,7 +560,7 @@ The final rendered UI of this implementation will be provided in \autoref{ssec:o
 \section{Implemented functional requirements}
 \label{ssec:overview_of_implemented_requirements}
 
-This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved the implementation of React components, detailed renders of final User Interfaces will be provided. 
+This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved the implementation of React components, detailed renders of final User Interfaces will be provided. It is important to note that this section provides the implementation overview of all stated functional requirements defined in \autoref{ssec:functional_requirements}.
 
 \subsection{User Authentication}
 
@@ -621,7 +620,7 @@ The Create and Publish Application requirements are one of the core requirements
 The \lpa{} platform has a process called \textit{Application data preparation workflow}. It consists of four steps during which a user of the platform provides data sources to visualize, and if successful, the \lpa{} redirects him to a \textit{Create Application} webpage. At this point, the platform assembles a visualizer configuration object in memory until the user provides a title for his application and decides to publish it. The diagram on \autoref{chap:num_1} demonstrates the user interface component on \textit{Create Application} that consist of a text field and two buttons:
 \begin{itemize}
     \item \textit{Publish} a button that invokes a chain of methods that parse the prepared visualizer object into TTL and uploads the file into his \solid{} POD.
-    \item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the \texttt{HTML} \texttt{iframe} to incorporate the visualizer into a webpage.
+    \item \textit{Embed} a button invoking the same process of storing and publishing an application but additionally displays a dialog popup to quickly generate the HTML \texttt{iframe} to incorporate the visualizer into a webpage.
 \end{itemize}
 
 \begin{figure}[h]
@@ -707,6 +706,7 @@ As the last step of creating and publishing the \lpa{} application, the popup at
 This concludes the demonstration of components and functionality of both \lpa{} and \lpas{} package that implement the functional requirements on storing, publishing and creating \lpa{} configurations. 
 
 \subsection{Configuring Application}
+\label{ssssec:configuring_application_implementation}
 
 The ability to configure the published applications had a clear and straightforward set of terms to implement. After publishing an application \lpa{} users  to \textit{rename}, \textit{delete} the configuration as well as configure and modify the filters available for the visualiser.
 
@@ -873,7 +873,7 @@ The Visualizer, Access Control requirement, defines how the creator of an applic
 \label{fig:lpa_access_control_setup}
 \end{figure}
 
-The implementation of \textit{AccessControlManager} abstraction in \autoref{sssec:access_control_manager_implementation} is the essential building block that was used to implement a set of React Components to allow modifying access control privileges of published visualizers. The \autoref{fig:lpa_access_control_setup} demonstrate an final render of a React Component that is presented to user when he clicks on \texttt{Access Control} drop down item on \textit{Application Control and Setup} webpage. The component is implemented in \textit{StorageAccessControlDialog.jsx} file which is a simple stateful React Component. The main elements of that popup can be described as follows:
+The implementation of \textit{AccessControlManager} abstraction in \autoref{sssec:access_control_manager_implementation} is the essential building block that was used to implement a set of React Components to allow modifying access control privileges of published visualizers. The \autoref{fig:lpa_access_control_setup} demonstrate an final render of a React Component that is presented to user when he clicks on \texttt{Access Control} drop down item on \textit{Application Control and Setup} webpage. The component is implemented in \textit{StorageAccessControlDialog} file which is a simple stateful React Component. The main elements of that popup can be described as follows:
 \begin{itemize}
     \item \textit{Public access} switch, this element controls the default public access to a published application. By default, \lpa{} sets the \textit{READ} public access so that anyone can access the published application by default. However, the user has an option to toggle the control element and disable default public visibility. 
     \item \textit{List of collaborators}, this element lists the contacts knows to user's \textit{WebID}. The querying of knows contacts is performed using \texttt{rdflib} library accessed via \lpas{} package. 
@@ -881,8 +881,9 @@ The implementation of \textit{AccessControlManager} abstraction in \autoref{ssse
 \end{itemize}
 
 \subsubsection{Collaborative sharing}
+\label{ssssec:collaborative_sharing}
 
-Collaborative sharing allows users of \lpa{} platform to share their visualizers with other users of the platform. The sharing process implementation is inspired by LinkedData Notifications specification \TODO{cite here} and involves the generation of an invitation file that send to the recipients inbox. The \autoref{fig:lpas_sharing_application} demonstrates the process of submitting an invitation in detail.
+Collaborative sharing allows users of \lpa{} platform to share their visualizers with other users of the platform. The sharing process implementation is inspired by Linked Data Notifications specification \TODO{cite here} and involves the generation of an invitation file that send to the recipients inbox. The \autoref{fig:lpas_sharing_application} demonstrates the process of submitting an invitation in detail.
 
 \begin{figure}[h]
 \centering
@@ -946,13 +947,13 @@ To sum up, the following section iterated over each functional requirement state
 \section{Implemented non-functional requirements}
 \label{ssec:non_functional_requirements_implementation}
 
-The section provides a general overview of implementation of non-functional requirements stated in \autoref{ssec:non_functional_requirements}. Due to the majority of requirements being covered simply by the core functionality of the \solid{} project itself the implementation details of individual requirements are less descriptive than descriptions in \autoref{ssec:overview_of_implemented_requirements}.
+The section provides a general overview of implementation of non-functional requirements stated in \autoref{ssec:non_functional_requirements}. Due to the majority of requirements being covered simply by the core functionality of the \solid{} project itself the implementation details of individual requirements are less descriptive than descriptions in \autoref{ssec:overview_of_implemented_requirements}. It is also important to note that this section provides the implementation overview of all stated functional requirements defined in \autoref{ssec:non_functional_requirements}.
 
 \subsection{Compatibility with latest tools}
 
 The implemented solution consists from three parts:
 \begin{itemize}
-    \item The \lpas{} package, an \texttt{npm} package containing the generic abstractions performing low-level interactions with instances of \solid{} servers. Relies on \texttt{rdflib}, \texttt{solid-auth-client} and \texttt{solid-auth-cli} libraries. All third party packages are pinned, stable and indirectly unit tested, more details on testing is provided in \autoref{chap:num_7}. 
+    \item The \lpas{} package, an npm package containing the generic abstractions performing low-level interactions with instances of \solid{} servers. Relies on \texttt{rdflib}, \texttt{solid-auth-client} and \texttt{solid-auth-cli} libraries. All third party packages are pinned, stable and indirectly unit tested, more details on testing is provided in \autoref{chap:num_7}. 
     \item The Storage React components, a set of frontend components written in ES6 inside the \lpa{} package. No additional third party packages are introduces to \lpa{} with these components, except for \lpas{} package. 
     \item The \lpas{} ontology, a vocabulary designed with \texttt{Protégé} and published with \texttt{Ontoology}. Used in \lpa{} by accessing its public hosted instance, therefore no additional third party packages are introduced.
 \end{itemize}
@@ -963,11 +964,11 @@ The whole intent of creating the \lpas{} package was to refactor and redesign th
 
 \subsection{Continuous Integration and Delivery}
 
-The \lpas{} package is located in a separate GitHub repository, has an automated continuous delivery pipeline invoking unit test, code formatting, and linting. The continuous delivery aspect publishes new \texttt{npm} versions in is semi-automated manner. The frontend storage components in \lpa{} are incorporated into frontend codebase. Hence they are validated using the \lpa{} CI and CD pipelines. Some improvements into \lpa{} testing pipelines were introduced, and they are described in detail in \autoref{chap:num_7}.
+The \lpas{} package is located in a separate GitHub repository, has an automated continuous delivery pipeline invoking unit test, code formatting, and linting. The continuous delivery aspect publishes new npm versions in is semi-automated manner. The frontend storage components in \lpa{} are incorporated into frontend codebase. Hence they are validated using the \lpa{} CI and CD pipelines. Some improvements into \lpa{} testing pipelines were introduced, and they are described in detail in \autoref{chap:num_7}.
 
 \subsection{Easy integration with \lpa{}}
 
-The \lpas{} package is distributed via \texttt{npm}, and seamlessly integrated into \lpa{} using the package management software. The frontend storage components are implemented inside the frontend codebase. However, they also maintain a consisted structure that improves code readability and defines the logical separation between functionalities of \lpa{} and \lpas{}.
+The \lpas{} package is distributed via npm, and seamlessly integrated into \lpa{} using the package management software. The frontend storage components are implemented inside the frontend codebase. However, they also maintain a consisted structure that improves code readability and defines the logical separation between functionalities of \lpa{} and \lpas{}.
 
 \subsection{Decentralized storage}
 
