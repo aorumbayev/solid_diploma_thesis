@@ -145,7 +145,7 @@ Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstract
     \item \textit{resourceExists()}, a method that executes the HTTP GET call to check if anything exits under specified path. The response is a simple boolean value.
     \item \textit{getFolder()}, a method that parses the contents of a particular folder and returns it as an array of underlying files and folders wrapped into a simple configuration abstraction. This is mainly used a part of any recursive operations involving folders.
     \item \textit{deleteFolderRecursively()}, a method used to execute recursive deletion of a particular folder. This is demonstrated in detail on \autoref{fig:lps_delete_resource} under a conditional block that is executed when resource is a folder.  
-    \item \textit{createAccessControlStatement()}, \textit{createAccessControlList}, \textit{updateACL()}, \textit{createACL()}, following methods can be found described in \autoref{sssec:access_control_manager_implementation}, as they relate to interacting with ACL resources.
+    \item \textit{createAccessControlStatement()}, \textit{createAccessControlList}, \textit{updateACL()}, \newline{} \textit{createACL()}, following methods can be found described in \autoref{sssec:access_control_manager_implementation}, as they relate to interacting with ACL resources.
 \end{itemize}
 
 It is important to note that the class is not a singleton in contrast with \textit{AuthenticationManager}. This is because all classes are exposed as public and static. The design makes the abstraction generic for many use cases within and outside the bounds of requirements of \lpa{}.
@@ -407,7 +407,7 @@ The main entities displayed on \ref{fig:lpa_frontend_architecture} can be descri
         \begin{itemize}
             \item \textit{State}, refers to the single state value that is managed by the store and returned by \texttt{getState()}. It represents the entire state of a Redux application, which is often a deeply nested object.
             \item \textit{Reducer} specifies how the application's state changes in response to actions sent to the store.
-            \item \textit{Actions} are payloads of information that send data from your application to your store. They are the only source of information for the store. It is invoked by sending them to the store using \texttt{store.dispatch()}.
+            \item \textit{Actions} are payloads of information that send data from your application to your store. They are the only source of information for the store. An action is invoked by sending them to the store using \texttt{store.dispatch()}.
             \item \textit{Selector} is simply any function that accepts the Redux store state (or part of the state) as an argument and returns data that is based on that state.
         \end{itemize}
 \end{itemize}
@@ -448,11 +448,11 @@ As mentioned in \autoref{ssssec:lpa_frontend_code_structure}, let us describe th
 \label{sssec:authentication_view_implementation}
 
 This section continues the architecture and mocks provided in \autoref{ssec:lpas_storage_component_design}, and describes the implementation of the React Component in detail.
-To comply with conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src/frontend/containers/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
+To comply with conventions of \lpa{} frontend, the webpage is represented by two separate React Components, one of which is stateful and the other is stateless and manages the views only. The implementation is located at \texttt{src\-/frontend\-/containers\-/AuthenticationPage} path on \lpa{} repository. The folder is named after the webpage and consist of:
 \begin{itemize}
     \item \textit{AuthenticationContainer}, a file containing the stateful React Component. In other words, it manages local views specific states as well as global states related to Redux.
     \item \textit{AuthenticationComponent}, a file containing implementation of stateless React Component. In other words it is only responsible for passing the React \textit{props} and rendering simple views.
-    \item \textit{SolidProviderComponent}, a file located in a subfolder called \textit{children}, that simply renders the drop-down menu that allows users to pick specific providers.
+    \item \textit{SolidProviderComponent}, a file located in a sub-folder called \textit{children}. Component renders the drop-down menu that allows users to pick specific provi\-der from a list of supported \solid{} providers.
 \end{itemize}
 
 \begin{listing}[H]    
@@ -469,7 +469,7 @@ export const AuthorizationContainer = connect(mapStateToProps)(Authorization);
 \label{lst:map_state_to_props_example}
 \end{listing}
 
-Following that pattern, the \textit{render()} function of \textit{AuthenticationContainer} takes an instance of \textit{AuthenticationComponent} while passing both internal and Redux state as props to it. The global structure of all Redux states in \lpa{} is to specific to be described within the scope of the \lpas{} project, however an examples of states relevant to Authentication View are going to be provided. For instance, the code example at \autoref{lst:map_state_to_props_example} demonstrates a typical example of an operation that maps the Redux states to \textit{props} of a React Component, in this case we are mapping the global \textit{webID} value that is used by React Router to identify whether user is authenticated and can render the dashboard or should be redirected back to the screen. As it was mentioned earlier in \autoref{ssssec:lpa_frontend_code_structure} and \autoref{sssec:authentication_manager_implementation}, the \textit{AppRouter} is one of the main entry points to the frontend web app, and it directly utilizes both \textit{AuthenticationManager} abstraction from Authentication React component. An example code on \autoref{lst:track_session_example} demonstrates a code snippet from \textit{AppRouter} that is invoked every time user session is being authenticated or user is logging out.
+Following that pattern, the \textit{render()} function of \textit{AuthenticationContainer} expects an instance of \textit{AuthenticationComponent} while passing both internal and Redux state as props to it. The global structure of all Redux states in \lpa{} is to specific to be described within the scope of the \lpas{} project, however an examples of states relevant to Authentication View are going to be provided. For instance, the code example at \autoref{lst:map_state_to_props_example} demonstrates a typical example of an operation that maps the Redux states to \textit{props} of a React Component, in this case we are mapping the global \textit{webID} value that is used by React Router to identify whether user is authenticated and can render the dashboard or should be redirected back to the screen. As it was mentioned earlier in \autoref{ssssec:lpa_frontend_code_structure} and \autoref{sssec:authentication_manager_implementation}, the \textit{AppRouter} is one of the main entry points to the frontend web app, and it directly utilizes both \textit{AuthenticationManager} abstraction from Authentication React component. An example code on \autoref{lst:track_session_example} demonstrates a code snippet from \textit{AppRouter} that is invoked every time user session is being authenticated or user is logging out.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -504,7 +504,7 @@ The set of methods inside the \textit{AuthenticationComponent} class can be desc
     \item \textit{handleSignIn} a method that is invoked when is pressing the \textit{Authenticate} button, this redirects a call to \textit{AuthenticationManager} abstraction that initiates the sequence flow described at \autoref{fig:lps_authentication_sequence_diagram}.
     \item \textit{handleWebIdFieldChange} a method invoked when user inputs or modifies the input at the \textit{textfield} used for WebID.
     \item \textit{isWebIdValid} a method that uses \textit{regex} to validate whether provided WebID is in valid format.
-    \item \textit{onSetWithWebId} a method invoked when the \textit{withWebIdStatus} status changes.  
+    \item \textit{onSetWithWebId} a method invoked when the \textit{withWebIdStatus} status is being changed.  
 \end{itemize}
 
 The final rendered UI of this implementation will be provided in the of this chapter under \autoref{ssec:overview_of_implemented_requirements}, where a detailed overview of a final implementation satisfying each of the original \lpa{} requirements are provided.
@@ -629,7 +629,7 @@ The \lpa{} platform has a process called \textit{Application data preparation wo
 \label{fig:create_app_implementation_diagram}
 \end{figure}
 
-A method source code demonstrated on \autoref{lst:save_app_to_solid_chunk} is invoked by \textit{CreateVisualizerPage} and its underlying sub components. As the first step, it simply checks whether the \texttt{webId} is provided. Afterwards, the \texttt{applicationConfigurationObject} is assembled which is a JavaScript \textit{object} with fields corresponding to \lpas{} Ontology. When passed into \textit{StorageBackend} the object is parsed into an \texttt{rdflib} graph, serialized into TTL and uploaded into \solid{} using \lpas{} package.
+A method source code demonstrated on \autoref{lst:save_app_to_solid_chunk} is invoked by \textit{CreateVisualizerPage} and its underlying sub components. As the first step, it simply checks whether the \texttt{webId} is provided. Afterwards, the \texttt{application\-Configuration\-Object} is assembled which is a JavaScript \textit{object} with fields corresponding to \lpas{} Ontology. When passed into \textit{StorageBackend} the object is parsed into an \texttt{rdflib} graph, serialized into TTL and uploaded into \solid{} using \lpas{} package.
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -770,7 +770,7 @@ Deleting an application that was previously published is a trivial task from the
 \begin{figure}[hbt]
 \minipage{0.3\textwidth}
   \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_delete_from_configuration_page.png}}
-  \caption{Option to invoke the deletion confirmation popup on \textit{Application Control and Setup} webpage}
+  \caption{Option to invoke the deletion confirmation popup on \textit{Application Control and Setup} web page}
   \label{fig:lpa_delete_from_configuration_page}
 \endminipage\hfill
 \minipage{0.6\textwidth}

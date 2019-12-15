@@ -55,7 +55,7 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 
 \begin{enumerate}
     \item The user clicks on the 'Authenticate' button. This is the starting point of this sequence diagram that serves as a trigger for \lpa{} to invoke the \lpa{} package.
-    \item The frontend component calls the Authentication Manager and asynchronously waits for a callback. As the main input, it supplies the information about the \solid{} provider that the user would like to use.
+    \item The frontend component calls the Authentication Manager and awaits for a callback. As the main input, it supplies the information about the \solid{} provider that the user would like to use.
     \item The Authentication Manager contacts the \solid{} provider and requests the provider authentication web page. Each provider conforming to \solid{} specification should contain that page.
     \item Depending on the browser environment of the user, he gets redirected to the provider's authentication web page either in a new browser tab or a popup dialog.
     \item The user selects the preferred authentication and inputs the credentials. At the moment of writing this thesis, popular \solid{} server implementations like node-solid-server support both WebID+TLS and WebID-OIDC specifications.
@@ -65,7 +65,7 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 \end{enumerate}
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=12cm]{lps_authentication_sequence_diagram.png}
 \caption{Sequence diagram for \textit{authenticate} operation invoked from \lpa{} frontend.}
