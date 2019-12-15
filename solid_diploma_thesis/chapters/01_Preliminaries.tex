@@ -149,7 +149,7 @@ Generally, we can categorize it into three main parts:
 
 \begin{itemize}
     \item \textbf{\fulllpa{}} - the main platform from LinkedPipes bundle that defines the functional and non-functional requirements for for \lpas{} project. Combines multiple database solutions for Linked Data, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
-    \item \textbf{LinkedPipes Services} - a set of external services provided from LinkedPipes bundle that \lpa{} heavily utilizes. Provides a toolset for identifying how linked data can be discovered, extracted, transformed and loaded into an RDF file for further processing.
+    \item \textbf{\lps{}} - a set of external services provided from LinkedPipes bundle that \lpa{} heavily utilizes. Provides a toolset for identifying how linked data can be discovered, extracted, transformed and loaded into an RDF file for further processing.
 \end{itemize}
 
 \subsubsection{Frontend}
@@ -169,7 +169,7 @@ Additionally, the \lpa{} frontend is the main component that is going to be impr
 
 \subsubsection{Backend}
 
-The function of the backend component is to provide a RESTful API that is used by the frontend component to execute user-requested actions and can also be used by other developers to create their user applications. The backend then implements the communication protocols with external services from LinkedPipes Services bundle. 
+The function of the backend component is to provide a RESTful API that is used by the frontend component to execute user-requested actions and can also be used by other developers to create their user applications. The backend then implements the communication protocols with external services from \lps{} bundle. 
 
 \subsubsection{PostgreSQL} 
 
@@ -191,10 +191,10 @@ Aside from PostgreSQL, another important database technology is OpenLink Virtuos
 
 In general, Virtuoso is a middleware and database engine hybrid that combines the functionality of a traditional \gls{RDBMS}, \gls{ORDBMS}, virtual database, RDF, XML, free-text, web application server and file server functionality in a single system. Rather than having dedicated servers for each of the functionality mentioned above, Virtuoso serves as a universal server instance.
 
-\subsection{LinkedPipes Services} 
+\subsection{\lps{}} 
 \label{ssssec:linkedpipes_services}
 
-The LinkedPipes Services bundle demonstrated on \autoref{fig:lpa_intro_architecture} consists of two open-source software solutions developed under the Faculty of Mathematics and Physics at Charles University in Prague. They serve as the providers of core Linked Data processing functionality for \lpa{} platform. Since a significant technical knowledge in Semantic Web is required to use the tools independently, the \lpa{} platform provides a layer on top of them to simplify interactions with those components and make it available for any generic \textit{lay} user. 
+The \lps{} bundle demonstrated on \autoref{fig:lpa_intro_architecture} consists of two open-source software solutions developed under the Faculty of Mathematics and Physics at Charles University in Prague. They serve as the providers of core Linked Data processing functionality for \lpa{} platform. Since a significant technical knowledge in Semantic Web is required to use the tools independently, the \lpa{} platform provides a layer on top of them to simplify interactions with those components and make it available for any generic \textit{lay} user. 
 
 \subsubsection{ETL} 
 
