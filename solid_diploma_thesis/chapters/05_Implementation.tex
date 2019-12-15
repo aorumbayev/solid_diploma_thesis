@@ -64,10 +64,10 @@ The proceeding sections will describe the individual abstractions mentioned in \
 
 This section will continue the architectural description of the Authentication manager described in \autoref{sssec:authentication_manager}, describe the implementation, and provide examples of how the abstraction is used inside \lpa{}.
 
-The \textit{AuthenticationManager} is a Singleton class, instantiated only once and utilized both in the package itself as well as being invoked from \lpa{} frontend codebase. The reason for the class being implemented as a singleton is due to the fact that it wraps the functionality of \texttt{solid-auth-client} library, and it provides a singleton instance as well. Aside from providing the WebID authentication,  \texttt{solid-auth-client} implements a WebID OIDC specific \textit{fetch} functionality. The \textit{FETCH API} is originally a JavaScript API that provides an ability to send asynchronous \texttt{HTTP} calls. The implementation in \texttt{solid-auth-client}, is based on \texttt{isomorpic-fetch}, which is a third party framework that implements the \textit{Fetch API} both for browsers and Node.js. Hence, the abstraction is used for:
+The \textit{AuthenticationManager} is a Singleton class, instantiated only once and utilized both in the package itself as well as being invoked from \lpa{} frontend codebase. The reason for the class being implemented as a singleton is due to the fact that it wraps the functionality of \texttt{solid-auth-client} library, and it provides a singleton instance as well. Aside from providing the WebID authentication,  \texttt{solid-auth-client} implements a WebID OIDC specific \textit{fetch} functionality. The \textit{FETCH API} is originally a JavaScript API that provides an ability to send asynchronous HTTP calls. The implementation in \texttt{solid-auth-client}, is based on \texttt{isomorpic-fetch}, which is a third party framework that implements the \textit{Fetch API} both for browsers and Node.js. Hence, the abstraction is used for:
 \begin{itemize}
     \item Authentication, and ability to track the user session with callbacks. 
-    \item Sending \texttt{HTTP} calls to \solid{} server.
+    \item Sending HTTP calls to \solid{} server.
 \end{itemize}
 
 
@@ -117,7 +117,7 @@ login = async (idp, callbackUri) => {
 \label{lst:lpas_login_wrapper}
 \end{listing}
 
-To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} package. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a \texttt{HTTP} request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
+To sum up, the \textit{AuthenticationManager} is a simple and straightforward singleton abstraction that wraps the \texttt{solid-auth-client} library and only necessary functions from the wrapped library to be used inside \lpas{} package. The examples of invocation from within the \lpas{} package are limited to directly calling the \textit{fetch()} method whenever a HTTP request is assembled and needs to be executed, more details on that will be described in a section dedicated to \textit{FileManager} abstraction.  
 
 \subsection{File Manager}
 \label{sssec:file_manager_implementation}
@@ -131,18 +131,18 @@ In this subsection, we will continue on the \textit{FileManager} abstraction des
 \label{fig:lpas_filemanager_implementation_class}
 \end{figure}
 
-Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstraction is implemented as a TypeScript class providing a set of public static methods. It is responsible for all core \textit{CRUD} operations with \solid{} resources. It is important to note that all \texttt{HTTP} requests to \solid{} server are made using the \textit{fetch()} method invoked via \textit{AuthenticationManager}. In other words \textit{FileManager} relies on \textit{AuthenticationManager} when performing \texttt{HTTP} requests. To follow up a class representation on \autoref{fig:lpas_filemanager_implementation_class}, the methods can be described as follows:
+Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstraction is implemented as a TypeScript class providing a set of public static methods. It is responsible for all core \textit{CRUD} operations with \solid{} resources. It is important to note that all HTTP requests to \solid{} server are made using the \textit{fetch()} method invoked via \textit{AuthenticationManager}. In other words \textit{FileManager} relies on \textit{AuthenticationManager} when performing HTTP requests. To follow up a class representation on \autoref{fig:lpas_filemanager_implementation_class}, the methods can be described as follows:
 \begin{itemize}
     \item \textit{createResource()}, a function is responsible for creating new \solid{} resources. 
     \item \textit{deleteFolderContents()}, a function is mainly used for cleaning up the content of a particular folder. It iterates the contents and recursively deletes underlying folders and files.
     \item \textit{deleteResource()}, a function responsible for deleting individual resources from a \solid{} POD. Following the sequence flow presented on \autoref{fig:lps_rename_resource}, depending on the type of the resource it will either remove it directly or attempt to clean it recursively if the resource is an \textit{LDP-BC}.
-    \item \textit{getResource()}, a basic function executing a \texttt{GET} call to obtain a resource content from a \solid{} server.
+    \item \textit{getResource()}, a basic function executing a GET call to obtain a resource content from a \solid{} server.
     \item \textit{copyFile()}, a basic function performing a copy operation on an \textit{LDPR}.
     \item \textit{copyResource()}, a generic method performing a copy operation on a resource. Depending on the type of the resource it either invokes the \textit{copyFile()} directly or, if resource is an \textit{LDP-BC}, it performs a recursive copying.
     \item \textit{renameResource()}, a method responsible for changing the title of the resource inside the \solid{} POD. In that case it simply means changing the absolute path to resource, where the name is the last element in the path. This function is described in detail on \autoref{ssssec:renaming_resources}. The operation involves invocation of several simpler methods from the \textit{FileManager} abstraction.
-    \item \textit{updateResource()}, a generic function executing an \texttt{HTTP} \texttt{PUT} request for a particular resource.
+    \item \textit{updateResource()}, a generic function executing an HTTP PUT request for a particular resource.
     \item \textit{createOrUpdateResource()}, a method used in cases when a resource needs to be updated even if a different resource exists under that path. If a nothing exists under supplied path, resource will be created, if an object exists under particular path then it will be removed first.
-    \item \textit{resourceExists()}, a method that executes the \texttt{HTTP} \texttt{GET} call to check if anything exits under specified path. The response is a simple boolean value.
+    \item \textit{resourceExists()}, a method that executes the HTTP GET call to check if anything exits under specified path. The response is a simple boolean value.
     \item \textit{getFolder()}, a method that parses the contents of a particular folder and returns it as an array of underlying files and folders wrapped into a simple configuration abstraction. This is mainly used a part of any recursive operations involving folders.
     \item \textit{deleteFolderRecursively()}, a method used to execute recursive deletion of a particular folder. This is demonstrated in detail on \autoref{fig:lps_delete_resource} under a conditional block that is executed when resource is a folder.  
     \item \textit{createAccessControlStatement()}, \textit{createAccessControlList}, \textit{updateACL()}, \textit{createACL()}, following methods can be found described in \autoref{sssec:access_control_manager_implementation}, as they relate to interacting with ACL resources.
@@ -150,7 +150,7 @@ Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstract
 
 It is important to note that the class is not a singleton in contrast with \textit{AuthenticationManager}. This is because all classes are exposed as public and static. The design makes the abstraction generic for many use cases within and outside the bounds of requirements of \lpa{}.
 
-The \solid{} resource within the \lpas{} package is represented by \textit{ResourceConfiguration} abstraction that is a basic required input for most of the operations in \textit{FileManager} that involve execution of \texttt{HTTP} requests. The proceeding \autoref{ssssec:lpas_resource_config_implementation} will provide more details on implementation of this class and the relation to \textit{FileManager}.
+The \solid{} resource within the \lpas{} package is represented by \textit{ResourceConfiguration} abstraction that is a basic required input for most of the operations in \textit{FileManager} that involve execution of HTTP requests. The proceeding \autoref{ssssec:lpas_resource_config_implementation} will provide more details on implementation of this class and the relation to \textit{FileManager}.
  
 \subsubsection{Resource Configuration}
 \label{ssssec:lpas_resource_config_implementation}
@@ -177,7 +177,7 @@ The \textit{SolidResource} interface consist of the following:
     \item \textit{type}, an enumerator property represented on \autoref{lst:lpas_resource_type_enum}. Type is either a \textit{Folder} or a \textit{File}.
     \item \textit{path}, a \texttt{string} property representing a full absolute path excluding the filename itself. The reason why filename is excluded is to simplify the interactions within \textit{FileManager} class and provide more flexibility when operating with resources.
     \item \textit{title}, a \texttt{string} property representing the tile of the resource. The extension of the resource is not included.
-    \item \textit{contentType}, an optional \texttt{string} property representing the content type header to be passed when constructing and \texttt{HTTP} request to  manipulate this resource. If value is not provided, a TTL extension is used by default.
+    \item \textit{contentType}, an optional \texttt{string} property representing the content type header to be passed when constructing and HTTP request to  manipulate this resource. If value is not provided, a TTL extension is used by default.
     \item \textit{body}, an optional \texttt{string} property holding a content of the resource. The property is marked optional because there are cases when an empty folder resource need to be created, from an \lpa{} developer point, he does not need to provide any content to create an empty folder resource.
     \item \textit{isPublic}, an optional \textit{boolean} indicating whether the file is controlled only by the creator, owner or can have public read access. This is closely related to \textit{AccessControlManager} abstraction described in \autoref{sssec:access_control_manager_arch}. The proceeding section will describe the implementation of that abstraction in detail.  
 \end{itemize}
@@ -227,13 +227,12 @@ In this particular case, a folder resource \textit{ResourceConfig} class instanc
 \subsection{Access Control Manager}
 \label{sssec:access_control_manager_implementation}
 
-%TODO add citation to acl specification
 This subsection provides details on implementation of the \textit{AccessControlManager} abstraction from \autoref{sssec:access_control_manager_arch} section. Despite being called a separate abstraction, it is in fact implemented as a set of additional public static methods inside the \textit{FileManager} abstraction as seen on \autoref{fig:lpas_filemanager_implementation_class} diagram. Essentially every ACL resource is yet another resource represented as \textit{LDPR} in \solid{}. However the functional implication of those resource are more specific and require extra information and functionality to operate with them. That is why it is separated conceptually as a different abstraction but is implemented inside the same class called \textit{FileManager}. 
 
 Referring back to \autoref{fig:lpas_filemanager_implementation_class}, the main methods related to the abstraction are described as follows:
 \begin{itemize}
-    \item \textit{updateACL()}, a method constructing the array of RDF triples that is later serialized into a TTL and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server, replacing the previous resource under that path.
-    \item \textit{createACL()}, a method constructing the array of RDF triples that is later serialized into a TTL and send as a body in \texttt{HTTP} \texttt{PUT} request to \solid{} server.
+    \item \textit{updateACL()}, a method constructing the array of RDF triples that is later serialized into a TTL and send as a body in HTTP PUT request to \solid{} server, replacing the previous resource under that path.
+    \item \textit{createACL()}, a method constructing the array of RDF triples that is later serialized into a TTL and send as a body in HTTP PUT request to \solid{} server.
     \item \textit{createAccessControlStatement()}, a method constructing the array of RDF triples expressing access control for a particular WebID. 
     \item \textit{createAccessControlList()}, a method assembling an array of access control statements for multiple requested WebIDs using \textit{createAccessControlStatement()}, and as result serializes the array of statements into a raw TTL \texttt{string} using \texttt{rdflib}.
 \end{itemize}
@@ -313,7 +312,7 @@ const response = await StorageFileManager.updateACL(
 
 In this case, a folder resource is expressed as a \textit{ResourceConfig} class instance under \textit{configurationsFolderConfig} constant and \textit{configurationsAclResourceConfig} constant is created based on it to express and ACL file. Using the ES6 \texttt{spread} operator we populate the description of the folder resource as follows '\texttt{...configurationsFolderConfig.resource}'. Afterwards, the access control modes are supplied in an array giving the ability to \textit{Read} and \textit{Write} to that resource to anyone by default. In the last step the specify the webId of the owner of the resource and the ACL file to be created and supply the constructed \textit{AccessControlConfig} into \textit{updateACL()} method that is demonstrated in detail on this sequence \autoref{fig:lps_acl_update_flow}.
 
-To sum up, the section provided an overview of three main abstractions inside \lpas{} package. The \textit{AuthenticationManager} used as a main class to deal with WebID based authentications for \lpa{} platform. The \textit{FileManager}, responsible for managing all \texttt{HTTP} requests to manipulate resources in a \solid{} resource. \textit{AccessControlManager} abstraction that significantly simplified the interactions with \solid{} inside \lpa{} frontend significantly and gave an ability to implement more advanced access control related features to configure the published \lpa{} visualizers. This will be demonstrated in detail in \autoref{sssec:lpas_storage_frontend_implementation}. The consequitive section will describe the \lpas{} Ontology originally described in \autoref{fig:lps_acl_update_flow}, its implementation and hosting.
+To sum up, the section provided an overview of three main abstractions inside \lpas{} package. The \textit{AuthenticationManager} used as a main class to deal with WebID based authentications for \lpa{} platform. The \textit{FileManager}, responsible for managing all HTTP requests to manipulate resources in a \solid{} resource. \textit{AccessControlManager} abstraction that significantly simplified the interactions with \solid{} inside \lpa{} frontend significantly and gave an ability to implement more advanced access control related features to configure the published \lpa{} visualizers. This will be demonstrated in detail in \autoref{sssec:lpas_storage_frontend_implementation}. The consequitive section will describe the \lpas{} Ontology originally described in \autoref{fig:lps_acl_update_flow}, its implementation and hosting.
 
 \section{Hosting Storage Ontology}
 \label{ssec:storage_ontology_implementation}
@@ -751,7 +750,7 @@ patchFileWithQuery = async (url, query) => {
   }
 };
 \end{minted}
-\caption{The \textit{patchFileWithQuery} method in \textit{StorageSparqlClient} class is used for executing the \texttt{PATCH} requests to \solid{} servers.} 
+\caption{The \textit{patchFileWithQuery} method in \textit{StorageSparqlClient} class is used for executing the PATCH requests to \solid{} servers.} 
 \label{lst:lpapp_patch_file_with_query}
 \end{listing}
 
@@ -796,7 +795,7 @@ The ability to modify the filters on a published visualizer is another important
 \end{figure}
 
 
-The implementation of methods processing these operations are done in \textit{StorageToolbox}, \textit{StorageBackend} and \textit{StorageSparqlClient} classes, and similar to \textit{Renaming Application} procedure, the core logic simply constructs the required \texttt{SPARQL} queries and executes them using \texttt{HTTP} \texttt{PATCH} request. Example on \autoref{lst:lpapp_sample_set_filter_sparql} demonstrates the construction of \texttt{SPARQL} query that processes multiple filter selections in a single \texttt{PATCH} call.  
+The implementation of methods processing these operations are done in \textit{StorageToolbox}, \textit{StorageBackend} and \textit{StorageSparqlClient} classes, and similar to \textit{Renaming Application} procedure, the core logic simply constructs the required \texttt{SPARQL} queries and executes them using HTTP PATCH request. Example on \autoref{lst:lpapp_sample_set_filter_sparql} demonstrates the construction of \texttt{SPARQL} query that processes multiple filter selections in a single PATCH call.  
 
 \begin{listing}[H]    
 \begin{minted}[breaklines,frame=single,framerule=1pt]{javascript}
@@ -877,7 +876,7 @@ The implementation of \textit{AccessControlManager} abstraction in \autoref{ssse
 \begin{itemize}
     \item \textit{Public access} switch, this element controls the default public access to a published application. By default, \lpa{} sets the \textit{READ} public access so that anyone can access the published application by default. However, the user has an option to toggle the control element and disable default public visibility. 
     \item \textit{List of collaborators}, this element lists the contacts knows to user's \textit{WebID}. The querying of knows contacts is performed using \texttt{rdflib} library accessed via \lpas{} package. 
-    \item \textit{Friends and Contacts} dropdown, this element is a selector for sending invitations to share the published visualizer with other users of the platform. The next subsection will provide more details on the collaborative sharing feature implemented as an additional functionality on top of the initial functional requirement. Collaborative sharing features implementation is inspired by \TODO{cite ldn} and uses the \textit{ActivityStreams} vocabulary \TODO{cite activity streams}. However, due to the specificity of \lpa{}, it does not strictly follow all requirements of that specification. 
+    \item \textit{Friends and Contacts} dropdown, this element is a selector for sending invitations to share the published visualizer with other users of the platform. The next subsection will provide more details on the collaborative sharing feature implemented as an additional functionality on top of the initial functional requirement. Collaborative sharing features implementation is inspired by \textit{\gls{LDN}} \cite{ldn} and uses the \textit{ActivityStreams} vocabulary \cite{activitystreams}. However, due to the specificity of \lpa{}, it does not strictly follow all requirements of that specification. 
 \end{itemize}
 
 \subsubsection{Collaborative sharing}

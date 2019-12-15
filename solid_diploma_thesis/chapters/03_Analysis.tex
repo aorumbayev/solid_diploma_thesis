@@ -139,11 +139,9 @@ The provided server implementation was used as a main \solid{} server for the pr
 \begin{itemize}
 	\item \textbf{Easy integration with current \lpa{} project}, specifically the frontend web project. This allows usage of provided `node-solid-server.js` library.
     \item \textbf{Active maintenance by open-source community}. Aside from that, this server implementation is considered to be a default option suggested by creators of \solid{}.
-    \item \textbf{Support of \texttt{WebID IdP}, \texttt{WebID-TLS}, \texttt{WebID-OIDC}}. This implies majority of WebID communications protocols,
-    crucial to the user authentication and security aspects of the storage within \lpa{}.
+    \item \textbf{Support of \textit{WebID-TLS} and \textit{WebID-OIDC}}. This implies majority of WebID communications protocols,
+    crucial to the user authentication and security aspects of the storage within \lpa{}. The WebID-TLS stands for a WebID authentication method over TLS, providing am efficient and user friendly authentication on the Web \cite{webid_tls}. The WebID-OIDC is an authentication delegation protocol suitable for WebID-based decentralized systems such as \solid{} \cite{webid_oidc}.
 \end{itemize}
-
-% TODO add definitions for WebID authentication protocols 
 
 \subsection{The \solid{} React development stack}
 

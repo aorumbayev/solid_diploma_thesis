@@ -76,7 +76,7 @@ Multiple section in \autoref{chap:num_4} and \autoref{chap:num_5} will refer to 
  
 \section{\solid{}}
 
-To start with, one of many definitions of SOLID project, for developers, it can be referred to as a set of conventions and building tools for decentralized social applications based on Linked Data concepts. The open-source community actively maintains the project, and at the moment of writing this thesis project, the latest iteration of the specification \footnote{} is equal to version \texttt{v0.7.0}. On the other hand, for an average internet user, the term \solid{} is intended to be associated with a whole ecosystem of personal private storages where data is stored in a secure and decentralized fashion. The essential concepts of solid are defined as follows:
+To start with, one of many definitions of SOLID project, for developers, it can be referred to as a set of conventions and building tools for decentralized social applications based on Linked Data concepts. The open-source community actively maintains the project, and at the moment of writing this thesis project, the latest iteration of the specification \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}} is equal to version \texttt{v0.7.0}. On the other hand, for an average internet user, the term \solid{} is intended to be associated with a whole ecosystem of personal private storages where data is stored in a secure and decentralized fashion. The essential concepts of \solid{} are defined as follows:
 \begin{itemize}
     \item \solid{} \gls{POD}, is a personal websites that serve as online storages for users. The user has full control over his POD and can upload and store any data inside it. The data is either expressed as an RDF, if possible or has a generated RDF metadata attached to a file to preserve the semantics of it. In other words, one of the distinct features states in \solid{} specification is the requirement to have all data in PODs to be represented in RDF. PODs created and hosted by instances of a \solid{} servers.
     \item \solid{} Server, is an instance of a web server that is compliant to a \solid{} specification. It is responsible for managing users and creating, updating, or deleting instances of PODs belonging to users.
@@ -114,14 +114,7 @@ The following subsection provides a better formal understanding of the platform 
     \item \textit{Timeline} visualizer is a generic diagram that allows displaying usage of resources over time.
 \end{itemize}  
 
-\begin{figure}[h]
-\centering
-\fcolorbox{black}{white}{\includegraphics[width=0.4\linewidth]{lpa_logo.png}}
-\caption{Official \lpa{} logo designed by author as a part of separate contribution into that software project.}
-\label{fig:lpa_logo.png}
-\end{figure}
-
- A simple user story demonstrate on \autoref{fig:lpa_user_story} describes the platform as follows:
+A simple user story demonstrate on \autoref{fig:lpa_user_story} describes the platform as follows:
 \begin{enumerate}
     \item \textit{John creates an application}. Assume a Data Journalist user named John that has some Linked Data that he wants to visualize and publish on his website. He uses the \lpa{} and creates his application by following the platform instructions and providing the Linked Data sources to visualize.  
     \item \textit{\lpa{} extracts and visualizes data}. After inputs from John are provided, the platform is extracting and parsing his data into a format convenient for a visualize that the user selected.
@@ -138,7 +131,7 @@ This general user story represents the most generic interaction flow with \lpa{}
     \label{fig:lpa_user_story}
 \end{figure}
 
-It is important to note that the creation and publishing aspects of the \lpa{} are one of the requirements for \lpa{} that will be described in detail in \autoref{chap:num_3}. 
+It is important to note that the creation and publishing aspects of the \lpa{} are one of the requirements for \lpas{} that will be described in detail in \autoref{chap:num_3}. 
 
 \subsection{Components overview}
 \label{sssec:lpa_preliminaries_component_overview}
@@ -155,7 +148,7 @@ At the lower level, the \lpa{} is a bundle of various complex services and datab
 Generally, we can categorize it into three main parts: 
 
 \begin{itemize}
-    \item \textbf{\lpa{}} - the main platform from LinkedPipes bundle that defines the functional and non-functional requirements for for \lpas{} project. Combines multiple database solutions for Linked Data, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
+    \item \textbf{\fulllpa{}} - the main platform from LinkedPipes bundle that defines the functional and non-functional requirements for for \lpas{} project. Combines multiple database solutions for Linked Data, conventional SQL for storing user related records and implementation of a backend and frontend for creating applications.
     \item \textbf{LinkedPipes Services} - a set of external services provided from LinkedPipes bundle that \lpa{} heavily utilizes. Provides a toolset for identifying how linked data can be discovered, extracted, transformed and loaded into an RDF file for further processing.
 \end{itemize}
 
@@ -196,7 +189,7 @@ The entities stored in the database are described as follows:
 
 Aside from PostgreSQL, another important database technology is OpenLink Virtuoso\footnote{\url{https://virtuoso.openlinksw.com}} which is used for storing all Linked Data sources processed by LinkedPipes ETL pipelines, and that is later used by \lpa{} visualizers. The important note to mention is that in contrast with PostgreSQL that is only used for all user-related information that needs to be stored, Virtuoso is only used for storing Linked Data. 
 
-In general, Virtuoso Universal Server is a middleware and database engine hybrid that combines the functionality of a traditional Relational database management system (RDBMS), Object-relational database (ORDBMS), virtual database, RDF, XML, free-text, web application server and file server functionality in a single system. Rather than having dedicated servers for each of the functionality mentioned above, Virtuoso serves as a universal server instance.
+In general, Virtuoso is a middleware and database engine hybrid that combines the functionality of a traditional \gls{RDBMS}, \gls{ORDBMS}, virtual database, RDF, XML, free-text, web application server and file server functionality in a single system. Rather than having dedicated servers for each of the functionality mentioned above, Virtuoso serves as a universal server instance.
 
 \subsection{LinkedPipes Services} 
 \label{ssssec:linkedpipes_services}
@@ -205,7 +198,7 @@ The LinkedPipes Services bundle demonstrated on \autoref{fig:lpa_intro_architect
 
 \subsubsection{ETL} 
 
-LinkedPipes ETL is an RDF-based, lightweight \gls{ETL} tool for Linked Data \cite{etl}. It is not only a stand-alone application, but it also exposes a \acrshort{API} through which third-parties can execute the ETL process. 
+LinkedPipes ETL is an RDF-based, lightweight \gls{ETL} tool for Linked Data \cite{etl}. It is not only a stand-alone application, but it also exposes a \acrshort{API} through which third-parties can execute the ETL process. In formal terms, a service performs the core computational work by querying the graphs of data sources provided by a user and attempting to transform that data into a format that can be later converted into an input for visualizations. 
 
 \subsubsection{Discovery} 
 

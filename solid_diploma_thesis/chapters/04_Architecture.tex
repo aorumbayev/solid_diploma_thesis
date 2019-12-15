@@ -76,32 +76,31 @@ Sequence diagram on \autoref{fig:lps_authentication_sequence_diagram} demonstrat
 \subsection{File Manager}
 \label{sssec:file_manager}
 
-The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with Linked Data Platform specification. The Linked Data Platform or LDP is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers \cite{lpd_specification}. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
+The File Manager is responsible for implementing the CRUD operations for the \solid{}  providers that are compliant with Linked Data Platform specification. The \gls{LDP} is a specification that is reused and extended in the \solid{} specification to describe the REST API for interacting with LDP Resources and LDP Containers \cite{lpd_specification}. LDP Resources and LDP Containers are, in some sense, the basic building blocks of any \solid{} POD, since they allow users to create any files and folders. 
 
 As mentioned earlier, the \solid{} specification is re-using the LDP specification to provide a RESTful set of operations to interact with any compliant implementation of that specification. 
 
 The LDP has an extensive set of resource types that are suited for defining the folder and files. However, the architecture provided is relying on two common resource terminologies that were simple enough to cover the requirements without complicating the design of the architecture. Those resources are defined as follows:
-% TODO {OK, I see the definitions here. Again, some reordering/rephrasing should help with the undefined terms. Nevertheless, the terms you use deserve a definition. Also see the definition latex environment to make the text more formal.}
 
 \begin{itemize}
 %    Cite resource 
      \item Linked Data Platform Basic Container (LDP-BC), is a Linked Data Platform Basic Container. An LDP-RS representing a collection of linked documents that respond to client requests for creation, modification, and enumeration of its linked members and documents, and that conforms to the simple lifecycle patterns and conventions.
-    \item An \texttt{HTTP} resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions, in other words any resource that can be \textit{created}, \textit{updated}, \textit{deleted} and \textit{red}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
+    \item An HTTP resource whose state is represented in any way that conforms to the simple lifecycle patterns and conventions, in other words any resource that can be \textit{created}, \textit{updated}, \textit{deleted} and \textit{red}. The LDP servers process the CRUD operations to manipulate the lifecycle of LDPRs.
 \end{itemize}
 
 
 \subsubsection{Creating resources}
 
-The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a \texttt{POST} \texttt{HTTP} request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
+The essential operation that is at the core of most functional requirements defined earlier is the ability to create a resource in a POD. Using the NSS server as a basis, the general convention for creating LDP resources is a POST HTTP request providing a link to the POD using the path where resource needs to be created. As demonstrated on \autoref{fig:lpas_create_resource} the creation consist of the following steps:
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of resource, whether it is a folder or a file. Additionally, it describes the required information to identify the resource within the POD.
-    \item \lpas{} constructs an \texttt{HTTP} \texttt{POST} request to create the resource in POD in \solid{} server, the response is forwarded asynchronously.
+    \item \lpas{} constructs an HTTP POST request to create the resource in POD in \solid{} server, the response is forwarded asynchronously.
 \end{enumerate}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8cm]{lpas_create_resource.png}
-\caption{Sequence diagram for \texttt{POST} resource operation invoked from StorageFileManager.}
+\caption{Sequence diagram for POST resource operation invoked from StorageFileManager.}
 \label{fig:lpas_create_resource}
 \end{figure}
 
@@ -111,7 +110,7 @@ Reading the resources demonstrated on figure \ref{fig:lps_get_resource_sequence}
 
 \begin{enumerate}
     \item \lpa{} frontend invokes the FileManager abstraction with a request specified in \texttt{ResourceConfig} abstraction. The configuration provided contains information on the type of the resource, whether it is a folder or a file, as well as all required information to identify the resource within the POD.
-    \item \lpas{} constructs an \texttt{HTTP} \texttt{GET} request to obtain the information from \solid{} server from the provider, the response is forwarded asynchronously.
+    \item \lpas{} constructs an HTTP GET request to obtain the information from \solid{} server from the provider, the response is forwarded asynchronously.
 \end{enumerate}
 
 
@@ -120,7 +119,7 @@ As demonstrated in the steps above, the LDP specification provides advantages by
 \begin{figure}[h]
 \centering
 \includegraphics[width=8cm]{get_resource.png}
-\caption{Sequence diagram for \texttt{GET} resource operation invoked from StorageFileManager.}
+\caption{Sequence diagram for GET resource operation invoked from StorageFileManager.}
 \label{fig:lps_get_resource_sequence}
 \end{figure}
 
@@ -150,7 +149,7 @@ The flow in the sequence diagram displayed in figure \ref{fig:lps_rename_resourc
 
 \subsubsection{Deleting resources}
 
-The deletion of resources is slightly more complicated in comparison with the trivial \texttt{GET}, \texttt{POST}, \texttt{PUT}, and \texttt{PATCH} operations described in earlier sections. The main goal here is to differentiate the type of the resource, and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
+The deletion of resources is slightly more complicated in comparison with the trivial GET, POST, PUT, and PATCH operations described in earlier sections. The main goal here is to differentiate the type of the resource, and depending on whether it is an LDP Basic Container or generic LDP Resource, act accordingly to delete all files under that resource. 
 The flow from figure \ref{fig:lps_delete_resource} can be described as follows:
 
 \begin{enumerate}
@@ -212,7 +211,7 @@ The main function provided by the abstraction is an ACL file generator. The flow
     \item Create individual triples for public access if the resource itself is marked as public.
     \item Gather and parse those triples into a rdflib abstraction representing an RDF Graph.
     \item Serialize this graph instance into a string representing a TTL file.
-    \item Finally performs an \texttt{HTTP} call, that uses \texttt{PUT} to create an ACL file attached to a specified resource.
+    \item Finally performs an HTTP call, that uses PUT to create an ACL file attached to a specified resource.
 \end{enumerate}
 
 This concludes the section demonstrating the essential abstractions within the \lpas{} package. The consecutive chapters dedicated to Documentation will cover and provide more details regarding less significant classes and utilities available inside the package.
@@ -279,8 +278,7 @@ The \textit{FilterGroup} class is closely related to Filter and FilterConfigurat
 \label{fig:lpas_vocabulary_usage}
 \end{figure}
 
-In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{\url{https://json-ld.org}}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into TTL files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to implementation chapter.
-%TODO add reference to implementation   
+In order to simplify adoption of this ontology in \lpa{} frontend, the resulting ontology was converted into a JSON-LD Schema \footnote{\url{https://json-ld.org}}, as shown on \autoref{fig:lpas_vocabulary_usage}. However, due to some limitations in NSS, the individual \texttt{jsonld} configurations had to be converted into TTL files when stored in \solid{}. For more details on adoption and  implementation of this ontology refer to \autoref{chap:num_5}.
 
 
 \section{Storage Component Design}
