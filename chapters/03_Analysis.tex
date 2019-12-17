@@ -58,6 +58,7 @@ The \autoref{chap:num_5} describes the specific of creation, storing and publish
 
 The diagram is described as follows:
 \begin{itemize}
+    \TODO{I think Store app should not include Publish app. Publish app should extend store app.}
     \item \textit{Create application}, the platform provides an ability for Data Journalists to create an application. The process of creation of an application within \lpa{} also assumes that it is consequently \textit{Stored} and \textit{Published} via a set of interactions with storage.
     \item \textit{Upload application to storage}, a platform provides an API or a library for LPA Developers to perform uploading of an application into the storage solution.
     \item \textit{Browse published application}, a platform provides a way for any Lay User to browse the published application created by Data Journalists. This is included as a part of the requirement since publishing is directly interacting with storage, and implementation of the requirement applies to both \lpas{} and \lpa{} platform.
@@ -75,6 +76,7 @@ The last set of requirements is related to storage management and the sharing of
 \label{fig:lpa_managing_storage}
 \end{figure}
 
+\TODO{again, the includes seem wrong. When UC1 includes UC2, it means that UC2 is necessary/mandatory for UC1. In this case it would mean that whenever I "manage" storage, I need to delete data and edit data, etc. I get what you try to say, but "includes" means something else. I would consider using "inheritance" for this }
 As demonstrated on \autoref{fig:lpa_managing_storage}, the main elements are described as follows:
 \begin{itemize}
     \item \textit{Manage storage}, the functionality of the platform to allow Data Journalists (Platform Users) to interact and manipulate data in their storage. In the case of \lpa{}, it is limited to visualizer application-related data only. 

@@ -358,7 +358,7 @@ The resulting ontology created in \texttt{Protégé} was represented as an OWL w
 
 The \textit{Ontoology} itself is an open-source project that can be instantiated and configured manually. It is, however, also available as a standalone running instance \footnote{\url{http://ontoology.linkeddata.es}}. The publishing of the \lpas{} Ontology was done using the available instance instead of manually configuring one, this significantly reduced the development time needed to publish and host the vocabulary to be used in \lpa{} frontend.
 
-The initial configuration or startup guide to \textit{Ontology} consist of the following steps: 
+The initial configuration or startup guide to \TODO{oo} \textit{Ontology} consist of the following steps: 
 \begin{enumerate}
     \item \textit{Setup a GitHub repository}, an exported OWL file from \texttt{Protégé} was hosted on a regular public GitHub repository \footnote{\url{https://github.com/aorumbayev/linkedpipes_applications_ontology}} and placed at the root.
     \item \textit{Add repository to Ontoology}, add the repository by name into Ontology, and press \textit{Watch this repo} button. This is pretty much the last step involving any manual work. The following steps are all invoked in an automated fashion, demonstrating the full list of benefits provided by this software.
@@ -403,7 +403,7 @@ The main entities displayed on \ref{fig:lpa_frontend_architecture} can be descri
 
 \begin{itemize}
     \item \textit{React Component}, a JavaScript class or function that optionally accepts inputs, i.e., properties(props), and returns a React element that describes how a section of the UI (User Interface) should appear. 
-    \item \textit{Redux} represents a container that stores various states of the web application per individual webpage.
+    \item \textit{Redux} represents a container that stores various states of the web application per individual webpage. \TODO{this is duplicate of redux description earlier - it should link there}
         \begin{itemize}
             \item \textit{State}, refers to the single state value that is managed by the store and returned by \texttt{getState()}. It represents the entire state of a Redux application, which is often a deeply nested object.
             \item \textit{Reducer} specifies how the application's state changes in response to actions sent to the store.
