@@ -409,7 +409,7 @@ The main entities displayed on \ref{fig:lpa_frontend_architecture} can be descri
 \subsubsection{Frontend code structure}
 \label{ssssec:lpa_frontend_code_structure}
 
-The implementation of the \lpa{} frontend is located at the \texttt{src/frontend} path at official \lpa{} repository \footnote{\url{https://github.com/linkedpipes/applications}}  and structured as follows:
+The implementation of the \lpa{} frontend is located at the \texttt{src/frontend} path at official \lpa{} repository \footnote{\url{https://github.com/linkedpipes/applications}} and structured as follows:
 
 \begin{itemize}
     \item \textit{constants} - contains all constants used throughout the frontend component implementation.
@@ -556,6 +556,8 @@ The final rendered UI of this implementation will be provided in \autoref{ssec:o
 This section will iterate over the requirements from \lpa{} stated in \autoref{chap:num_3}, and demonstrate how each of the functional requirement was implemented by classes and abstractions described in previous sections of this chapter. For requirements that directly involved the implementation of React components, detailed renders of final User Interfaces will be provided. It is important to note that this section offers the implementation overview of all stated functional requirements defined in \autoref{ssec:functional_requirements}.
 
 \subsection{User Authentication}
+\label{sssec:user_authentication_implementation}
+
 
 To recap the User Authentication functional requirement, the user of the platform should be able to register an account in the application, log in, and log out. To fulfill the requirement, the Authentication View component described at \autoref{chap:num_1} was implemented. The final render on \autoref{fig:lpa_login_webpage} provides an intuitive User Interface that allows authentication by selecting a default \solid{} provider, as demonstrated on \autoref{fig:lpa_login_webpage_dropdown} or by specifying the WebID for authentication directly. The \textit{Learn more about WebID, and SOLID} button serves as a guide for users new to \solid{}, clicking the button will get them redirected to the official \texttt{inrupt} website. 
 
@@ -607,6 +609,7 @@ The \textit{logout} functionality is available under several components in \lpa{
 \end{figure}
 
 \subsection{Create, Store and Publish Application}
+\label{sssec:create_store_and_publish_application}
 
 The Create and Publish Application requirements are one of the core requirements that are both applicable to \lpas{} and \lpa{} frontend itself. The separation of code contributions to both \lpa{} and \lpas{} was a challenging task. From the standpoint of \lpas{}, an application is created when its configuration is stored as an RDF resource inside \solid{} POD. Having a stored configuration also implies that the application described by this configuration is published because the URI to configuration inside the POD is publicly available by default. In other words, storing creation and publishing of the application are closely related requirements that are easier to cover at once. The section will also focus on the parts of these functional requirements that directly related to interactions with \solid{} server. Additionally, It is important to mention that there is no actual application being stored in the \solid{} pod, the app itself is a React Component that is re-rendered from scratch based on the \lpa{} configuration that is loaded from the storage. 
 
@@ -699,7 +702,7 @@ As the last step of creating and publishing the \lpa{} application, the popup at
 This concludes the demonstration of components and functionality of both \lpa{} and \lpas{} package that implement the functional requirements on storing, publishing and creating \lpa{} configurations. 
 
 \subsection{Configuring Application}
-\label{ssssec:configuring_application_implementation}
+\label{sssec:configuring_application_implementation}
 
 The ability to configure the published applications had a clear and straightforward set of terms to implement. After publishing an application \lpa{} users  to \textit{rename}, \textit{delete} the configuration as well as configure and modify the filters available for the visualiser.
 
