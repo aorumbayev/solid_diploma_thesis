@@ -83,7 +83,7 @@ In other words, once the client is logged in the \solid{} app, consecutive inter
 
 As demonstrated on \autoref{fig:lpas_authentication_class}, the class consist of a set of public methods described as follows:
 \begin{itemize}
-    \item \textit{getInstance()}, this public method returns a singleton instance to an AuthenticationManager.
+    \item \textit{getInstance()}, this public method returns a singleton instance to an \textit{AuthenticationManager}.
     \item \textit{fetch()}, a wrapper redirecting the call to \texttt{solid-auth-client} fetch method.
     \item \textit{login()}, a wrapper redirecting the call to \texttt{solid-auth-client} login method.
     \item \textit{trackSession()}, a method with asynchronous callback notifying the listener when a logout or login operation is performed.
@@ -131,7 +131,7 @@ In this subsection, we will continue on the \textit{FileManager} abstraction des
 \label{fig:lpas_filemanager_implementation_class}
 \end{figure}
 
-Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstraction is implemented as a TypeScript class providing a set of public static methods. It is responsible for all core \textit{CRUD} operations with \solid{} resources. It is important to note that all HTTP requests to \solid{} server are made using the \textit{fetch()} method invoked via \textit{AuthenticationManager}. In other words \textit{FileManager} relies on \textit{AuthenticationManager} when performing HTTP requests. To follow up a class representation on \autoref{fig:lpas_filemanager_implementation_class}, the methods can be described as follows:
+Similar to the \textit{AuthenticationManager}, the \textit{FileManager} abstraction is implemented as a TypeScript class providing a set of public static methods. It is responsible for all core CRUD operations with \solid{} resources. It is important to note that all HTTP requests to \solid{} server are made using the \textit{fetch()} method invoked via \textit{AuthenticationManager}. In other words \textit{FileManager} relies on \textit{AuthenticationManager} when performing HTTP requests. To follow up a class representation on \autoref{fig:lpas_filemanager_implementation_class}, the methods can be described as follows:
 \begin{itemize}
     \item \textit{createResource()}, a function is responsible for creating new \solid{} resources. 
     \item \textit{deleteFolderContents()}, a function is mainly used for cleaning up the content of a particular folder. It iterates the contents and recursively deletes underlying folders and files.
@@ -365,7 +365,7 @@ The initial configuration or startup guide to \textit{Ontoology} consist of the 
     \item \textit{Merge initial PR from Ontoology}, once the repository is connected, an automated PR will be opened that will contain a following list of elements:
     \begin{enumerate}
         \item Diagrams, a folder with pre-generated class hierarchy visualizations of the ontology.
-        \item Documentation, an automatically generated ontology documentation hosted on GitHub Pages on the same repository, and available at \textit{w3id.org} permanent URL redirecting users to GitHub Pages.
+        \item Documentation, an automatically generated ontology documentation hosted on GitHub Pages on the same repository, and available at \textit{w3id.org} permanent \acrfull{URL} redirecting users to GitHub Pages.
         \item Evaluation report, \textit{Ontoology} generates a report that checks various aspects of the implementation of the ontology, providing hints when, for instance, some parts in the description of an entity is missing.
         \item JSON-LD, an original OWL, the file is automatically converted into a JSON-LD file.  
     \end{enumerate}
@@ -378,7 +378,7 @@ The initial configuration or startup guide to \textit{Ontoology} consist of the 
 \label{fig:misc_ontoology_ui}
 \end{figure}
 
-To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host applications. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available at \url{http://w3id.org/def/lpapps}. 
+To sum up, the \lpas{} ontology was implemented using two open-source frameworks called \texttt{Protégé} and \texttt{Ontoology}. The first tool was used as an editor to implement the ontology designed in \autoref{ssec:lpas_application_ontology_arch}. The second tool was used to publish and host applications. The detailed documentation will be mentioned in \autoref{chap:num_8} and is also available online as \href{http://w3id.org/def/lpapps}{hosted documentation}. 
 
 \section{Storage Frontend}
 \label{sssec:lpas_storage_frontend_implementation}
@@ -543,7 +543,7 @@ The Storage Control Panel is rather a simple set of React Components that heavil
 
 In general, the main functionality is located in the \textit{StorageAccessControlDialog} class, it strictly follows the mock at \autoref{fig:lpas_change_folder_mock} and can be described as follows:
 \begin{itemize}
-    \item \textit{handleFolderConfirm()} a method invoked when user clicks on \textit{Update} button. The component then invokes the \textit{StorageToolbox} class that communicates with \textit{FileManager} abstraction in \lpas{} package. For more detailed description of how \lpas{} package performs the \texttt{CRUD} operations on resources in \solid{} PODs refer back to \autoref{chap:num_4}.
+    \item \textit{handleFolderConfirm()} a method invoked when user clicks on \textit{Update} button. The component then invokes the \textit{StorageToolbox} class that communicates with \textit{FileManager} abstraction in \lpas{} package. For more detailed description of how \lpas{} package performs the CRUD operations on resources in \solid{} PODs refer back to \autoref{chap:num_4}.
     \item \textit{handleFolderCopy()} a method invoked when user clicks on \textit{Copy} button. The rest is similar to \textit{handleFolderConfirm()} where \textit{StorageToolbox} is invoked and it communicates with \textit{FileManager} abstraction in \lpas{} package. 
     \item \textit{handleFolderMove()} a method invoked when user clicks on \textit{Move} button. The proceeding invocation chain is identical to methods before.
 \end{itemize}
@@ -695,7 +695,7 @@ As the last step of creating and publishing the \lpa{} application, the popup at
 \begin{figure}[h]
 \centering
 \fcolorbox{black}{white}{\includegraphics[width=0.8\linewidth]{lpa_published_popup.png}}
-\caption{A popup presented after configuration is stored and a published url is ready to be shared.}
+\caption{A popup presented after configuration is stored and a published URL is ready to be shared.}
 \label{fig:lpa_published_app_popup}
 \end{figure}
 
@@ -873,7 +873,7 @@ The implementation of \textit{AccessControlManager} abstraction in \autoref{ssse
 \begin{itemize}
     \item \textit{Public access} switch, this element controls the default public access to a published application. By default, \lpa{} sets the \textit{READ} public access so that anyone can access the published application by default. However, the user has an option to toggle the control element and disable default public visibility. 
     \item \textit{List of collaborators}, this element lists the contacts knows to user's \textit{WebID}. The querying of knows contacts is performed using \texttt{rdflib} library accessed via \lpas{} package. 
-    \item \textit{Friends and Contacts} dropdown, this element is a selector for sending invitations to share the published visualizer with other users of the platform. The next subsection will provide more details on the collaborative sharing feature implemented as an additional functionality on top of the initial functional requirement. Collaborative sharing features implementation is inspired by \textit{\gls{LDN}} \cite{ldn} and uses the \textit{ActivityStreams} vocabulary \cite{activitystreams}. However, due to the specificity of \lpa{}, it does not strictly follow all requirements of that specification. 
+    \item \textit{Friends and Contacts} dropdown, this element is a selector for sending invitations to share the published visualizer with other users of the platform. The next subsection will provide more details on the collaborative sharing feature implemented as an additional functionality on top of the initial functional requirement. Collaborative sharing features implementation is inspired by \textit{\acrfull{LDN}} \cite{ldn} and uses the \textit{ActivityStreams} vocabulary \cite{activitystreams}. However, due to the specificity of \lpa{}, it does not strictly follow all requirements of that specification. 
 \end{itemize}
 
 \subsubsection{Collaborative sharing}

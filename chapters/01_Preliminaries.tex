@@ -10,16 +10,16 @@ The Semantic Web represents the next significant iteration in connecting data an
 
 There are three main technical specifications defining the Semantic Web technologies:
 \begin{itemize}
-	\item \gls{RDF}, is a data modelling language designed for Semantic Web. Every information in Semantic Web is represented in the RDF.
-	\item \gls{SPARQL}, is a query language for Semantic Web. It is mainly designed for querying data across different data sets represented in RDF.
-    \item \gls{OWL} is a knowledge representation language for Semantic Web. It allows defining entities and concepts in a way that enables high reusability for many different applications and purposes. Additionally, it also can be represented in a corresponded \gls{MIME} type, also known as a \textit{OWL} file.
+	\item \acrfull{RDF}, is a data modelling language designed for Semantic Web. Every information in Semantic Web is represented in the RDF.
+	\item \acrfull{SPARQL}, is a query language for Semantic Web. It is mainly designed for querying data across different data sets represented in RDF \cite{sparql_main_spec}.
+    \item \acrfull{OWL} is a knowledge representation language for Semantic Web. It allows defining entities and concepts in a way that enables high reusability for many different applications and purposes. Additionally, it also can be represented in a corresponded \acrfull{MIME} type, also known as a \textit{OWL} file \cite{owl}.
 \end{itemize}  
 
 In other words, the usage of the technology stack mentioned above is what defines a Semantic Web application and differentiates it from any other technologies related to data.
 
 \subsection{RDF}
 
-The Resource Description Framework is a language for representing resources in World Wide Web \cite{rdf}\cite{rdf_primer}. Every element of information in RDF is expressed as relation between entities. The entity in RDF is usually referred to as \textit{resource} and identified by \gls{URI}, in other terms anything identified by URI is a resource. The relation itself is expressed using \textit{triple} notation. A \textit{triple} notation is a statement written as follows, \texttt{\textbf{subject} \textbf{predicate} \textbf{object}}.
+The Resource Description Framework is a language for representing resources in World Wide Web \cite{rdf}\cite{rdf_primer}. Every element of information in RDF is expressed as relation between entities. The entity in RDF is usually referred to as \textit{resource} and identified by \acrfull{URI}, in other terms anything identified by \acrfull{URI} is a resource. The relation itself is expressed using \textit{triple} notation. A \textit{triple} notation is a statement written as follows, \texttt{\textbf{subject} \textbf{predicate} \textbf{object}}.
 
 Consider the following example on \autoref{lst:intro_triple_example}. A \textit{subject} is a person identified by a URI, a \textit{predicate} identified by a URI describes the kind of relationship and lastly the \textit{object} is a resource similar to \textit{subject} and identified by a URI. In other words, the example demonstrating a sentence \textit{Person A knows Person B} expressed in RDF triple notation. A typical RDF document consists of many triple statements, together they can be represented as a directed \textit{graph}, where relation is presented as a directed edge between two vertices. The term graph will be often referred in \autoref{chap:num_4}  and \autoref{chap:num_5}.
  
@@ -35,13 +35,13 @@ http://example.name#Altynbek http://xmlns.com/foaf/0.1/knows http://example.name
 
 RDF has many commonly used serialization formats. The formats heavily utilized in this project can be described as follows:
 \begin{itemize}
-	\item \gls{TTL}, a commonly used textual syntax for RDF. It allows an RDF graph to be written in a compact and easily understandable text form. It supports abbreviations for common usage patterns and datatypes.
-	\item \gls{JSON-LD}, a textual syntax for RDF that adds the benefits of JSON. It is a perfect serialization format for development environments due to the minimal effort needed to transform any JSON objects into JSON-LD. 
+	\item \acrfull{TTL}, a commonly used textual syntax for RDF. It allows an RDF graph to be written in a compact and easily understandable text form. It supports abbreviations for common usage patterns and datatypes.
+	\item \acrfull{JSON-LD}, a textual syntax for RDF that adds the benefits of JSON. It is a perfect serialization format for development environments due to the minimal effort needed to transform any JSON objects into JSON-LD. 
 \end{itemize}
 
 \subsubsection{RDF ontologies}
 
-Referring back to example in \autoref{lst:intro_triple_example}, the resources starting with \texttt{example.name} URIs are chosen at random only for the sake of demonstrating a triple notation. However, the predicate URI is not a random identifier. On the contrary, this URI belongs to a so-called \textit{RDF Vocabulary}. The term usually stands for a grouping of resource identifiers that represent well-knows entities and resources for various domains. The predicate from example belongs to an RDF Vocabulary called \gls{FOAF}. This vocabulary, also usually referred to as \textit{ontology}, provides a set of resource identifiers describing persons, their activities and the relations to other persons. The term ontology and vocabulary will be often used in \autoref{chap:num_4} and \autoref{chap:num_5}, when describing a process of design and implementation of a custom ontology for expressing configurations of applications published with \lpa{} platform.
+Referring back to example in \autoref{lst:intro_triple_example}, the resources starting with \texttt{example.name} URIs are chosen at random only for the sake of demonstrating a triple notation. However, the predicate URI is not a random identifier. On the contrary, this URI belongs to a so-called \textit{RDF Vocabulary}. The term usually stands for a grouping of resource identifiers that represent well-knows entities and resources for various domains. The predicate from example belongs to an RDF Vocabulary called \acrfull{FOAF}. This vocabulary, also usually referred to as \textit{ontology}, provides a set of resource identifiers describing persons, their activities and the relations to other persons \cite{foaf}. The term ontology and vocabulary will be often used in \autoref{chap:num_4} and \autoref{chap:num_5}, when describing a process of design and implementation of a custom ontology for expressing configurations of applications published with \lpa{} platform.
 
 \subsection{SPARQL}
 
@@ -76,13 +76,13 @@ Multiple section in \autoref{chap:num_4} and \autoref{chap:num_5} will refer to 
  
 \section{\solid{}}
 
-To start with, one of many definitions of SOLID project, for developers, it can be referred to as a set of conventions and building tools for decentralized social applications based on Linked Data concepts. The open-source community actively maintains the project, and at the moment of writing this thesis project, the latest iteration of the specification \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}} is equal to version \texttt{v0.7.0}. On the other hand, for an average internet user, the term \solid{} is intended to be associated with a whole ecosystem of personal private storages where data is stored in a secure and decentralized fashion. The essential concepts of \solid{} are defined as follows:
+To start with, one of many definitions of SOLID project, for developers, it can be referred to as a set of conventions and building tools for decentralized social applications based on Linked Data concepts. The open-source community actively maintains the project, and at the moment of writing this thesis project, the latest iteration of the specification \footnote{\url{https://github.com/solid/solid-spec/blob/master/CHANGELOG.md}} is equal to version \texttt{v0.7.0}. On the other hand, for an average Internet user, the term \solid{} is intended to be associated with a whole ecosystem of personal private storages where data is stored in a secure and decentralized fashion. The essential concepts of \solid{} are defined as follows:
 \begin{itemize}
-    \item \solid{} \gls{POD}, is a personal website that serves as an online storage per individual user. The user has full control over his POD and can upload and store any data inside it. The data is either expressed as an RDF, if possible or has a generated RDF metadata attached to a file to preserve the semantics of it. In other words, one of the distinct features states in \solid{} specification is the requirement to have all data in PODs to be represented in RDF. PODs created and hosted by instances of a \solid{} servers.
+    \item \solid{} \acrfull{POD}, is a personal website that serves as an online storage per individual user. The user has full control over his POD and can upload and store any data inside it. The data is either expressed as an RDF, if possible or has a generated RDF metadata attached to a file to preserve the semantics of it. In other words, one of the distinct features states in \solid{} specification is the requirement to have all data in PODs to be represented in RDF. PODs created and hosted by instances of a \solid{} servers.
     \item \solid{} Server, is an instance of a web server that is compliant to a \solid{} specification. It is responsible for managing users and creating, updating, or deleting instances of PODs belonging to users.
     \item WebID is a way to uniquely identify a person, organization, or any other entity using a URI. The URI leads to a \textit{WebID Profile Document}, which is an RDF document expressed in TTL format and contains information describing the agent attached to that WebID. \solid{} servers manage the creation of such WebID Profile Documents and provide URIs to them that are commonly referred to as \textit{Solid WebID} because it is a WebID with a URI that is hosted inside a POD inside an instance of a \solid{} server.
     \item \solid{} Provider, is essentially any organization or entity that hosts a public instance of a \solid{} server. Everyone, whether it is an individual person or an organization, can either create and host their instance of a \solid{} provider by the following documentation on the official website of \textit{Inrupt} \footnote{\url{https://inrupt.com}}. Inrupt is a startup company founded in 2017 by Sir Berners-Lee that is focused on further improvement and enrichment of \solid{} project ecosystem. They also serve as one of the most popular public \solid{} providers where everyone can create a WebID and have a POD hosted in \solid{} servers managed by Inrupt. 
-    \item \gls{ACL}, a list of permissions attached to an object in the filesystem. \solid{} project is using a specification called \textit{Web Access Control (WAC)} \cite{solid_wac_specification}. It applies the generic concepts of ACL to decentralized cross-domain access control systems and describes the management of so-called \textit{ACL resources} in \solid{} PODs. The term ACL, in consecutive chapters, is going to be referred to as an RDF resource in \solid{} conforming to WAC specification, and controlling the control privileges of resources in POD. 
+    \item \acrfull{ACL}, a list of permissions attached to an object in the filesystem. \solid{} project is using a specification called \textit{Web Access Control (WAC)} \cite{solid_wac_specification}. It applies the generic concepts of ACL to decentralized cross-domain access control systems and describes the management of so-called \textit{ACL resources} in \solid{} PODs. The term ACL, in consecutive chapters, is going to be referred to as an RDF resource in \solid{} conforming to WAC specification, and controlling the control privileges of resources in POD. 
 \end{itemize} 
 
 The core terms and concepts summarized above will be actively mentioned, and references in the following chapters and will provide a more in-depth technical overview and definitions of \solid{} specification. 
@@ -101,7 +101,7 @@ As mentioned in \hyperref[chap:introduction]{Introduction}, the \lpa{} project i
 There are two main user groups targeted by \lpa{} platform:
 \begin{itemize}
 	\item \textit{Domain experts}, is a special set of users identified as Semantic Web enthusiasts and people familiar with basic concepts of Linked Data. They have some basic understanding of terms such as RDF, and are able to provide data sources to \lpa{} platform for creating visualizations.
-	\item \textit{Lay users}, represents an set of average internet users with no particular knowledge of Semantic Web and Linked Data. They can access and interact with applications created with \lpa{} platform by \textit{domain experts}.
+	\item \textit{Lay users}, represents an set of average Internet users with no particular knowledge of Semantic Web and Linked Data. They can access and interact with applications created with \lpa{} platform by \textit{domain experts}.
 \end{itemize}
 
 \subsection{Platform description}
@@ -122,7 +122,7 @@ A simple user story demonstrate on \autoref{fig:lpa_user_story} describes the pl
     \item \textit{Bob observes the visualized application}. Bob browses through the website and explores the published visualization without being required to log in or have an account in \lpa{}.
 \end{enumerate}
 
-This general user story represents the most generic interaction flow with \lpa{} platform from the standpoint of its target users. The consecutive sections will dive into more technical details, components, and functional aspects of this platform. 
+This user story represents the most generic interaction flow with \lpa{} platform from the standpoint of its target users. The consecutive sections will dive into more technical details, components, and functional aspects of this platform. 
 
 \begin{figure}[h]
     \centering
@@ -170,7 +170,7 @@ Additionally, the \lpa{} frontend is the main component that is going to be impr
 
 \subsubsection{Backend}
 
-The function of the backend component is to provide a RESTful API that is used by the frontend component to execute user-requested actions and can also be used by other developers to create their user applications. The backend then implements the communication protocols with external services from \lps{} bundle. 
+The function of the backend component is to provide a RESTful \acrfull{API} that is used by the frontend component to execute user-requested actions and can also be used by other developers to create their user applications. The backend then implements the communication protocols with external services from \lps{} bundle. 
 
 \subsubsection{PostgreSQL} 
 
@@ -184,13 +184,13 @@ The entities stored in the database are described as follows:
 \item Running instances of LinkedPipes discovery processes. The LinkedPipes Discovery component is described in detail \autoref{ssssec:linkedpipes_services}.
 \item Running LinkedPipes ETL pipelines. The LinkedPipes ETL component is described in detail in \autoref{ssssec:linkedpipes_services}.
 \item Custom templates of data sources generated by users.
-\end{itemize}.
+\end{itemize}
 
 \subsubsection{Virtuoso DB}
 
 Aside from PostgreSQL, another important database technology is OpenLink Virtuoso\footnote{\url{https://virtuoso.openlinksw.com}} which is used for storing all Linked Data sources processed by LinkedPipes ETL pipelines, and that is later used by \lpa{} visualizers. The important note to mention is that in contrast with PostgreSQL that is only used for all user-related information that needs to be stored, Virtuoso is only used for storing Linked Data. 
 
-In general, Virtuoso is a middleware and database engine hybrid that combines the functionality of a traditional \gls{RDBMS}, \gls{ORDBMS}, virtual database, RDF, XML, free-text, web application server and file server functionality in a single system. Rather than having dedicated servers for each of the functionality mentioned above, Virtuoso serves as a universal server instance.
+In general, Virtuoso is a middleware and database engine hybrid that combines the functionality of a traditional \acrfull{RDBMS}, \acrfull{ORDBMS}, virtual database, RDF, XML, free-text, web application server and file server functionality in a single system. Rather than having dedicated servers for each of the functionality mentioned above, Virtuoso serves as a universal server instance.
 
 \subsection{\lps{}} 
 \label{ssssec:linkedpipes_services}
@@ -199,7 +199,7 @@ The \lps{} bundle demonstrated on \autoref{fig:lpa_intro_architecture} consists 
 
 \subsubsection{ETL} 
 
-LinkedPipes ETL is an RDF-based, lightweight \gls{ETL} tool for Linked Data \cite{etl}. It is not only a stand-alone application, but it also exposes an \acrshort{API} through which third-parties can execute the ETL process. In formal terms, a service performs the core computational work by querying the graphs of data sources provided by a user and attempting to transform that data into a format that can be later converted into an input for visualizations. 
+LinkedPipes ETL is an RDF-based, lightweight \acrfull{ETL} tool for Linked Data \cite{etl}. It is not only a stand-alone application, but it also exposes an \acrshort{API} through which third-parties can execute the ETL process. In formal terms, a service performs the core computational work by querying the graphs of data sources provided by a user and attempting to transform that data into a format that can be later converted into an input for visualizations. 
 
 \subsubsection{Discovery} 
 

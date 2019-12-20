@@ -7,7 +7,7 @@ Aside from definitions of specific requirements, it is important to note that th
 \begin{itemize}
     \item \textit{Data journalists}, this category of actors are one of main target users of \lpa{} platform. They are defined as people familiar with, at least, basics of Semantic Web. They can provide Linked  Data sources to \lpa{} for further visualization and publishing of apps. They are also assumed to have an actual account in the \lpa{} platform.
     \item \textit{Lay users}, this is a second target category of users of \lpa{} platform. They do not have any prior experience with Semantic Web and in most cases, browse the published visualizers created by Data journalists. They are not obliged to have an actual account in the \lpa{} platform.
-    \item \textit{\gls{LPA} Developers}, a developers implementing on \lpa{} platform codebase and main users of \lpas{} features, APIs and functionality to be developed. The majority of details in \autoref{chap:num_5} are focused on developing a developer-friendly software for this category of users.
+    \item \textit{\acrfull{LPA} Developers}, a developers implementing on \lpa{} platform codebase and main users of \lpas{} features, APIs and functionality to be developed. The majority of details in \autoref{chap:num_5} are focused on developing a developer-friendly software for this category of users.
 \end{itemize}
 
 \section{Functional requirements}
@@ -66,7 +66,7 @@ The diagram is described as follows:
 
 \subsection{Managing storage and sharing published applications}
 
-The last set of requirements is related to storage management and the sharing of published applications. The storage management requires a functionality to allows platform users to \textit{move}, \textit{copy} and \textit{create} data in their authenticated spaces in storage. The sharing requirement describes the functionality to allow users to share the applications they have published and control the access control settings to them. Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as Linked Data. Therefore the persistent storage tooling needs to be optimized for files in RDF format.
+The last set of requirements is related to storage management and the sharing of published applications. The storage management requires a functionality that allows platform users to \textit{move}, \textit{copy} and \textit{create} data in their authenticated spaces in storage. The sharing requirement describes the functionality to allow users to share the applications they have published and control the access control settings to them. Since published applications require to be publically accessible to anyone, the platform needs to have a functionality to persist the configurations of the applications in a secure way. Moreover, the configurations for most of the published applications are represented as Linked Data. Therefore the persistent storage tooling needs to be optimized for files in RDF format.
  
 \begin{figure}[h]
 \centering
@@ -106,7 +106,7 @@ The final solution needs to be able to integrate with the \lpa{} easily. Another
 
 \subsection{Decentralized storage}
 
-The Data Journalists, one of the primary target users of \lpa{} platform, should be able to choose any storage within compliant to the technology stack of the solution. In other words, the platform should be able to support storing data in any personal space of such storage instances that are created, hosted, or owned by users directly or by the third-party providers.
+The Data Journalists, one of the primary target users of \lpa{} platform, should be able to choose any storage that is compliant with the technology stack of the solution. In other words, the platform should be able to support storing data in any personal space of such storage instances that are created, hosted, or owned by users directly or by the third-party providers.
 
 \section{\solid{} development toolset}
 
@@ -140,7 +140,7 @@ The provided server implementation was used as a main \solid{} server for the pr
 	\item \textbf{Easy integration with current \lpa{} project}, specifically the frontend web project. This allows usage of provided `node-solid-server.js` library.
     \item \textbf{Active maintenance by open-source community}. Aside from that, this server implementation is considered to be a default option suggested by creators of \solid{}.
     \item \textbf{Support of \textit{WebID-TLS} and \textit{WebID-OIDC}}. This implies majority of WebID communications protocols,
-    crucial to the user authentication and security aspects of the storage within \lpa{}. The WebID-TLS stands for a WebID authentication method over TLS, providing am efficient and user friendly authentication on the Web \cite{webid_tls}. The WebID-OIDC is an authentication delegation protocol suitable for WebID-based decentralized systems such as \solid{} \cite{webid_oidc}.
+    crucial to the user authentication and security aspects of the storage within \lpa{}. The WebID-TLS stands for a WebID authentication method over \acrfull{TLS}, providing an efficient and user friendly authentication on the Web \cite{webid_tls}. The WebID-OIDC is an authentication delegation protocol suitable for WebID-based decentralized systems such as \solid{} \cite{webid_oidc}.
 \end{itemize}
 
 \subsection{The \solid{} React development stack}
@@ -194,11 +194,11 @@ The following library adds support of the LDflex language to \solid{} by:
 \section{Why \solid{}?}
 \label{sssec:why_solid}
 
-Even though it is presented as a flawless dominating technology in table \ref{tab:solid_comparisons_table}, it is, in fact, far from being perfect. Some of the disadvantages include:
+Even though it is presented as a flawless dominating technology in \autoref{table:solid_comparisons_table}, it is, in fact, far from being perfect. Some of the disadvantages include:
 \begin{itemize}
     \item \textit{Still under active research and development}, the project itself started back in 2016. Still, the real active traction and improvements had happened only within the past two years after community grew bigger, and the project gained popularity in the open-source community. It also means that there are still major changes in specifications introduces in every new iteration.
     \item \textit{Lack of actively maintained community libraries}, even though \solid{} organization on GitHub \footnote{\url{https://github.com}} actively updates and maintains its libraries for interacting with \solid{}. There is a large number of libraries developed by the community with tools that, in some cases, are more useful and popular. However, due to the \solid{} project still being actively developed, a lot of libraries outside of the scope of the organization become obsolete and outdated quickly.
-    \item \textit{Still a lot of room to improve infrastructure for developers}. The project does not provide intuitive and user-friendly documentation. An average developer is required to have basic knowledge in Semantic Web, Linked Data, and working with RDF and SPARQL. However, the improvements were made in 2019, and eventually, the onboarding process into the technology will become easier for any developer.
+    \item \textit{Still a lot of room for improving infrastructure for developers}. The project does not provide intuitive and user-friendly documentation. An average developer is required to have basic knowledge in Semantic Web, Linked Data, and working with RDF and SPARQL. However, the improvements were made in 2019, and eventually, the onboarding process into the technology will become easier for any developer.
 \end{itemize}
 
-Despite the disadvantaged mentioned above, the main reason for choosing \solid{} as a core for providing storage capabilities to \lpa{} was the fact that it is a very flexible and low-level technology.  Firstly,  as mentioned earlier, \solid{} represents multiple things at once. It is both a toolset with libraries for developers, a set of specifications, and an ambitious idea to a better World Wide Web where people own their data, and all information is linked together, preserving the semantic meaning. Of course, many attempts on decentralization were made before, but \solid{} differs from the others in the way that it does not target individuals in specific fields or domains of the internet, it attempts to change the internet itself, making it a better online space for everyone. And lastly, it demonstrated itself as a perfect fit for any application that requires any social aspects and involves dealing with any form of Linked Data, where \lpa{} platform and its requirements are compliant to all of the statements mentioned earlier.
+Despite the disadvantaged mentioned above, the main reason for choosing \solid{} as a core for providing storage capabilities to \lpa{} was the fact that it is a very flexible and low-level technology.  Firstly,  as mentioned earlier, \solid{} represents multiple things at once. It is both a toolset with libraries for developers, a set of specifications, and an ambitious idea to a better World Wide Web where people own their data, and all information is linked together, preserving the semantic meaning. Of course, many attempts on decentralization were made before, but \solid{} differs from the others in the way that it does not target individuals in specific fields or domains of the Internet, it attempts to change the Internet itself, making it a better online space for everyone. And lastly, it demonstrated itself as a perfect fit for any application that requires any social aspects and involves dealing with any form of Linked Data, where \lpa{} platform and its requirements are compliant to all of the statements mentioned earlier.
